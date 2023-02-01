@@ -1,6 +1,7 @@
 import {Page} from "./src/render";
 import {Partial} from "./src/partial";
-import {doRender} from "./src/utility/utility";
+import {doRender, loadPage} from "./src/utility/utility";
+import {Router} from "./src/router/router";
 
 export function renderPage(partial:{
     name:string,
@@ -27,4 +28,21 @@ export function definePartial(partial:{
     let component:Partial = new Partial(partial)
     component.hash = "2222"
     return component;
+}
+
+export function defineRouter(config:{
+    routes: {
+        path:string,
+        render: string,
+        meta: {},
+        beforeEnter:()=>{}
+    }[],
+    beforeEach:()=>{},
+    http:{}
+}){
+    return new Router(config)
+}
+
+export function createAPP(config){
+    window.onload = loadPage
 }

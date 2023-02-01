@@ -40,6 +40,28 @@ export function addEvents(nodes,page){
     }
 }
 
+export function loadPage(){
+    let page = resolveRoute(this.router,location.pathname)
+    let xml = new XMLHttpRequest()
+    xml.onreadystatechange = function (){
+        if(xml.readyState === 4 && xml.status === 200){
+            eval(xml.responseText)
+        }
+    }
+    xml.open("GET","/assert/render/"+page+".js")
+    xml.send()
+}
+
+function resolveRoute(router,routeName) {
+    let array = router.routes
+    for (let i=0;i<array.length;i++){
+        if (array[i].path === routeName){
+            return array[i].page
+        }
+    }
+    return "404"
+}
+
 function beforePostProcessor(data){
     data["$age"] = 23
     let setter = getSetter({})
