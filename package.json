@@ -1,17 +1,17 @@
 {
-  "name": "render",
+  "name": "router",
   "version": "1.0.0",
-  "author": {
-    "name": "mutian",
-    "email": "mutian-xiangcai@outlook.com"
-  },
-  "license": "MIT",
+  "description": "The router for render-js",
+  "main": "index.js",
   "type": "module",
   "types": "index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "axios": "^1.2.6"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//render-js/router.git"
+  },
+  "author": "mutian",
+  "license": "MIT"
 }

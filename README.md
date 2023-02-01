@@ -1,2 +1,2 @@
-# render
-The page render for render-js
+# router
+The router for render-js
