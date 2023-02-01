@@ -1,2 +1,2 @@
-# router
-The router for render-js
+# render
+The core module of render-js
