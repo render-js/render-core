@@ -2,6 +2,7 @@ import {Page} from "./src/render";
 import {Partial} from "./src/partial";
 import {doRender, loadPage} from "./src/utility/utility";
 import {Router} from "./src/router/router";
+import {Application} from "./src/application";
 
 export function renderPage(partial:{
     name:string,
@@ -44,5 +45,5 @@ export function defineRouter(config:{
 }
 
 export function createAPP(config){
-    window.onload = loadPage
+    return new Application()
 }

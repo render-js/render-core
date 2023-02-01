@@ -1,6 +1,7 @@
 import {getSetter} from "../getter/get-setter";
 import {loadStyle} from "../loader/style-loader";
 import {Page} from "../render";
+import {Router} from "../router/router";
 
 export function addLabel(nodes,page){
     for (let i=0;i<nodes.length;i++){
@@ -52,12 +53,9 @@ export function loadPage(){
     xml.send()
 }
 
-function resolveRoute(router,routeName) {
-    let array = router.routes
-    for (let i=0;i<array.length;i++){
-        if (array[i].path === routeName){
-            return array[i].page
-        }
+function resolveRoute(router:Router,routeName) {
+    if (router.resolveRender(routeName) !== null){
+        return router.resolveRender(routeName);
     }
     return "404"
 }
