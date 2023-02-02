@@ -1,6 +1,7 @@
 interface PartialBase{
     getName():string;
     getTemplate():string;
+    getData():{} | null;
     getComponents():{} | null;
     getMethods():{}| null;
     getBeforeRender():()=>{} | null
@@ -8,9 +9,12 @@ interface PartialBase{
 }
 
 export class Partial implements PartialBase{
+
     private readonly name: string;
 
     private readonly template: string;
+
+    private readonly data?: {}
 
     private readonly methods?:{};
 
@@ -25,6 +29,7 @@ export class Partial implements PartialBase{
     constructor(partial:{
         name:string,
         template:string,
+        data?:()=>{},
         methods?:{},
         components?:{},
         beforeRender?:()=>{},
@@ -32,9 +37,15 @@ export class Partial implements PartialBase{
     }) {
         this.name = partial.name;
         this.template = partial.template;
+        this.data = partial.data();
+        this.methods = partial.methods
         this.components = partial.components;
         this.beforeRender = partial.beforeRender;
         this.afterRender = partial.afterRender;
+    }
+
+    getData(): {} {
+        return this.data;
     }
 
     getMethods(): {} {

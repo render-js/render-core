@@ -1,5 +1,6 @@
 import {Router} from "./router/router";
-import {loadPage} from "./utility/utility";
+import {loadPage} from "./request/request";
+
 
 interface AppBase{
     run():void
@@ -10,8 +11,12 @@ export class Application implements AppBase{
 
     private router:Router
 
-    constructor() {
+    private selector:string
 
+    constructor(config:{
+        selector:string
+    }) {
+        this.selector = config.selector
     }
 
     run(): void {

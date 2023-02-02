@@ -1,10 +1,10 @@
 import {Page} from "./src/render";
 import {Partial} from "./src/partial";
-import {doRender, loadPage} from "./src/utility/utility";
 import {Router} from "./src/router/router";
 import {Application} from "./src/application";
+import {doRenderPage} from "./src/executor";
 
-export function renderPage(partial:{
+export function renderPage(render:{
     name:string,
     template:string,
     data:()=>{},
@@ -13,14 +13,15 @@ export function renderPage(partial:{
     beforeRender?:()=>{},
     afterRender?:()=>{}
 }):any{
-    let component:Page = new Page(partial)
+    let component:Page = new Page(render)
     component.hash = "2222"
-    doRender(component)
+    doRenderPage(component)
 }
 
 export function definePartial(partial:{
     name:string,
     template:string,
+    data?:()=>{},
     methods?:{},
     components?:{},
     beforeRender?:()=>{},
@@ -44,6 +45,8 @@ export function defineRouter(config:{
     return new Router(config)
 }
 
-export function createAPP(config){
-    return new Application()
+export function createAPP(config:{
+    selector:string
+}){
+    return new Application(config)
 }

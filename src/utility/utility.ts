@@ -1,17 +1,21 @@
-import {getSetter} from "../getter/get-setter";
-import {loadStyle} from "../loader/style-loader";
+import {beforePostProcessor} from "../propcessor/processor";
 import {Page} from "../render";
-import {Router} from "../router/router";
+import {Partial} from "../partial";
 
 export function addLabel(nodes,page){
+
     for (let i=0;i<nodes.length;i++){
-        nodes[i].setAttribute(page.name,"");
+
+        nodes[i].setAttribute(page.getName(),"");
+
         let kk = nodes[i].children
+
         addLabel(kk,page)
     }
 }
 
-export function addEvents(nodes,page){
+export function addEvent(nodes:HTMLCollection,page:Page | Partial){
+
     for (let i=0;i<nodes.length;i++){
 
         let attributes = nodes[i].getAttributeNames()
@@ -21,7 +25,9 @@ export function addEvents(nodes,page){
             let result = attributes[j].match(/^v-on:([a-z]+)$/g)
 
             if (result === null){
+
             }else {
+
                 for (let k=0;k<result.length;k++){
 
                     let action = result[k].substring(5)
@@ -30,108 +36,89 @@ export function addEvents(nodes,page){
 
                     nodes[i].removeAttribute(result[k])
 
-                    nodes[i].addEventListener(action,page.methods[method].bind(beforePostProcessor(page.data())))
+                    nodes[i].addEventListener(action,page.getMethods()[method].bind(beforePostProcessor(page.getData())))
                 }
             }
         }
 
         let kk = nodes[i].children
 
-        addEvents(kk,page)
+        addEvent(kk,page)
     }
 }
 
-export function loadPage(){
-    let page = resolveRoute(this.router,location.pathname)
-    let xml = new XMLHttpRequest()
-    xml.onreadystatechange = function (){
-        if(xml.readyState === 4 && xml.status === 200){
-            eval(xml.responseText)
+export function addInnerText(nodes:HTMLCollection,page:Page | Partial):void{
+
+    for (let i=0;i<nodes.length;i++){
+
+        let result = nodes[i].hasAttribute("v-txt")
+
+        if (result){
+
+            let dataName:string = nodes[i].getAttribute("v-txt")
+
+            nodes[i].removeAttribute("v-txt")
+
+            // @ts-ignore
+            nodes[i].innerText = page.getData()[dataName]
         }
+
+        let kk = nodes[i].children
+
+        addInnerText(kk,page)
     }
-    xml.open("GET","/assert/render/"+page+".js")
-    xml.send()
 }
 
-function resolveRoute(router:Router,routeName) {
-    if (router.resolveRender(routeName) !== null){
-        return router.resolveRender(routeName);
+export function addInnerHtml(nodes:HTMLCollection,page:Page | Partial):void{
+
+    for (let i=0;i<nodes.length;i++){
+
+        let result = nodes[i].hasAttribute("v-html")
+
+        if (result){
+
+            let dataName:string = nodes[i].getAttribute("v-html")
+
+            nodes[i].removeAttribute("v-html")
+
+            // @ts-ignore
+            nodes[i].innerHTML = page.getData()[dataName]
+        }
+
+        let kk = nodes[i].children
+
+        addInnerHtml(kk,page)
     }
-    return "404"
 }
 
-function beforePostProcessor(data){
-    data["$age"] = 23
-    let setter = getSetter({})
-    data.__defineSetter__("name",setter)
-    return data
-}
+export function renderValue(nodes:HTMLCollection,page:Page | Partial):void{
 
-export function doRender(page:Page):void{
+    for (let i=0;i<nodes.length;i++){
 
-    let temp = document.createElement("div")
+        let result:NodeList = nodes[i].childNodes
 
-    temp.innerHTML = page.getTemplate()
+        for (let j=0;j<result.length;j++){
 
-    let template = temp.childNodes[0]
+            if (result[j].nodeType === 3){
 
-    // @ts-ignore
-    let content = template.content
+                let real = result[j].nodeValue.match(/^\{\{\w+\}\}$/g)
 
-    let main = content.children[0]
+                if (real !== null){
 
-    let style = content.children[1]
+                    let expression  = result[j].nodeValue
 
-    let root = document.getElementById("app")
+                    let expression_before = expression.replace(/\{/g,"")
 
-    root.appendChild(main)
+                    let expression_after = expression_before.replace(/\}/g,"")
 
-    loadStyle(style.childNodes[0].nodeValue)
+                    result[j].nodeValue = page.getData()[expression_after]
 
-    let nodes =root.children
+                    let kk = nodes[i].children
 
-    addLabel(nodes,page)
-
-    addEvents(nodes,page)
-
-    let components = Object.keys(page.getComponents())
-
-    findComponent(nodes,components,page)
-}
-
-
-function renderComponent(component,parent,child):void{
-    let temp = document.createElement("div")
-
-    temp.innerHTML = component.template
-
-    let template = temp.childNodes[0]
-
-    // @ts-ignore
-    let content = template.content
-
-    let main = content.children[0]
-
-    let style = content.children[1]
-
-    parent.replaceChild(main,child)
-
-    loadStyle(style.childNodes[0].nodeValue)
-
-    let nodes =main.children
-    addLabel(nodes,component)
-    addEvents(nodes,component)
-    let components = Object.keys(component.components)
-    findComponent(nodes,components,component)
-}
-
-function findComponent(nodes,components,page){
-    for(let i=0;i<nodes.length;i++){
-        for (let j=0;j<components.length;j++) {
-            if (nodes[i].nodeName === components[j].toUpperCase()){
-                renderComponent(page.components[components[j]],nodes[i].parentNode,nodes[i])
+                    renderValue(kk,page)
+                }
             }
         }
-        findComponent(nodes[i].children,components,page)
     }
 }
+

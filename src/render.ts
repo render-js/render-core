@@ -1,6 +1,7 @@
 interface RenderBase{
     getName():string;
     getTemplate():string;
+    getData():{} |null;
     getComponents():{} | null;
     getMethods():{}| null;
     getBeforeRender():()=>{} | null
@@ -20,11 +21,14 @@ export class Page implements RenderBase{
 
     private readonly afterRender?:()=>{};
 
+    private readonly data:{}
+
     public hash:string;
 
     constructor(page:{
         name:string,
         template:string,
+        data?:()=>{},
         methods?:{},
         components?:{},
         beforeRender?:()=>{},
@@ -32,9 +36,14 @@ export class Page implements RenderBase{
     }) {
         this.name = page.name;
         this.template = page.template;
+        this.data = page.data()
         this.components = page.components;
         this.beforeRender = page.beforeRender;
         this.afterRender = page.afterRender;
+    }
+
+    getData(): {} | null{
+        return this.data
     }
 
     getMethods(): {} {
@@ -44,7 +53,7 @@ export class Page implements RenderBase{
     getComponents(): {} {
         return this.components;
     }
-    getBeforeRender(): () => {} {
+    getBeforeRender(): () => {} | null {
         return this.beforeRender;
     }
     getAfterRender(): () => {} {

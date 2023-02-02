@@ -1,7 +1,10 @@
-export function resolveModel(){
+import {Router} from "../router/router";
 
-}
+export function resolveRoute(router:Router,routeName:string) {
 
-export function resolveEL(){
+    if (router.resolveRender(routeName) !== null){
 
+        return router.resolveRender(routeName);
+    }
+    return "404"
 }

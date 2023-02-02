@@ -6,8 +6,8 @@ export class Router implements RouterBase{
     private readonly routes:{
         path:string,
         render: string,
-        meta: {},
-        beforeEnter:()=>{}
+        meta?: {},
+        beforeEnter?:()=>{}
     }[];
 
     private beforeEach:()=>{};
@@ -19,11 +19,11 @@ export class Router implements RouterBase{
         routes: {
             path:string,
             render: string,
-            meta: {},
-            beforeEnter:()=>{}
+            meta?: {},
+            beforeEnter?:()=>{}
         }[],
-        beforeEach:()=>{},
-        http:{}
+        beforeEach?:()=>{},
+        http?:{}
     }) {
         this.routes = config.routes;
         this.beforeEach = config.beforeEach;
