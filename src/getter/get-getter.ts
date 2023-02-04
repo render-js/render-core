@@ -1,6 +1,7 @@
-export function getGetter(obj){
-    let getter = function (){
+export function getGetter(data:{}){
 
+    let getter = function (obj,prop){
+        return obj[prop]
     }
-    return getter.bind(obj)
+    return getter.bind(data)
 }

@@ -7,28 +7,32 @@ import {doRenderPage} from "./src/executor";
 export function renderPage(render:{
     name:string,
     template:string,
-    data:()=>{},
+    data?:{},
+    props?:string[],
+    computed?:{},
     methods?:{},
     components?:{},
     beforeRender?:()=>{},
     afterRender?:()=>{}
 }):any{
     let component:Page = new Page(render)
-    component.hash = "2222"
+    component.collection = new Map<string,ChildNode[]>()
     doRenderPage(component)
 }
 
 export function definePartial(partial:{
     name:string,
     template:string,
-    data?:()=>{},
+    data?:{},
+    props?:string[],
+    computed?:{},
     methods?:{},
     components?:{},
     beforeRender?:()=>{},
     afterRender?:()=>{}
 }):any{
-    let component:Partial = new Partial(partial)
-    component.hash = "2222"
+    let component:Partial = new Partial(partial);
+    component.collection = new Map<string,ChildNode[]>()
     return component;
 }
 
@@ -45,7 +49,7 @@ export function defineRouter(config:{
     return new Router(config)
 }
 
-export function createAPP(config:{
+export function createApp(config:{
     selector:string
 }){
     return new Application(config)

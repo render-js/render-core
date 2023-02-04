@@ -8,10 +8,17 @@ interface RenderBase{
     getAfterRender():()=>{} | null
 }
 
-export class Page implements RenderBase{
+export class Page implements RenderBase,UpdaterBase{
+
+    private rootNode:ChildNode;
+
     private readonly name: string;
 
     private readonly template: string;
+
+    private readonly props?:{};
+
+    private data:{};
 
     private readonly methods?:{};
 
@@ -21,14 +28,14 @@ export class Page implements RenderBase{
 
     private readonly afterRender?:()=>{};
 
-    private readonly data:{}
-
-    public hash:string;
+    private map:Map<string, any>;
 
     constructor(page:{
         name:string,
         template:string,
-        data?:()=>{},
+        props?:string[],
+        data?:{},
+        computed?:{},
         methods?:{},
         components?:{},
         beforeRender?:()=>{},
@@ -36,14 +43,39 @@ export class Page implements RenderBase{
     }) {
         this.name = page.name;
         this.template = page.template;
-        this.data = page.data()
+        this.data = page.data;
+        this.props = page.props;
         this.components = page.components;
         this.beforeRender = page.beforeRender;
         this.afterRender = page.afterRender;
     }
 
+    getRootNode(): ChildNode {
+        return this.rootNode;
+    }
+
+    set root(node:ChildNode){
+        this.rootNode = node;
+    }
+
+    getComponentCollection(key:string):any {
+        return this.map.get(key);
+    }
+
+    get collection(){
+        return this.map;
+    }
+
+    set collection(map:Map<string, ChildNode[]>){
+        this.map = map;
+    }
+
     getData(): {} | null{
         return this.data
+    }
+
+    setData(data:{}){
+        this.data = data;
     }
 
     getMethods(): {} {

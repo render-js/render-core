@@ -2,19 +2,23 @@ interface PartialBase{
     getName():string;
     getTemplate():string;
     getData():{} | null;
+    getProps():{} | null;
     getComponents():{} | null;
     getMethods():{}| null;
     getBeforeRender():()=>{} | null
     getAfterRender():()=>{} | null
 }
 
-export class Partial implements PartialBase{
+export class Partial implements PartialBase,UpdaterBase{
+    private rootNode:ChildNode;
 
     private readonly name: string;
 
     private readonly template: string;
 
-    private readonly data?: {}
+    private data?: {};
+
+    private readonly props?: {};
 
     private readonly methods?:{};
 
@@ -24,12 +28,14 @@ export class Partial implements PartialBase{
 
     private readonly afterRender?:()=>{};
 
-    public hash:string;
+    private map:Map<string, any>;
 
     constructor(partial:{
         name:string,
         template:string,
-        data?:()=>{},
+        data?:{},
+        props?:string[],
+        computed?:{},
         methods?:{},
         components?:{},
         beforeRender?:()=>{},
@@ -37,15 +43,44 @@ export class Partial implements PartialBase{
     }) {
         this.name = partial.name;
         this.template = partial.template;
-        this.data = partial.data();
-        this.methods = partial.methods
+        this.data = partial.data;
+        this.props = partial.props;
+        this.methods = partial.methods;
         this.components = partial.components;
         this.beforeRender = partial.beforeRender;
         this.afterRender = partial.afterRender;
     }
 
+    getRootNode(): ChildNode {
+        return this.rootNode;
+    }
+
+    set root(node:ChildNode){
+        this.rootNode = node;
+    }
+
+    getComponentCollection(key: string): any {
+        return this.map.get(key);
+    }
+
+    get collection(){
+        return this.map;
+    }
+
+    set collection(map:Map<string, ChildNode[]>){
+        this.map = map;
+    }
+
+    getProps(): {} {
+        return this.props;
+    }
+
     getData(): {} {
         return this.data;
+    }
+
+    setData(data:{}){
+        this.data = data;
     }
 
     getMethods(): {} {

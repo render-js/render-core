@@ -1,47 +1,44 @@
-import {addEvent, addInnerHtml, addInnerText, addLabel, renderValue} from "./utility/utility";
+import {addEvent, addInnerHtml, addInnerText, addLabel, bindModel, renderValue} from "./utility/utility";
 import {Page} from "./render";
 import {loadStyle} from "./loader/style-loader";
 import {Partial} from "./partial";
+import {getProxyObject} from "./proxy/proxy";
 
 
 
 export function doRenderPage(page:Page):void{
 
-    let temp:HTMLDivElement = document.createElement("div")
-
-    temp.innerHTML = page.getTemplate()
-
-    let template:ChildNode = temp.childNodes[0]
-
+    let temp:HTMLDivElement = document.createElement("div");
+    temp.innerHTML = page.getTemplate();
+    let template:ChildNode = temp.childNodes[0];
     // @ts-ignore
-    let content = template.content
+    let content = template.content;
+    let main = content.children[0];
+    let style = content.children[1];
+    let root = document.getElementById("app");
+    root.appendChild(main);
 
-    let main = content.children[0]
+    //数据双向绑定
+    page.root = main;
+    let proxyObject = getProxyObject(page.getData(),page)
+    page.setData(proxyObject)
 
-    let style = content.children[1]
-
-    let root = document.getElementById("app")
-
-    //直接渲染raw到app元素下
-    root.appendChild(main)
-
-    loadStyle(style.childNodes[0].nodeValue)
-
+    //组件内容处理
     let nodes:HTMLCollection =root.children
-
+    loadStyle(style.childNodes[0].nodeValue)
     addLabel(nodes,page)
+    addEvent(nodes,page,proxyObject)
+    addInnerHtml(nodes,page,proxyObject)
+    addInnerText(nodes,page,proxyObject)
+    renderValue(nodes,page,proxyObject)
+    bindModel(nodes,page,proxyObject)
 
-    addEvent(nodes,page)
-
-    addInnerHtml(nodes,page)
-
-    addInnerText(nodes,page)
-
-    renderValue(nodes,page)
-
-    let components:string[] = Object.keys(page.getComponents())
-
+    //深度渲染
+    let components:string[] = Object.getOwnPropertyNames(page.getComponents())
     findComponent(nodes,components,page)
+
+    collectComponents(document.getElementById("app"),page)
+
 }
 
 function findComponent(nodes:HTMLCollection,components:string[],page:Page | Partial):void{
@@ -52,7 +49,7 @@ function findComponent(nodes:HTMLCollection,components:string[],page:Page | Part
 
             if (nodes[i].nodeName === components[j].toUpperCase()){
 
-                renderComponent(page.getComponents()[components[j]],nodes[i].parentNode,nodes[i])
+                renderComponent(page.getComponents()[components[j]],nodes[i].parentNode,nodes[i],page.getName())
             }
         }
 
@@ -61,38 +58,59 @@ function findComponent(nodes:HTMLCollection,components:string[],page:Page | Part
 }
 
 
-function renderComponent(component:Partial,parent,child):void{
+function renderComponent(component:Partial,parent,child,attr):void{
 
+    //渲染子组件
     let temp:HTMLDivElement = document.createElement("div")
-
     temp.innerHTML = component.getTemplate()
-
     let template:ChildNode = temp.childNodes[0]
-
     // @ts-ignore
     let content = template.content
-
     let main = content.children[0]
-
+    main.setAttribute("cpn",attr)
     let style = content.children[1]
-
     parent.replaceChild(main,child)
 
-    loadStyle(style.childNodes[0].nodeValue)
 
+    //数据双向绑定
+    component.root = main;
+    let proxyObject = getProxyObject(component.getData(),component)
+    component.setData(proxyObject)
+
+    //组件内容处理
     let nodes =main.children
-
+    loadStyle(style.childNodes[0].nodeValue)
     addLabel(nodes,component)
+    addEvent(nodes,component,proxyObject)
+    addInnerHtml(nodes,component,proxyObject)
+    addInnerText(nodes,component,proxyObject)
+    renderValue(nodes,component,proxyObject)
+    bindModel(nodes,component,proxyObject)
 
-    addEvent(nodes,component)
-
-    addInnerHtml(nodes,component)
-
-    addInnerText(nodes,component)
-
-    renderValue(nodes,component)
-
-    let components = Object.keys(component.getComponents())
-
+    //深度渲染
+    let components = Object.getOwnPropertyNames(component.getComponents())
     findComponent(nodes,components,component)
+}
+
+function collectComponents(main:Element,page:Partial | Page):void{
+    let components = page.getComponents()
+    //引用子组件
+    for (let pageKey in components) {
+        let keys:string[] = Object.getOwnPropertyNames(components)
+        let map = page.collection;
+
+        for (let i=0;i<keys.length;i++){
+            let gets = main.getElementsByTagName(keys[i]);
+
+            let gos:ChildNode[] = [];
+
+            for (let j=0;j<gets.length;j++){
+                if (gets[j].getAttribute("cpn") === page.getName()){
+                    gos.push(gets[j])
+                }
+            }
+            map.set(keys[i],gos)
+        }
+        collectComponents(document.getElementById("app"),components[pageKey])
+    }
 }

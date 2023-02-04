@@ -1,7 +1,17 @@
+import {getSetter} from "../getter/get-setter";
 import {Page} from "../render";
 import {Partial} from "../partial";
 
-export function addLabel(nodes,page){
+export  function getProxyObject(obj:{},updater:Page | Partial):any{
+
+    let handel = {}
+
+    handel["set"] = getSetter(obj,updater)
+
+    return new Proxy(obj, handel);
+}
+
+export function addLabelForUpdater(nodes,page){
 
     for (let i=0;i<nodes.length;i++){
 
@@ -9,11 +19,11 @@ export function addLabel(nodes,page){
 
         let kk = nodes[i].children
 
-        addLabel(kk,page)
+        addLabelForUpdater(kk,page)
     }
 }
 
-export function addEvent(nodes:HTMLCollection,page:Page | Partial,data:{}){
+export function addEventForUpdater(nodes:HTMLCollection,page:Page | Partial,data:{}){
 
     for (let i=0;i<nodes.length;i++){
 
@@ -39,14 +49,13 @@ export function addEvent(nodes:HTMLCollection,page:Page | Partial,data:{}){
                 }
             }
         }
-
         let kk = nodes[i].children
 
-        addEvent(kk,page,data)
+        addEventForUpdater(kk,page,data)
     }
 }
 
-export function addInnerText(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
+export function addInnerTextForUpdater(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -64,11 +73,11 @@ export function addInnerText(nodes:HTMLCollection,page:Page | Partial,data:{}):v
 
         let kk = nodes[i].children
 
-        addInnerText(kk,page,data)
+        addInnerTextForUpdater(kk,page,data)
     }
 }
 
-export function addInnerHtml(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
+export function addInnerHtmlForUpdater(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -83,14 +92,13 @@ export function addInnerHtml(nodes:HTMLCollection,page:Page | Partial,data:{}):v
             // @ts-ignore
             nodes[i].innerHTML = data[dataName]
         }
-
         let kk = nodes[i].children
 
-        addInnerHtml(kk,page,data)
+        addInnerHtmlForUpdater(kk,page,data)
     }
 }
 
-export function renderValue(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
+export function renderValueForUpdater(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -111,17 +119,16 @@ export function renderValue(nodes:HTMLCollection,page:Page | Partial,data:{}):vo
                     let expression_after = expression_before.replace(/\}/g,"")
 
                     result[j].nodeValue = data[expression_after]
-
-                    let kk = nodes[i].children
-
-                    renderValue(kk,page,data)
                 }
             }
         }
+        let kk = nodes[i].children
+
+        renderValueForUpdater(kk,page,data)
     }
 }
 
-export function bindModel(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
+export function bindModelForUpdater(nodes:HTMLCollection,page:Page | Partial,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -141,6 +148,12 @@ export function bindModel(nodes:HTMLCollection,page:Page | Partial,data:{}):void
             nodes[i].setAttribute("value",data[dataName])
 
             if (tagName === "INPUT" || tagName === "SELECT" || tagName === "TEXTAREA"){
+
+                nodes[i].setAttribute("name",dataName)
+
+                // @ts-ignore
+                nodes[i].setAttribute("value",data[dataName])
+                //光标定位
 
                 let listener = function (evt){
                     if (!evt.target.hasAttribute("flag")){
@@ -164,10 +177,36 @@ export function bindModel(nodes:HTMLCollection,page:Page | Partial,data:{}):void
                 nodes[i].addEventListener("input",listener.bind(data))
                 nodes[i].addEventListener("compositionstart",compositionstart)
                 nodes[i].addEventListener("compositionend",compositionend.bind(data))
+
+                // @ts-ignore
+                nodes[i].focus()
+                // @ts-ignore
+                nodes[i].setSelectionRange(data[dataName].length, data[dataName].length)
             }
         }
+
         let kk = nodes[i].children
-        bindModel(kk,page,data)
+
+        bindModelForUpdater(kk,page,data)
     }
 }
 
+export function collectComponentsForUpdater(main:Element,page:Partial | Page):void{
+    //引用子组件
+    let keys:string[] = Object.getOwnPropertyNames(page.getComponents())
+    let map = page.collection;
+
+    for (let i=0;i<keys.length;i++){
+
+        let gets = main.getElementsByTagName(keys[i]);
+
+        let gos:ChildNode[] = [];
+
+        for (let j=0;j<gets.length;j++){
+            if (gets[j].getAttribute("cpn") === page.getName()){
+                gos.push(gets[j])
+            }
+        }
+        map.set(keys[i],gos)
+    }
+}
