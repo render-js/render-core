@@ -137,9 +137,6 @@ export function bindModel(nodes:HTMLCollection,page:Page | Partial,data:{}):void
 
             nodes[i].setAttribute("name",dataName)
 
-            // @ts-ignore
-            nodes[i].setAttribute("value",data[dataName])
-
             if (tagName === "INPUT" || tagName === "SELECT" || tagName === "TEXTAREA"){
 
                 let listener = function (evt){
