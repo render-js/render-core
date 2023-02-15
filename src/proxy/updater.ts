@@ -1,4 +1,4 @@
 interface UpdaterBase{
-    getRootNode():ChildNode;
+    getRootNode():Element;
     getComponentCollection(key:string):ChildNode[];
 }

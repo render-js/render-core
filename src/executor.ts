@@ -7,7 +7,11 @@ import {getProxyObject} from "./proxy/proxy";
 
 
 export function doRenderPage(page:Page):void{
+    //beforeRender
+    let beforeRender = page.getBeforeRender().bind(page.getData());
+    page.setBeforeRender(beforeRender)
 
+    //开始渲染
     let temp:HTMLDivElement = document.createElement("div");
     temp.innerHTML = page.getTemplate();
     let template:ChildNode = temp.childNodes[0];
@@ -17,6 +21,13 @@ export function doRenderPage(page:Page):void{
     let style = content.children[1];
     let root = document.getElementById("app");
     root.appendChild(main);
+
+    //afterRender
+    let props = page.getProps();
+    let data = page.getData();
+    data['props'] = props;
+    let afterRender = page.getAfterRender().bind(data)
+    page.setAfterRender(afterRender)
 
     //数据双向绑定
     page.root = main;
@@ -59,6 +70,9 @@ function findComponent(nodes:HTMLCollection,components:string[],page:Page | Part
 
 
 function renderComponent(component:Partial,parent,child,attr):void{
+    //beforeRender
+    let beforeRender = component.getBeforeRender().bind(component.getData());
+    component.setBeforeRender(beforeRender)
 
     //渲染子组件
     let temp:HTMLDivElement = document.createElement("div")
@@ -71,6 +85,12 @@ function renderComponent(component:Partial,parent,child,attr):void{
     let style = content.children[1]
     parent.replaceChild(main,child)
 
+    //afterRender
+    let props = component.getProps();
+    let data = component.getData();
+    data['props'] = props;
+    let afterRender = component.getAfterRender().bind(data)
+    component.setAfterRender(afterRender)
 
     //数据双向绑定
     component.root = main;

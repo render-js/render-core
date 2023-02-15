@@ -17,7 +17,7 @@ export class Router implements RouterBase{
 
     constructor(config:{
         routes: {
-            path:string,
+            path: string,
             render: string,
             meta?: {},
             beforeEnter?:()=>{}

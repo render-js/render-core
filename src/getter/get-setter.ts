@@ -54,3 +54,9 @@ function update(node:ChildNode,updater:Page | Partial):void{
 function alterNode(first:ChildNode,two:ChildNode):void{
     first.parentNode.replaceChild(two,first)
 }
+
+function updateProperties(root:Element,cpn:string,obj:{}){
+    for (let objKey in obj) {
+        root.getElementsByTagName(objKey)
+    }
+}
