@@ -1,4 +1,4 @@
-import {Router} from "../router/router";
+import {Router} from "../../router/router";
 
 export function resolveRoute(router:Router,routeName:string) {
 

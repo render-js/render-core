@@ -1,5 +1,5 @@
-import {Page} from "../render";
-import {Partial} from "../partial";
+import {Page} from "../class/render";
+import {Partial} from "../class/partial";
 import {
     addEventForUpdater,
     addInnerHtmlForUpdater,

@@ -1,6 +1,6 @@
 import {getSetter} from "../getter/get-setter";
-import {Page} from "../render";
-import {Partial} from "../partial";
+import {Page} from "../class/render";
+import {Partial} from "../class/partial";
 
 export  function getProxyObject(obj:{},updater:Page | Partial):any{
 

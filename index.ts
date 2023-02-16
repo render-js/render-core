@@ -1,5 +1,5 @@
-import {Page} from "./src/render";
-import {Partial} from "./src/partial";
+import {Page} from "./src/class/render";
+import {Partial} from "./src/class/partial";
 import {Router} from "./src/router/router";
 import {Application} from "./src/application";
 import {doRenderPage} from "./src/executor";

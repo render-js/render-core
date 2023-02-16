@@ -1,9 +1,8 @@
 {
-  "name": "router",
+  "name": "renderjs",
   "version": "1.0.0",
-  "description": "The router for render-js",
+  "description": "renderjs front framework",
   "main": "index.js",
-  "type": "module",
   "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,5 +1,5 @@
 import {Router} from "./router/router";
-import {loadPage} from "./request/request";
+import {loadPage} from "./utility/request/request";
 
 
 interface AppBase{

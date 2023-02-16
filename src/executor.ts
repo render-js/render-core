@@ -1,7 +1,7 @@
 import {addEvent, addInnerHtml, addInnerText, addLabel, bindModel, renderValue} from "./utility/utility";
-import {Page} from "./render";
-import {loadStyle} from "./loader/style-loader";
-import {Partial} from "./partial";
+import {Page} from "./class/render";
+import {loadStyle} from "./utility/loader/style-loader";
+import {Partial} from "./class/partial";
 import {getProxyObject} from "./proxy/proxy";
 
 
