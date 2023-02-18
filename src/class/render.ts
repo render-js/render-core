@@ -1,9 +1,9 @@
+import {UpdaterBase} from "../core/proxy/proxy";
+
 interface RenderBase{
     getName():string;
     getTemplate():string;
     getData():{};
-    getProps():{} | null;
-    setProps(key:string,value:any)
     getComponents():{};
     getMethods():{};
     getBeforeRender():()=>void
@@ -22,8 +22,6 @@ export class Page implements RenderBase,UpdaterBase{
 
     private readonly template: string;
 
-    private readonly props?:{};
-
     private data:{};
 
     private readonly methods?:{};
@@ -36,13 +34,13 @@ export class Page implements RenderBase,UpdaterBase{
 
     private afterRender?:() => void;
 
-    private beforeUpdate?:() => void;
+    private readonly beforeUpdate?:() => void;
 
-    private afterUpdate?:() => void;
+    private readonly afterUpdate?:() => void;
 
-    private beforeMount?:() => void;
+    private readonly beforeMount?:() => void;
 
-    private beforeUnmount?:() => void;
+    private readonly beforeUnmount?:() => void;
 
     private map:Map<string, any>;
 
@@ -62,47 +60,47 @@ export class Page implements RenderBase,UpdaterBase{
     }) {
         this.name = page.name;
         this.template = page.template;
-        if (typeof page.data == null){
+        if (typeof page.data == "undefined"){
             this.data = {};
         }else {
             this.data = page.data;
         }
-        if (page.computed == null){
+        if (page.computed == "undefined"){
             this.computed = {};
         }else {
             this.computed = page.computed;
         }
-        if (typeof page.components == null){
+        if (typeof page.components == "undefined"){
             this.components = {};
         }else {
             this.components = page.components;
         }
-        if (typeof page.beforeRender == null){
+        if (typeof page.beforeRender == "undefined"){
             this.beforeRender = function (){}
         }else {
             this.beforeRender = page.beforeRender;
         }
-        if (typeof page.afterRender == null){
+        if (typeof page.afterRender == "undefined"){
             this.afterRender = function (){}
         }else {
             this.afterRender = page.afterRender;
         }
-        if (typeof page.beforeUpdate == null){
+        if (typeof page.beforeUpdate == "undefined"){
             this.beforeUpdate = function (){}
         }else {
             this.beforeUpdate = page.beforeUpdate;
         }
-        if (typeof page.afterRender == null){
+        if (typeof page.afterUpdate == "undefined"){
             this.afterUpdate = function (){}
         }else {
             this.afterUpdate = page.afterUpdate;
         }
-        if (typeof page.afterRender == null){
+        if (typeof page.beforeMount == "undefined"){
             this.beforeMount = function (){}
         }else {
             this.beforeMount = page.beforeMount;
         }
-        if (typeof page.afterRender == null){
+        if (typeof page.beforeUnmount == "undefined"){
             this.beforeUnmount = function (){}
         }else {
             this.beforeUnmount = page.beforeUnmount;
@@ -122,14 +120,6 @@ export class Page implements RenderBase,UpdaterBase{
 
     getTemplate(): string {
         return this.template;
-    }
-
-    getProps(): {} {
-        return this.props;
-    }
-
-    setProps(key: string, value: any) {
-        this.props[key] = value;
     }
 
     getData(): {}{
@@ -152,6 +142,18 @@ export class Page implements RenderBase,UpdaterBase{
         return this.components;
     }
 
+    getComponentCollection(key: string): any {
+        return this.map.get(key);
+    }
+
+    get collection(){
+        return this.map;
+    }
+
+    set collection(map:Map<string, ChildNode[]>){
+        this.map = map;
+    }
+
     getBeforeRender(): () => void {
         return this.beforeRender;
     }
@@ -169,40 +171,16 @@ export class Page implements RenderBase,UpdaterBase{
     getBeforeUpdate(): () => void {
         return this.beforeUpdate;
     }
-    setBeforeUpdate(render:()=>void){
-        this.beforeUpdate = render;
-    }
 
     getAfterUpdate(): () => void {
         return this.afterUpdate;
-    }
-    setAfterUpdate(render:()=>void){
-        this.afterUpdate = render;
     }
 
     getBeforeMount(): () => void {
         return this.beforeMount;
     }
-    setBeforeMount(render:()=>void){
-        this.beforeMount = render;
-    }
 
     getBeforeUnmount(): () => void {
         return this.beforeUnmount;
-    }
-    setBeforeUnmount(render:()=>void){
-        this.beforeUnmount = render;
-    }
-
-    getComponentCollection(key:string):any {
-        return this.map.get(key);
-    }
-
-    get collection(){
-        return this.map;
-    }
-
-    set collection(map:Map<string, ChildNode[]>){
-        this.map = map;
     }
 }

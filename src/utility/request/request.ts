@@ -1,6 +1,5 @@
 import {resolveRoute} from "../resolver/resolver";
 
-
 export function loadPage(){
 
     let page:string = resolveRoute(this.router,location.pathname)

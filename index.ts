@@ -1,35 +1,43 @@
 import {Page} from "./src/class/render";
 import {Partial} from "./src/class/partial";
-import {Router} from "./src/router/router";
-import {Application} from "./src/application";
-import {doRenderPage} from "./src/executor";
+import {Router} from "./src/class/router";
+import {Shell} from "./src/class/shell";
+import {RenderPage} from "./src/core/render/render";
+import {Runtime} from "./src/core/react/react";
 
-export function renderPage(render:{
+export function definePage(render:{
     name:string,
     template:string,
     data?:{},
-    props?:string[],
     computed?:{},
     methods?:{},
     components?:{},
-    beforeRender?:()=>{},
-    afterRender?:()=>{}
+    beforeRender?:()=>void,
+    afterRender?:()=>void,
+    beforeUpdate?:()=>void,
+    afterUpdate?:()=>void,
+    beforeMount?:()=>void,
+    beforeUnmount?:()=>void;
 }):any{
     let component:Page = new Page(render)
     component.collection = new Map<string,ChildNode[]>()
-    doRenderPage(component)
+    RenderPage(component)
 }
 
 export function definePartial(partial:{
     name:string,
     template:string,
+    props:string[],
     data?:{},
-    props?:string[],
     computed?:{},
     methods?:{},
     components?:{},
-    beforeRender?:()=>{},
-    afterRender?:()=>{}
+    beforeRender?:()=>void,
+    afterRender?:()=>void,
+    beforeUpdate?:()=>void,
+    afterUpdate?:()=>void,
+    beforeMount?:()=>void,
+    beforeUnmount?:()=>void;
 }):any{
     let component:Partial = new Partial(partial);
     component.collection = new Map<string,ChildNode[]>()
@@ -50,7 +58,11 @@ export function defineRouter(config:{
 }
 
 export function createApp(config:{
-    selector:string
+    mount:string
 }){
-    return new Application(config)
+    return new Shell(config)
+}
+
+export function runtime():any{
+    return new Runtime();
 }

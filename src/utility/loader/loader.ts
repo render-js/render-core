@@ -1,7 +1,3 @@
-/*
- *Here is the loader for style
- */
-
 export function loadStyle(data) {
     let style = document.createElement('style')
     let text = document.createTextNode(data)

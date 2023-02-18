@@ -1,9 +1,10 @@
+import {UpdaterBase} from "../core/proxy/proxy";
+
 interface PartialBase{
     getName():string;
     getTemplate():string;
     getData():{};
-    getProps():{};
-    setProps(key:string,value:any)
+    getProps():string[];
     getComponents():{};
     getMethods():{};
     getBeforeRender():()=>void
@@ -22,7 +23,7 @@ export class Partial implements PartialBase,UpdaterBase{
 
     private readonly template: string;
 
-    private readonly props?: {};
+    private readonly props?: string[];
 
     private data?: {};
 
@@ -32,23 +33,24 @@ export class Partial implements PartialBase,UpdaterBase{
 
     private readonly components?:{};
 
-    private beforeRender?:() => void;
+    private readonly beforeRender?:() => void;
 
-    private afterRender?:() => void;
+    private readonly afterRender?:() => void;
 
-    private beforeUpdate?:() => void;
+    private readonly beforeUpdate?:() => void;
 
-    private afterUpdate?:() => void;
+    private readonly afterUpdate?:() => void;
 
-    private beforeMount?:() => void;
+    private readonly beforeMount?:() => void;
 
-    private beforeUnmount?:() => void;
+    private readonly beforeUnmount?:() => void;
 
     private map:Map<string, any>;
 
     constructor(partial:{
         name:string,
         template:string,
+        props:string[],
         data?:{},
         computed?:{},
         methods?:{},
@@ -62,52 +64,57 @@ export class Partial implements PartialBase,UpdaterBase{
     }) {
         this.name = partial.name;
         this.template = partial.template;
-        if (typeof partial.data == null){
+        if (typeof partial.props == "undefined"){
+            this.props = [];
+        }else {
+            this.props = partial.props;
+        }
+        if (typeof partial.data == "undefined"){
             this.data = {};
         }else {
             this.data = partial.data;
         }
-        if (typeof partial.computed == null){
+        if (typeof partial.computed == "undefined"){
             this.computed = {};
         }else {
             this.computed = partial.computed;
         }
-        if (typeof partial.methods == null){
+        if (typeof partial.methods == "undefined"){
             this.methods = {};
         }else {
             this.methods = partial.methods;
         }
-        if (typeof partial.components == null){
+        if (typeof partial.components == "undefined"){
             this.components = {};
         }else {
             this.components = partial.components;
         }
-        if (typeof partial.beforeRender == null){
+        if (typeof partial.beforeRender == "undefined"){
             this.beforeRender = function (){}
         }else {
             this.beforeRender = partial.beforeRender;
         }
-        if (typeof partial.afterRender == null){
+        if (typeof partial.afterRender == "undefined"){
             this.afterRender = function (){}
         }else {
             this.afterRender = partial.afterRender;
         }
-        if (typeof partial.beforeUpdate == null){
+        if (typeof partial.beforeUpdate == "undefined"){
             this.beforeUpdate = function (){}
         }else {
             this.beforeUpdate = partial.beforeUpdate;
         }
-        if (typeof partial.afterRender == null){
+        if (typeof partial.afterUpdate == "undefined"){
             this.afterUpdate = function (){}
         }else {
             this.afterUpdate = partial.afterUpdate;
         }
-        if (typeof partial.afterRender == null){
+        if (typeof partial.beforeMount == "undefined"){
             this.beforeMount = function (){}
         }else {
             this.beforeMount = partial.beforeMount;
         }
-        if (typeof partial.afterRender == null){
+        if (typeof partial.beforeUnmount == "undefined"){
             this.beforeUnmount = function (){}
         }else {
             this.beforeUnmount = partial.beforeUnmount;
@@ -130,12 +137,8 @@ export class Partial implements PartialBase,UpdaterBase{
         return this.template;
     }
 
-    getProps(): {} {
+    getProps(): string[] {
         return this.props;
-    }
-
-    setProps(key: string, value: any) {
-        this.props[key] = value;
     }
 
     getData(): {} {
@@ -158,48 +161,6 @@ export class Partial implements PartialBase,UpdaterBase{
         return this.components;
     }
 
-    getBeforeRender(): () => void {
-        return this.beforeRender;
-    }
-    setBeforeRender(render:()=>void){
-        this.beforeRender = render;
-    }
-
-    getAfterRender(): () => void {
-        return this.afterRender;
-    }
-    setAfterRender(render:()=>void){
-        this.afterRender = render;
-    }
-
-    getBeforeUpdate(): () => void {
-        return this.beforeUpdate;
-    }
-    setBeforeUpdate(render:()=>void){
-        this.beforeUpdate = render;
-    }
-
-    getAfterUpdate(): () => void {
-        return this.afterUpdate;
-    }
-    setAfterUpdate(render:()=>void){
-        this.afterUpdate = render;
-    }
-
-    getBeforeMount(): () => void {
-        return this.beforeMount;
-    }
-    setBeforeMount(render:()=>void){
-        this.beforeMount = render;
-    }
-
-    getBeforeUnmount(): () => void {
-        return this.beforeUnmount;
-    }
-    setBeforeUnmount(render:()=>void){
-        this.beforeUnmount = render;
-    }
-
     getComponentCollection(key: string): any {
         return this.map.get(key);
     }
@@ -210,5 +171,29 @@ export class Partial implements PartialBase,UpdaterBase{
 
     set collection(map:Map<string, ChildNode[]>){
         this.map = map;
+    }
+
+    getBeforeRender(): () => void {
+        return this.beforeRender;
+    }
+
+    getAfterRender(): () => void {
+        return this.afterRender;
+    }
+
+    getBeforeUpdate(): () => void {
+        return this.beforeUpdate;
+    }
+
+    getAfterUpdate(): () => void {
+        return this.afterUpdate;
+    }
+
+    getBeforeMount(): () => void {
+        return this.beforeMount;
+    }
+
+    getBeforeUnmount(): () => void {
+        return this.beforeUnmount;
     }
 }
