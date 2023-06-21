@@ -1,4 +1,3 @@
-import {alterNode, findComponent, findLiveComponent} from "../action/action";
 import {
     addEventForUpdater,
     addInnerHtmlForUpdater,
@@ -6,12 +5,12 @@ import {
     addLabelForUpdater,
     bindModelForUpdater,
     bindPropsForUpdate,
-    collectComponentsForUpdater
-} from "./methods";
-import {VPage} from "../../class/page";
-import {bindProps} from "../action/utility";
+} from "../api/methods";
 
-export function update(node:ChildNode,updater:VPage):void{
+import {Controller} from "../../class/controller";
+import {findComponent} from "./render";
+
+export function update(node:ChildNode,updater:Controller):void{
     //获取raw对象
     let updateRawData = updater["raw"];
 
@@ -41,19 +40,11 @@ export function update(node:ChildNode,updater:VPage):void{
     addInnerHtmlForUpdater(main.children,updater.data);
     addInnerTextForUpdater(main.children,updater.data);
     bindPropsForUpdate(main.children,updater.data);
-    findLiveComponent(main.children,Object.getOwnPropertyNames(updater.owner.getComponents()),updater.owner);
 
     //afterUpdate
     let afterUpdate =  updater.owner.getAfterUpdate().bind(updateRawData);
     afterUpdate();
 
-    //alter
-    updater.owner.collection.forEach(function (value, key) {
-        let ks = main.getElementsByTagName(key)
-        for (let i=0;i<ks.length;i++){
-            alterNode(ks[i],value[i])
-        }
-    })
     // @ts-ignore
     let cpn = node.parentNode.getAttribute("cpn")
     node.parentNode.replaceChild(main,node)
@@ -72,12 +63,9 @@ export function update(node:ChildNode,updater:VPage):void{
 
     //Mount
     updater.root = main
-
-    //collector
-    collectComponentsForUpdater(document.getElementById("app"),updater.owner)
 }
 
-export function updateForComponent(node:ChildNode,updater:VPage):void{
+export function updateForComponent(node:ChildNode,updater:Controller):void{
     //获取raw对象
     let updateRawData = updater["raw"];
 

@@ -1,15 +1,4 @@
-import {Router} from "../../class/router";
-
-export function resolveRoute(router:Router,routeName:string) {
-
-    if (router.resolveRender(routeName) !== null){
-
-        return router.resolveRender(routeName);
-    }
-    return "404"
-}
-
-export function resolveProps(node:Element,keys:string[]):any{
+export function resolveProps(node:Element, keys:string[]):any{
 
     let attrs = node.attributes;
 

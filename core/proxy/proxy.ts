@@ -1,11 +1,7 @@
 import {getSetter, getSetterForComponent} from "../../utility/setter/setter";
-import {VPage} from "../../class/page";
+import {Controller} from "../../class/controller";
 
-export interface UpdaterBase{
-    getRootNode():Element;
-}
-
-export  function getProxyObject(obj:{},updater:VPage):any{
+export  function getProxyObject(obj:{},updater:Controller):any{
 
     let handel = {}
 
@@ -14,7 +10,7 @@ export  function getProxyObject(obj:{},updater:VPage):any{
     return new Proxy(obj, handel);
 }
 
-export  function getProxyObjectForComponent(obj:{},updater:VPage):any{
+export  function getProxyObjectForComponent(obj:{},updater:Controller):any{
 
     let handel = {}
 

@@ -1,7 +1,7 @@
 import {update, updateForComponent} from "../../core/render/update";
-import {VPage} from "../../class/page";
+import {Controller} from "../../class/controller";
 
-export function getSetter(data:{},updater:VPage){
+export function getSetter(data:{},updater:Controller){
 
     let setter = function (obj,prop,value):boolean{
         obj[prop] = value
@@ -12,7 +12,7 @@ export function getSetter(data:{},updater:VPage){
     return setter.bind(updater)
 }
 
-export function getSetterForComponent(data:{},updater:VPage){
+export function getSetterForComponent(data:{},updater:Controller){
 
     let setter = function (obj,prop,value):boolean{
         obj[prop] = value

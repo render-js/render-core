@@ -1,7 +1,6 @@
-import {Page} from "../../class/render";
-import {Partial} from "../../class/partial";
+import {Component} from "../../class/component";
 
-export function addLabel(nodes,page){
+export function addLabelForUpdater(nodes,page){
 
     for (let i=0;i<nodes.length;i++){
 
@@ -9,11 +8,11 @@ export function addLabel(nodes,page){
 
         let kk = nodes[i].children
 
-        addLabel(kk,page)
+        addLabelForUpdater(kk,page)
     }
 }
 
-export function addEvent(nodes:HTMLCollection,page:Page | Partial,data:{}){
+export function addEventForUpdater(nodes:HTMLCollection,page:Component,data:{}){
 
     for (let i=0;i<nodes.length;i++){
 
@@ -39,14 +38,13 @@ export function addEvent(nodes:HTMLCollection,page:Page | Partial,data:{}){
                 }
             }
         }
-
         let kk = nodes[i].children
 
-        addEvent(kk,page,data)
+        addEventForUpdater(kk,page,data)
     }
 }
 
-export function addInnerText(nodes:HTMLCollection,data:{}):void{
+export function addInnerTextForUpdater(nodes:HTMLCollection,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -64,11 +62,11 @@ export function addInnerText(nodes:HTMLCollection,data:{}):void{
 
         let kk = nodes[i].children
 
-        addInnerText(kk,data)
+        addInnerTextForUpdater(kk,data)
     }
 }
 
-export function addInnerHtml(nodes:HTMLCollection,data:{}):void{
+export function addInnerHtmlForUpdater(nodes:HTMLCollection,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -83,14 +81,13 @@ export function addInnerHtml(nodes:HTMLCollection,data:{}):void{
             // @ts-ignore
             nodes[i].innerHTML = data[dataName]
         }
-
         let kk = nodes[i].children
 
-        addInnerHtml(kk,data)
+        addInnerHtmlForUpdater(kk,data)
     }
 }
 
-export function bindProps(nodes:HTMLCollection,data:{}){
+export function bindPropsForUpdate(nodes:HTMLCollection,data:{}){
 
     for (let i=0;i<nodes.length;i++){
 
@@ -123,11 +120,11 @@ export function bindProps(nodes:HTMLCollection,data:{}){
 
         let kk = nodes[i].children
 
-        bindProps(kk,data);
+        bindPropsForUpdate(kk,data);
     }
 }
 
-// export function renderValue(nodes:NodeList,data:{}):void{
+// export function renderValueForUpdater(nodes:NodeList,data:{}):void{
 //
 //     for (let i=0;i<nodes.length;i++){
 //
@@ -154,7 +151,7 @@ export function bindProps(nodes:HTMLCollection,data:{}){
 //                 }else if (result[j].nodeType === 1){
 //                     // @ts-ignore
 //                     let kk = result[j].children
-//                     renderValue(kk,data)
+//                     renderValueForUpdater(kk,data)
 //                 }
 //             }
 //         }else if (nodes[i].nodeType === 3){
@@ -174,7 +171,7 @@ export function bindProps(nodes:HTMLCollection,data:{}){
 //     }
 // }
 
-export function bindModel(nodes:HTMLCollection,data:{}):void{
+export function bindModelForUpdater(nodes:HTMLCollection,data:{}):void{
 
     for (let i=0;i<nodes.length;i++){
 
@@ -190,7 +187,16 @@ export function bindModel(nodes:HTMLCollection,data:{}):void{
 
             nodes[i].setAttribute("name",dataName)
 
+            // @ts-ignore
+            nodes[i].setAttribute("value",data[dataName])
+
             if (tagName === "INPUT" || tagName === "SELECT" || tagName === "TEXTAREA"){
+
+                nodes[i].setAttribute("name",dataName)
+
+                // @ts-ignore
+                nodes[i].setAttribute("value",data[dataName])
+                //光标定位
 
                 let listener = function (evt){
                     if (!evt.target.hasAttribute("flag")){
@@ -214,10 +220,16 @@ export function bindModel(nodes:HTMLCollection,data:{}):void{
                 nodes[i].addEventListener("input",listener.bind(data))
                 nodes[i].addEventListener("compositionstart",compositionstart)
                 nodes[i].addEventListener("compositionend",compositionend.bind(data))
+
+                // @ts-ignore
+                nodes[i].focus()
+                // @ts-ignore
+                nodes[i].setSelectionRange(data[dataName].length, data[dataName].length)
             }
         }
+
         let kk = nodes[i].children
-        bindModel(kk,data)
+
+        bindModelForUpdater(kk,data)
     }
 }
-

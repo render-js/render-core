@@ -1,10 +1,7 @@
-import {UpdaterBase} from "../core/proxy/proxy";
-
-interface PartialBase{
+interface RenderBase{
     getName():string;
     getTemplate():string;
     getData():{};
-    getProps():string[];
     getComponents():{};
     getMethods():{};
     getBeforeRender():()=>void
@@ -15,17 +12,13 @@ interface PartialBase{
     getBeforeUnmount():()=>void
 }
 
-export class Partial implements PartialBase,UpdaterBase{
-
-    private rootNode:Element;
+export class Component implements RenderBase{
 
     private readonly name: string;
 
     private readonly template: string;
 
-    private readonly props?: string[];
-
-    private data?: {};
+    private data:{};
 
     private readonly methods?:{};
 
@@ -33,9 +26,9 @@ export class Partial implements PartialBase,UpdaterBase{
 
     private readonly components?:{};
 
-    private readonly beforeRender?:() => void;
+    private beforeRender?:() => void;
 
-    private readonly afterRender?:() => void;
+    private afterRender?:() => void;
 
     private readonly beforeUpdate?:() => void;
 
@@ -45,12 +38,9 @@ export class Partial implements PartialBase,UpdaterBase{
 
     private readonly beforeUnmount?:() => void;
 
-    private map:Map<string, any>;
-
-    constructor(partial:{
+    constructor(page:{
         name:string,
         template:string,
-        props:string[],
         data?:{},
         computed?:{},
         methods?:{},
@@ -62,71 +52,53 @@ export class Partial implements PartialBase,UpdaterBase{
         beforeMount?:()=>void,
         beforeUnmount?:()=>void;
     }) {
-        this.name = partial.name;
-        this.template = partial.template;
-        if (typeof partial.props == "undefined"){
-            this.props = [];
-        }else {
-            this.props = partial.props;
-        }
-        if (typeof partial.data == "undefined"){
+        this.name = page.name;
+        this.template = page.template;
+        if (typeof page.data == "undefined"){
             this.data = {};
         }else {
-            this.data = partial.data;
+            this.data = page.data;
         }
-        if (typeof partial.computed == "undefined"){
+        if (page.computed == "undefined"){
             this.computed = {};
         }else {
-            this.computed = partial.computed;
+            this.computed = page.computed;
         }
-        if (typeof partial.methods == "undefined"){
-            this.methods = {};
-        }else {
-            this.methods = partial.methods;
-        }
-        if (typeof partial.components == "undefined"){
+        if (typeof page.components == "undefined"){
             this.components = {};
         }else {
-            this.components = partial.components;
+            this.components = page.components;
         }
-        if (typeof partial.beforeRender == "undefined"){
+        if (typeof page.beforeRender == "undefined"){
             this.beforeRender = function (){}
         }else {
-            this.beforeRender = partial.beforeRender;
+            this.beforeRender = page.beforeRender;
         }
-        if (typeof partial.afterRender == "undefined"){
+        if (typeof page.afterRender == "undefined"){
             this.afterRender = function (){}
         }else {
-            this.afterRender = partial.afterRender;
+            this.afterRender = page.afterRender;
         }
-        if (typeof partial.beforeUpdate == "undefined"){
+        if (typeof page.beforeUpdate == "undefined"){
             this.beforeUpdate = function (){}
         }else {
-            this.beforeUpdate = partial.beforeUpdate;
+            this.beforeUpdate = page.beforeUpdate;
         }
-        if (typeof partial.afterUpdate == "undefined"){
+        if (typeof page.afterUpdate == "undefined"){
             this.afterUpdate = function (){}
         }else {
-            this.afterUpdate = partial.afterUpdate;
+            this.afterUpdate = page.afterUpdate;
         }
-        if (typeof partial.beforeMount == "undefined"){
+        if (typeof page.beforeMount == "undefined"){
             this.beforeMount = function (){}
         }else {
-            this.beforeMount = partial.beforeMount;
+            this.beforeMount = page.beforeMount;
         }
-        if (typeof partial.beforeUnmount == "undefined"){
+        if (typeof page.beforeUnmount == "undefined"){
             this.beforeUnmount = function (){}
         }else {
-            this.beforeUnmount = partial.beforeUnmount;
+            this.beforeUnmount = page.beforeUnmount;
         }
-    }
-
-    set root(node:Element){
-        this.rootNode = node;
-    }
-
-    getRootNode(): Element {
-        return this.rootNode;
     }
 
     getName(): string {
@@ -137,12 +109,8 @@ export class Partial implements PartialBase,UpdaterBase{
         return this.template;
     }
 
-    getProps(): string[] {
-        return this.props;
-    }
-
-    getData(): {} {
-        return this.data;
+    getData(): {}{
+        return this.data
     }
 
     setData(data:{}){
@@ -161,24 +129,18 @@ export class Partial implements PartialBase,UpdaterBase{
         return this.components;
     }
 
-    getComponentCollection(key: string): any {
-        return this.map.get(key);
-    }
-
-    get collection(){
-        return this.map;
-    }
-
-    set collection(map:Map<string, ChildNode[]>){
-        this.map = map;
-    }
-
     getBeforeRender(): () => void {
         return this.beforeRender;
+    }
+    setBeforeRender(render:()=>void):void{
+        this.beforeRender = render;
     }
 
     getAfterRender(): () => void {
         return this.afterRender;
+    }
+    setAfterRender(render:()=>void):void{
+        this.afterRender = render;
     }
 
     getBeforeUpdate(): () => void {
