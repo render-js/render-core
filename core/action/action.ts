@@ -1,11 +1,8 @@
-import {renderComponent} from "../render/render";
-import {Component} from "../../class/component";
-
-export function alterNode(first:ChildNode,two:ChildNode):void{
-    first.parentNode.replaceChild(two,first)
-}
+let metaTag:string[] = ["H1","H2","H3","H4","H5","H6","DIV","SCRIPT","A","UL","LI","OL","TABLE","TH","TD","LABEL","INPUT"];
 
 export function isUnKnown(element:string):boolean
 {
-    return false;
+    if (metaTag.some(ele => ele == element)){
+        return false;
+    }return false
 }

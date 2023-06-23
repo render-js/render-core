@@ -25,10 +25,16 @@ export function renderComponent(proto: Component, parent: ParentNode,child:Eleme
 
     let controller:Controller = new Controller();
     controller.owner = proto;
+
+    //数据双向绑定
     controller.data = Object.create(proto.getData());
+    //数据写入对象
+    controller["raw"] = controller.data;
+    //数据更新对象
+    controller.data = getProxyObject(controller.data, controller);
 
     //beforeRender
-    let beforeRender = proto.getBeforeRender().bind(controller.data);
+    let beforeRender = proto.getBeforeRender().bind(controller["raw"]);
     beforeRender();
 
     //Render
@@ -54,26 +60,26 @@ export function renderComponent(proto: Component, parent: ParentNode,child:Eleme
     parent.replaceChild(main,child);
 
     //afterRender
-    let afterRender = proto.getAfterRender().bind(controller.data);
+    let afterRender = proto.getAfterRender().bind(controller["raw"]);
     afterRender();
 
-    //数据双向绑定
+    //切换根组件
     controller.root = main;
-    controller["raw"] = controller.data;
-    controller.data = getProxyObject(controller.data, controller);
 
     //深度渲染
     findComponent(main.children,tagLib)
 }
 
 //继续渲染
-export function findComponent(nodes:HTMLCollection,tagLib:Map<string, Component>):void
+export function findComponent(collection:HTMLCollection,tagLib:Map<string, Component>):void
 {
-    for(let i:number=0;i<nodes.length;i++){
-        if (tagLib.has(nodes[i].nodeName.toUpperCase())){
-            //生成渲染对象
-            renderComponent(tagLib.get(nodes[i].nodeName.toUpperCase()),nodes[i].parentNode,nodes[i],tagLib.get(nodes[i].nodeName).getName(),tagLib);
+    for (let i:number=0;i<collection.length;i++)
+    {
+        if (isUnKnown(collection[i].nodeName))
+        {
+            renderComponent(tagLib.get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],tagLib.get(collection[i].nodeName.toUpperCase()).getName(),tagLib);
+        }else {
+            findComponent(collection[i].children,tagLib)
         }
-        findComponent(nodes[i].children,tagLib)
     }
 }

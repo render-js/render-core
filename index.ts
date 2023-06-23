@@ -1,11 +1,11 @@
 import {renderHtml} from "./core/render/render";
-import {init} from "./runtime/init";
 import {Component} from "./class/component";
 
 export class EJS{
     readonly tagLib:Map<string, Component>
 
     constructor() {
+        this.tagLib = new Map<string,Component>();
     }
 
     public run():void
@@ -18,7 +18,7 @@ export class EJS{
         if (component instanceof Component) {
             if (!this.tagLib.has(component.getName().toUpperCase()))
             {
-                this.tagLib.set(component.getName(),component)
+                this.tagLib.set(component.getName().toUpperCase(),component)
             }else {
                 console.warn("The Tag:"+component.getName().toUpperCase()+"has been registered!")
             }
@@ -26,7 +26,7 @@ export class EJS{
             component.forEach(component =>{
                 if (!this.tagLib.has(component.getName().toUpperCase()))
                 {
-                    this.tagLib.set(component.getName(),component)
+                    this.tagLib.set(component.getName().toUpperCase(),component)
                 }else {
                     console.warn("The Tag:"+component.getName().toUpperCase()+"has been registered!")
                 }

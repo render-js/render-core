@@ -2,7 +2,7 @@ interface RenderBase{
     getName():string;
     getTemplate():string;
     getData():{};
-    getComponents():{};
+    getComputed():{};
     getMethods():{};
     getBeforeRender():()=>void
     getAfterRender():()=>void
@@ -18,17 +18,15 @@ export class Component implements RenderBase{
 
     private readonly template: string;
 
-    private data:{};
+    private readonly data:{};
 
     private readonly methods?:{};
 
     private readonly computed?:{};
 
-    private readonly components?:{};
+    private readonly beforeRender?:() => void;
 
-    private beforeRender?:() => void;
-
-    private afterRender?:() => void;
+    private readonly afterRender?:() => void;
 
     private readonly beforeUpdate?:() => void;
 
@@ -44,7 +42,6 @@ export class Component implements RenderBase{
         data?:{},
         computed?:{},
         methods?:{},
-        components?:{},
         beforeRender?:()=>void,
         afterRender?:()=>void,
         beforeUpdate?:()=>void,
@@ -54,21 +51,25 @@ export class Component implements RenderBase{
     }) {
         this.name = page.name;
         this.template = page.template;
+        //添加数据
         if (typeof page.data == "undefined"){
             this.data = {};
         }else {
             this.data = page.data;
         }
+        //添加计算属性
         if (page.computed == "undefined"){
             this.computed = {};
         }else {
             this.computed = page.computed;
         }
-        if (typeof page.components == "undefined"){
-            this.components = {};
+        //添加方法属性
+        if (typeof page.methods == "undefined"){
+            this.methods = {};
         }else {
-            this.components = page.components;
+            this.methods = page.methods;
         }
+        //生命周期函数
         if (typeof page.beforeRender == "undefined"){
             this.beforeRender = function (){}
         }else {
@@ -113,10 +114,6 @@ export class Component implements RenderBase{
         return this.data
     }
 
-    setData(data:{}){
-        this.data = data;
-    }
-
     getMethods(): {} {
         return this.methods;
     }
@@ -125,22 +122,12 @@ export class Component implements RenderBase{
         return this.computed;
     }
 
-    getComponents(): {} {
-        return this.components;
-    }
-
     getBeforeRender(): () => void {
         return this.beforeRender;
-    }
-    setBeforeRender(render:()=>void):void{
-        this.beforeRender = render;
     }
 
     getAfterRender(): () => void {
         return this.afterRender;
-    }
-    setAfterRender(render:()=>void):void{
-        this.afterRender = render;
     }
 
     getBeforeUpdate(): () => void {

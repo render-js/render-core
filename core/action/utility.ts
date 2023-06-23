@@ -1,55 +1,55 @@
 import {Component} from "../../class/component";
 
-export function addLabel(nodes,page){
+export function addLabel(nodes:HTMLCollection,component:Component){
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        nodes[i].setAttribute("cpn",page.getName());
+        nodes[i].setAttribute("cpn",component.getName());
 
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
 
-        addLabel(kk,page)
+        addLabel(kk,component)
     }
 }
 
-export function addEvent(nodes:HTMLCollection,page:Component,data:{}){
+export function addEvent(nodes:HTMLCollection,component:Component,data:{}){
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        let attributes = nodes[i].getAttributeNames()
+        let attributes:string[] = nodes[i].getAttributeNames()
 
-        for (let j=0;j<attributes.length;j++){
+        for (let j:number=0;j<attributes.length;j++){
 
-            let result = attributes[j].match(/^v-on:([a-z]+)$/g)
+            let result:RegExpMatchArray = attributes[j].match(/^v-on:([a-z]+)$/g)
 
             if (result === null){
 
             }else {
 
-                for (let k=0;k<result.length;k++){
+                for (let k:number=0;k<result.length;k++){
 
-                    let action = result[k].substring(5)
+                    let action:string = result[k].substring(5)
 
-                    let method = nodes[i].getAttribute(result[k])
+                    let method:string = nodes[i].getAttribute(result[k])
 
                     nodes[i].removeAttribute(result[k])
 
-                    nodes[i].addEventListener(action,page.getMethods()[method].bind(data))
+                    nodes[i].addEventListener(action,component.getMethods()[method].bind(data))
                 }
             }
         }
 
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
 
-        addEvent(kk,page,data)
+        addEvent(kk,component,data)
     }
 }
 
 export function addInnerText(nodes:HTMLCollection,data:{}):void{
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        let result = nodes[i].hasAttribute("v-txt")
+        let result:boolean = nodes[i].hasAttribute("v-txt")
 
         if (result){
 
@@ -61,7 +61,7 @@ export function addInnerText(nodes:HTMLCollection,data:{}):void{
             nodes[i].innerText = data[dataName]
         }
 
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
 
         addInnerText(kk,data)
     }
@@ -69,9 +69,9 @@ export function addInnerText(nodes:HTMLCollection,data:{}):void{
 
 export function addInnerHtml(nodes:HTMLCollection,data:{}):void{
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        let result = nodes[i].hasAttribute("v-html")
+        let result:boolean = nodes[i].hasAttribute("v-html")
 
         if (result){
 
@@ -83,7 +83,7 @@ export function addInnerHtml(nodes:HTMLCollection,data:{}):void{
             nodes[i].innerHTML = data[dataName]
         }
 
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
 
         addInnerHtml(kk,data)
     }
@@ -91,23 +91,23 @@ export function addInnerHtml(nodes:HTMLCollection,data:{}):void{
 
 export function bindProps(nodes:HTMLCollection,data:{}){
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        let attributes = nodes[i].getAttributeNames()
+        let attributes:string[] = nodes[i].getAttributeNames()
 
-        for (let j=0;j<attributes.length;j++){
+        for (let j:number=0;j<attributes.length;j++){
 
-            let result = attributes[j].match(/^v-bind:([a-z]+)$/g)
+            let result:RegExpMatchArray = attributes[j].match(/^v-bind:([a-z]+)$/g)
 
             if (result === null){
 
             }else {
 
-                for (let k=0;k<result.length;k++){
+                for (let k:number=0;k<result.length;k++){
 
-                    let property = result[k].substring(7)
+                    let property:string = result[k].substring(7)
 
-                    let dataName = nodes[i].getAttribute(result[k])
+                    let dataName:string = nodes[i].getAttribute(result[k])
 
                     nodes[i].removeAttribute(result[k])
 
@@ -120,64 +120,17 @@ export function bindProps(nodes:HTMLCollection,data:{}){
             }
         }
 
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
 
         bindProps(kk,data);
     }
 }
 
-// export function renderValue(nodes:NodeList,data:{}):void{
-//
-//     for (let i=0;i<nodes.length;i++){
-//
-//         if (nodes[i].nodeType === 1){
-//
-//             let result:NodeList = nodes[i].childNodes
-//
-//             for (let j=0;j<result.length;j++){
-//
-//                 if (result[j].nodeType === 3){
-//
-//                     let real = result[j].nodeValue.match(/^\{\{\w+\}\}$/g)
-//
-//                     if (real !== null){
-//
-//                         let expression  = result[j].nodeValue
-//
-//                         let expression_before = expression.replace(/\{/g,"")
-//
-//                         let expression_after = expression_before.replace(/\}/g,"")
-//
-//                         result[j].nodeValue = data[expression_after]
-//                     }
-//                 }else if (result[j].nodeType === 1){
-//                     // @ts-ignore
-//                     let kk = result[j].children
-//                     renderValue(kk,data)
-//                 }
-//             }
-//         }else if (nodes[i].nodeType === 3){
-//             let real = nodes[i].nodeValue.match(/^\{\{\w+\}\}$/g)
-//
-//             if (real !== null){
-//
-//                 let expression  = nodes[i].nodeValue
-//
-//                 let expression_before = expression.replace(/\{/g,"")
-//
-//                 let expression_after = expression_before.replace(/\}/g,"")
-//
-//                 nodes[i].nodeValue = data[expression_after]
-//             }
-//         }
-//     }
-// }
-
 export function bindModel(nodes:HTMLCollection,data:{}):void{
 
-    for (let i=0;i<nodes.length;i++){
+    for (let i:number=0;i<nodes.length;i++){
 
-        let result = nodes[i].hasAttribute("v-model")
+        let result:boolean = nodes[i].hasAttribute("v-model")
 
         if (result){
 
@@ -185,7 +138,7 @@ export function bindModel(nodes:HTMLCollection,data:{}):void{
 
             nodes[i].removeAttribute("v-model")
 
-            let tagName = nodes[i].tagName
+            let tagName:string = nodes[i].tagName
 
             nodes[i].setAttribute("name",dataName)
 
@@ -215,7 +168,7 @@ export function bindModel(nodes:HTMLCollection,data:{}):void{
                 nodes[i].addEventListener("compositionend",compositionend.bind(data))
             }
         }
-        let kk = nodes[i].children
+        let kk:HTMLCollection = nodes[i].children
         bindModel(kk,data)
     }
 }
