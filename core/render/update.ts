@@ -11,7 +11,7 @@ import {Controller} from "../../class/controller";
 
 export function update(node:ChildNode,updater:Controller):void{
     //获取raw对象
-    let updateRawData = updater["raw"];
+    let updateRawData = updater.raw_data;
 
     //beforeRender
     let beforeRender = updater.owner.getBeforeRender().bind(updateRawData);
@@ -35,10 +35,10 @@ export function update(node:ChildNode,updater:Controller):void{
 
     //update actions
     addLabelForUpdater(main.children,updater.owner);
-    addEventForUpdater(main.children,updater.owner,updater.data);
-    addInnerHtmlForUpdater(main.children,updater.data);
-    addInnerTextForUpdater(main.children,updater.data);
-    bindPropsForUpdate(main.children,updater.data);
+    addEventForUpdater(main.children,updater.owner,updater.proxyForMethods);
+    addInnerHtmlForUpdater(main.children,updater.proxyForMethods);
+    addInnerTextForUpdater(main.children,updater.proxyForMethods);
+    bindPropsForUpdate(main.children,updater.proxyForMethods);
 
     //afterUpdate
     let afterUpdate =  updater.owner.getAfterUpdate().bind(updateRawData);
@@ -50,7 +50,7 @@ export function update(node:ChildNode,updater:Controller):void{
     main.setAttribute("cpn",cpn)
 
     //获取定位
-    bindModelForUpdater(main.children,updater.data);
+    bindModelForUpdater(main.children,updater.proxyForMethods);
 
     //beforeUnmount
     let beforeUnmount = updater.owner.getBeforeUnmount().bind(updateRawData);

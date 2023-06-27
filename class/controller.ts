@@ -4,7 +4,11 @@ export class Controller{
 
     root:ParentNode;
 
-    owner:Component
+    owner:Component;
 
-    data:object;
+    raw_data:{};
+
+    proxyForMethods:{};
+
+    proxyForExecutor:{};
 }

@@ -1,12 +1,10 @@
-interface RenderBase{
+interface EmbedBase{
     getName():string;
     getTemplate():string;
-    getProps(): {};
     getData():{};
     getComputed():{};
     getMethods():{};
     getWatcher():{};
-    getExecutor():{};
     getBeforeRender():()=>void
     getAfterRender():()=>void
     getBeforeUpdate():()=>void
@@ -15,13 +13,11 @@ interface RenderBase{
     getBeforeUnmount():()=>void
 }
 
-export class Component implements RenderBase{
+export default class ApiComponent implements EmbedBase{
 
     private readonly name: string;
 
     private readonly template: string;
-
-    private readonly props?:{};
 
     private readonly data:{};
 
@@ -30,8 +26,6 @@ export class Component implements RenderBase{
     private readonly computed?:{};
 
     private readonly watcher?:{};
-
-    private readonly executor?:{};
 
     private readonly beforeRender?:() => void;
 
@@ -48,12 +42,10 @@ export class Component implements RenderBase{
     constructor(config:{
         name:string,
         template:string,
-        props?:{},
         data?:{},
         computed?:{},
         methods?:{},
         watcher?:{},
-        executor?:{}
         beforeRender?:()=>void,
         afterRender?:()=>void,
         beforeUpdate?:()=>void,
@@ -65,12 +57,6 @@ export class Component implements RenderBase{
         this.name = config.name;
         //标签模板样式
         this.template = config.template;
-        //添加数据
-        if (typeof config.props == "undefined"){
-            this.props = {};
-        }else {
-            this.props = config.props;
-        }
         //添加数据
         if (typeof config.data == "undefined"){
             this.data = {};
@@ -94,12 +80,6 @@ export class Component implements RenderBase{
             this.watcher = {};
         }else {
             this.watcher = config.watcher;
-        }
-        //添加处理器属性
-        if (typeof config.executor == "undefined"){
-            this.executor = {};
-        }else {
-            this.executor = config.executor;
         }
         //生命周期函数
         if (typeof config.beforeRender == "undefined"){
@@ -142,10 +122,6 @@ export class Component implements RenderBase{
         return this.template;
     }
 
-    getProps(): {}{
-        return this.props;
-    }
-
     getData(): {}{
         return this.data;
     }
@@ -160,10 +136,6 @@ export class Component implements RenderBase{
 
     getWatcher(): {} {
         return this.watcher;
-    }
-
-    getExecutor(): {} {
-        return this.executor;
     }
 
     getBeforeRender(): () => void {

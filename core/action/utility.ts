@@ -1,4 +1,5 @@
 import {Component} from "../../class/component";
+import ApiComponent from "../../class/apiComponent";
 
 export function addLabel(nodes:HTMLCollection,component:Component){
 
@@ -9,6 +10,18 @@ export function addLabel(nodes:HTMLCollection,component:Component){
         let kk:HTMLCollection = nodes[i].children
 
         addLabel(kk,component)
+    }
+}
+
+export function addLabelForApi(nodes:HTMLCollection,component:ApiComponent){
+
+    for (let i:number=0;i<nodes.length;i++){
+
+        nodes[i].setAttribute("cpn",component.getName());
+
+        let kk:HTMLCollection = nodes[i].children
+
+        addLabelForApi(kk,component)
     }
 }
 
@@ -42,6 +55,39 @@ export function addEvent(nodes:HTMLCollection,component:Component,data:{}){
         let kk:HTMLCollection = nodes[i].children
 
         addEvent(kk,component,data)
+    }
+}
+
+export function addEventForApi(nodes:HTMLCollection,component:ApiComponent,data:{}){
+
+    for (let i:number=0;i<nodes.length;i++){
+
+        let attributes:string[] = nodes[i].getAttributeNames()
+
+        for (let j:number=0;j<attributes.length;j++){
+
+            let result:RegExpMatchArray = attributes[j].match(/^v-on:([a-z]+)$/g)
+
+            if (result === null){
+
+            }else {
+
+                for (let k:number=0;k<result.length;k++){
+
+                    let action:string = result[k].substring(5)
+
+                    let method:string = nodes[i].getAttribute(result[k])
+
+                    nodes[i].removeAttribute(result[k])
+
+                    nodes[i].addEventListener(action,component.getMethods()[method].bind(data))
+                }
+            }
+        }
+
+        let kk:HTMLCollection = nodes[i].children
+
+        addEventForApi(kk,component,data)
     }
 }
 

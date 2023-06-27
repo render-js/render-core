@@ -1,10 +1,10 @@
-export function resolveProps(node:Element, keys:string[]):any{
+export function resolveProps(node:Element, properties:{}):any{
 
-    let attrs = node.attributes;
+    let attrs:NamedNodeMap = node.attributes;
 
-    let props = {};
+    let props:{} = {};
 
-    for (let key of keys) {
+    for (let key in Object.getOwnPropertyNames(properties)) {
 
         props[key] = attrs.getNamedItem(key).value;
     }
@@ -12,14 +12,14 @@ export function resolveProps(node:Element, keys:string[]):any{
     return props;
 }
 
-export function resolvePropsByObject(list:NamedNodeMap,keys:string[]):any{
-
-    let props = {};
-
-    for (let key of keys) {
-
-        props[key] = list.getNamedItem(key).value;
-    }
-
-    return props;
+export function resolveQueries():any
+{
+    let query:{} = {};
+    let parameters:string = location.search.replace("?","")
+    let listPara:string[] = parameters.split("&")
+    listPara.forEach(function (value:string):void{
+        let results:string[] = value.split("=")
+        Reflect.set(query,results[0],results[1]);
+    })
+    return query;
 }
