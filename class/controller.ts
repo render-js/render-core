@@ -6,6 +6,8 @@ export class Controller{
 
     owner:Component;
 
+    references:Map<string, Element>;
+
     raw_data:{};
 
     proxyForMethods:{};

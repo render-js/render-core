@@ -2,10 +2,10 @@ import {loadStyle} from "../../utility/loader/loader";
 import {addEvent, addInnerHtml, addInnerText, addLabel, bindModel, bindProps} from "../action/utility";
 import {getProxyObject} from "../proxy/proxy";
 import {Controller} from "../../class/controller";
-import {isUnKnown} from "../action/action";
+import {addRef, isUnKnown} from "../action/action";
 import {resolver} from "../../resolve/resolver";
 import {Component} from "../../class/component";
-import {getCodeSpace} from "../action/bind";
+import {getCodeSpace, getCodeSpaceForRef} from "../action/bind";
 import {resolveProps, resolveQueries} from "../../utility/resolver/resolver";
 
 //检查元素是否为基元素
@@ -47,40 +47,54 @@ export function renderComponent(proto: Component, parent: ParentNode, child:Elem
     //Render
     let temp:HTMLDivElement = document.createElement("div");
     temp.innerHTML = proto.getTemplate();
-    let template:ChildNode = temp.childNodes[0];
-    // @ts-ignore
-    let content = template.content;
-    let main = content.children[0];
-    main.setAttribute("cpn",attr);
-    let style = content.children[1];
+    let template:HTMLTemplateElement = temp.getElementsByTagName("template")[0];
+    let content:DocumentFragment = template.content;
+    let tagTemplate:Element = content.firstElementChild;
+    let tagStyle:Element = content.lastElementChild;
 
-    //render actions
-    loadStyle(style.childNodes[0].nodeValue);
-    addLabel(main.children,proto);
-    addEvent(main.children,proto,controller.proxyForMethods);
-    addInnerHtml(main.children,controller.proxyForMethods);
-    addInnerText(main.children,controller.proxyForMethods);
-    bindModel(main.children,controller.proxyForMethods);
-    bindProps(main.children,controller.proxyForMethods);
+    /**
+     * 模板处理方法群
+     */
+    //向head位置添加该组件的样式
+    loadStyle(tagStyle.nodeValue,proto.getName());
+    //给所有元素添加上npm=tag标志
+    addLabel(tagTemplate.children,proto);
+    //将元素事件绑定到元素上
+    addEvent(tagTemplate.children,proto,controller.proxyForMethods);
+    //渲染html
+    addInnerHtml(tagTemplate.children,controller.proxyForMethods);
+    //渲染text
+    addInnerText(tagTemplate.children,controller.proxyForMethods);
+    //绑定数据
+    bindModel(tagTemplate.children,controller.proxyForMethods);
+    //渲染属性
+    bindProps(tagTemplate.children,controller.proxyForMethods);
+
+    //注入ref
+    getCodeSpaceForRef(controller.raw_data,{$ref:addRef(tagTemplate.children)});
 
     //mount
-    parent.replaceChild(main,child);
+    let renderSpace:Element = document.createElement("div");
+    parent.replaceChild(renderSpace,child);
+    while (tagTemplate.hasChildNodes()){
+        renderSpace.append(tagTemplate.firstChild);
+    }
 
     //afterRender
     let afterRender = proto.getAfterRender().bind(controller.raw_data);
     afterRender();
 
-    //切换根组件
-    controller.root = main;
+    //指定渲染空间
+    controller.root = renderSpace;
 
     //深度渲染
-    findComponent(main.children,tagLib)
+    findComponent(tagTemplate.children,tagLib)
 }
 
 //继续渲染
 export function findComponent(collection:HTMLCollection,tagLib:Map<string, Component>):void
 {
-    for (let i:number=0;i<collection.length;i++)
+    for (let i:number = 0; i < collection.length; i++)
     {
         if (isUnKnown(collection[i].nodeName))
         {

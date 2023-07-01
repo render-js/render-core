@@ -83,32 +83,32 @@ export default class ApiComponent implements EmbedBase{
         }
         //生命周期函数
         if (typeof config.beforeRender == "undefined"){
-            this.beforeRender = function (){}
+            this.beforeRender = function ():void{}
         }else {
             this.beforeRender = config.beforeRender;
         }
         if (typeof config.afterRender == "undefined"){
-            this.afterRender = function (){}
+            this.afterRender = function ():void{}
         }else {
             this.afterRender = config.afterRender;
         }
         if (typeof config.beforeUpdate == "undefined"){
-            this.beforeUpdate = function (){}
+            this.beforeUpdate = function ():void{}
         }else {
             this.beforeUpdate = config.beforeUpdate;
         }
         if (typeof config.afterUpdate == "undefined"){
-            this.afterUpdate = function (){}
+            this.afterUpdate = function ():void{}
         }else {
             this.afterUpdate = config.afterUpdate;
         }
         if (typeof config.beforeMount == "undefined"){
-            this.beforeMount = function (){}
+            this.beforeMount = function ():void{}
         }else {
             this.beforeMount = config.beforeMount;
         }
         if (typeof config.beforeUnmount == "undefined"){
-            this.beforeUnmount = function (){}
+            this.beforeUnmount = function ():void{}
         }else {
             this.beforeUnmount = config.beforeUnmount;
         }

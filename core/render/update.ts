@@ -9,9 +9,9 @@ import {
 
 import {Controller} from "../../class/controller";
 
-export function update(node:ChildNode,updater:Controller):void{
+export function update(node:Element,updater:Controller):void{
     //获取raw对象
-    let updateRawData = updater.raw_data;
+    let updateRawData:{} = updater.raw_data;
 
     //beforeRender
     let beforeRender = updater.owner.getBeforeRender().bind(updateRawData);
@@ -44,22 +44,18 @@ export function update(node:ChildNode,updater:Controller):void{
     let afterUpdate =  updater.owner.getAfterUpdate().bind(updateRawData);
     afterUpdate();
 
-    // @ts-ignore
-    let cpn = node.parentNode.getAttribute("cpn")
-    node.parentNode.replaceChild(main,node)
-    main.setAttribute("cpn",cpn)
-
-    //获取定位
-    bindModelForUpdater(main.children,updater.proxyForMethods);
-
     //beforeUnmount
     let beforeUnmount = updater.owner.getBeforeUnmount().bind(updateRawData);
     beforeUnmount();
 
-    //beforeMount
-    let beforeMount = updater.owner.getBeforeMount().bind(updateRawData);
-    beforeMount();
+    //mount
+    while (node.hasChildNodes()){
+        node.removeChild(node.firstChild);
+    }
+    while (main.hasChildNodes()){
+        node.appendChild(main.firstChild);
+    }
 
-    //Mount
-    updater.root = main;
+    //获取定位
+    bindModelForUpdater(node.children,updater.proxyForMethods);
 }

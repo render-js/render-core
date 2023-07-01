@@ -8,12 +8,12 @@ import {
     bindProps
 } from "../action/utility";
 import {getProxyObjectForApi} from "../proxy/proxy";
-import {isUnKnown} from "../action/action";
+import {addRef, isUnKnown} from "../action/action";
 import {Component} from "../../class/component";
 import {renderComponent} from "./render";
 import ApiComponent from "../../class/apiComponent";
 import {ApiController} from "../../class/apiController";
-import {getApiCodeSpace} from "../action/bind";
+import {getApiCodeSpace, getCodeSpaceForRef} from "../action/bind";
 
 
 //渲染自定义标签
@@ -39,34 +39,41 @@ export function renderApiComponent(proto: ApiComponent, parent: ParentNode, attr
     //Render
     let temp:HTMLDivElement = document.createElement("div");
     temp.innerHTML = proto.getTemplate();
-    let template:ChildNode = temp.childNodes[0];
-    // @ts-ignore
-    let content = template.content;
-    let main = content.children[0];
-    main.setAttribute("cpn",attr);
-    let style = content.children[1];
+    let template:HTMLTemplateElement = temp.getElementsByTagName("template")[0];
+    let content:DocumentFragment = template.content;
+    let tagTemplate:Element = content.firstElementChild;
+    let tagStyle = content.lastElementChild;
 
     //render actions
-    loadStyle(style.childNodes[0].nodeValue);
-    addLabelForApi(main.children,proto);
-    addEventForApi(main.children,proto,apiController.proxyForMethods);
-    addInnerHtml(main.children,apiController.proxyForMethods);
-    addInnerText(main.children,apiController.proxyForMethods);
-    bindModel(main.children,apiController.proxyForMethods);
-    bindProps(main.children,apiController.proxyForMethods);
+    loadStyle(tagStyle.nodeValue,proto.getName());
+    addLabelForApi(tagTemplate.children,proto);
+    addEventForApi(tagTemplate.children,proto,apiController.proxyForMethods);
+    addInnerHtml(tagTemplate.children,apiController.proxyForMethods);
+    addInnerText(tagTemplate.children,apiController.proxyForMethods);
+    bindModel(tagTemplate.children,apiController.proxyForMethods);
+    bindProps(tagTemplate.children,apiController.proxyForMethods);
+
+    //注入ref
+    getCodeSpaceForRef(apiController.raw_data,{$ref:addRef(tagTemplate.children)});
 
     //mount
-    parent.append(main);
+    while(parent.hasChildNodes()) //当div下还存在子节点时 循环继续
+    {
+        parent.removeChild(parent.firstChild);
+    }
+    while (tagTemplate.hasChildNodes()){
+        parent.append(tagTemplate.firstChild);
+    }
 
     //afterRender
     let afterRender = proto.getAfterRender().bind(apiController.raw_data);
     afterRender();
 
     //切换根组件
-    apiController.root = main;
+    apiController.root = parent;
 
     //深度渲染
-    findComponent(main.children,tagLib)
+    findComponent(tagTemplate.children,tagLib)
 
     //返回api对象
     getApiCodeSpace(apiController.raw_data,proto.getMethods());

@@ -2,18 +2,17 @@ import {renderHtml} from "./core/render/render";
 import {Component} from "./class/component";
 import ApiComponent from "./class/apiComponent";
 import {renderApiComponent} from "./core/render/apiRender";
+import meta from "./meta/meta";
 
-export class EJS{
-    readonly tagLib:Map<string, Component>
+export class RenderJS{
+
+    public readonly version:string;
+
+    readonly tagLib:Map<string, Component>;
 
     constructor() {
         this.tagLib = new Map<string,Component>();
-    }
-
-    public run():void
-    {
-        Reflect.set(window,"tagLib",this.tagLib);
-        renderHtml(document.body.children,this.tagLib)
+        this.version = meta.version;
     }
 
     public addTag(component:Component | Component[]):void
@@ -36,11 +35,15 @@ export class EJS{
             })
         }
     }
+
+    public run():void
+    {
+        Reflect.set(window,"tagLib",this.tagLib);
+        renderHtml(document.body.children,this.tagLib)
+    }
 }
 
 export class callableComponent{
-
-    readonly tagLib:Map<string, Component>
 
     private readonly apiComponent:ApiComponent;
 
@@ -61,7 +64,6 @@ export class callableComponent{
         beforeUnmount?:()=>void;
     }) {
         this.apiComponent = new ApiComponent(config);
-        this.tagLib = new Map<string, Component>();
     }
 
     public render(selector:string):void
