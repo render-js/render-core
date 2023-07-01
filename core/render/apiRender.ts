@@ -1,36 +1,33 @@
-import {loadStyle} from "../../utility/loader/loader";
-import {
-    addEventForApi,
-    addInnerHtml,
-    addInnerText,
-    addLabelForApi,
-    bindModel,
-    bindProps
-} from "../action/utility";
-import {getProxyObjectForApi} from "../proxy/proxy";
-import {addRef, isUnKnown} from "../action/action";
+import {loadStyle} from "../../library/loader/loader";
+import {addLabel} from "../utility/miscUtility";
+import {getProxyObjectForApi} from "../proxy/getProxy";
+import {isUnKnown} from "../utility/checkUtility";
 import {Component} from "../../class/component";
-import {renderComponent} from "./render";
 import ApiComponent from "../../class/apiComponent";
 import {ApiController} from "../../class/apiController";
-import {getApiCodeSpace, getCodeSpaceForRef} from "../action/bind";
+import {getApiCodeSpace, getCodeSpaceForRef} from "../utility/injectUtility";
+import {initRender} from "./initRender";
+import {resolver_Ref} from "../cmd/v-ref";
+import {resolver_html} from "../cmd/v-html";
+import {resolver_txt} from "../cmd/v-txt";
+import {resolver_model} from "../cmd/v-model";
+import {resolver_bind} from "../cmd/v-bind";
+import {Controller} from "../../class/controller";
+import {resolver_event} from "../cmd/v-on";
 
 
 //渲染自定义标签
-export function renderApiComponent(proto: ApiComponent, parent: ParentNode, attr: string, tagLib:Map<string, Component>):any{
+export function apiRender(proto: ApiComponent, parent: ParentNode, attr: string, tagLib:Map<string, Component>):any{
 
     //获取控制对象
     let apiController:ApiController = new ApiController();
-    apiController.owner = proto;
+    apiController.proto = proto;
 
     //复制原始数据对象到控制对象
     apiController.raw_data = Object.create(proto.getData());
 
     //数据渲染对象
     apiController.proxyForMethods = getProxyObjectForApi(apiController.raw_data, apiController);
-
-    //数据更新对象
-    apiController.proxyForExecutor = getProxyObjectForApi(apiController.raw_data, apiController);
 
     //beforeRender
     let beforeRender = proto.getBeforeRender().bind(apiController.raw_data);
@@ -41,23 +38,31 @@ export function renderApiComponent(proto: ApiComponent, parent: ParentNode, attr
     temp.innerHTML = proto.getTemplate();
     let template:HTMLTemplateElement = temp.getElementsByTagName("template")[0];
     let content:DocumentFragment = template.content;
-    let tagTemplate:Element = content.firstElementChild;
-    let tagStyle = content.lastElementChild;
 
-    //render actions
-    loadStyle(tagStyle.nodeValue,proto.getName());
-    addLabelForApi(tagTemplate.children,proto);
-    addEventForApi(tagTemplate.children,proto,apiController.proxyForMethods);
-    addInnerHtml(tagTemplate.children,apiController.proxyForMethods);
-    addInnerText(tagTemplate.children,apiController.proxyForMethods);
-    bindModel(tagTemplate.children,apiController.proxyForMethods);
-    bindProps(tagTemplate.children,apiController.proxyForMethods);
+    //获取到模板
+    let tagTemplate:Element = content.firstElementChild;
+
+    addLabel(tagTemplate.children,proto.getName());
+
+    resolver_event(tagTemplate.children,proto.getMethods(),apiController.proxyForMethods);
+
+    resolver_html(tagTemplate.children,apiController.proxyForMethods);
+
+    resolver_txt(tagTemplate.children,apiController.proxyForMethods);
+
+    resolver_model(tagTemplate.children,apiController.proxyForMethods);
+
+    resolver_bind(tagTemplate.children,apiController.proxyForMethods);
+
+    //获取到模板样式
+    let tagStyle:Element = content.lastElementChild;
+    loadStyle(tagStyle.childNodes[0].nodeValue,proto.getName());
 
     //注入ref
-    getCodeSpaceForRef(apiController.raw_data,{$ref:addRef(tagTemplate.children)});
+    getCodeSpaceForRef(apiController.raw_data,resolver_Ref(tagTemplate.children));
 
     //mount
-    while(parent.hasChildNodes()) //当div下还存在子节点时 循环继续
+    while(parent.hasChildNodes())
     {
         parent.removeChild(parent.firstChild);
     }
@@ -77,6 +82,7 @@ export function renderApiComponent(proto: ApiComponent, parent: ParentNode, attr
 
     //返回api对象
     getApiCodeSpace(apiController.raw_data,proto.getMethods());
+
     return apiController.raw_data;
 }
 
@@ -87,7 +93,7 @@ export function findComponent(collection:HTMLCollection,tagLib:Map<string, Compo
     {
         if (isUnKnown(collection[i].nodeName))
         {
-            renderComponent(tagLib.get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],tagLib.get(collection[i].nodeName.toUpperCase()).getName(),tagLib);
+            initRender(tagLib.get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],tagLib,new Controller());
         }else {
             findComponent(collection[i].children,tagLib)
         }

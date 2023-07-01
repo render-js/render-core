@@ -1,20 +1,25 @@
-import {renderHtml} from "./core/render/render";
 import {Component} from "./class/component";
 import ApiComponent from "./class/apiComponent";
-import {renderApiComponent} from "./core/render/apiRender";
 import meta from "./meta/meta";
+import {renderHtml} from "./runtime/runtime";
+import {apiRender} from "./core/render/apiRender";
 
+//页面RenderJs
 export class RenderJS{
 
+    //版本号
     public readonly version:string;
 
+    //自定义标签库
     readonly tagLib:Map<string, Component>;
 
+    //构造函数
     constructor() {
         this.tagLib = new Map<string,Component>();
         this.version = meta.version;
     }
 
+    //添加自定义标签
     public addTag(component:Component | Component[]):void
     {
         if (component instanceof Component) {
@@ -36,6 +41,7 @@ export class RenderJS{
         }
     }
 
+    //运行renderJs
     public run():void
     {
         Reflect.set(window,"tagLib",this.tagLib);
@@ -43,12 +49,16 @@ export class RenderJS{
     }
 }
 
-export class callableComponent{
+//嵌入式RenderJs
+export class EmbedRenderJs{
 
+    //嵌入式控制对象
     private readonly apiComponent:ApiComponent;
 
+    //嵌入式交互对象
     private controller:{};
 
+    //构造函数
     constructor(config:{
         name:string,
         template:string,
@@ -66,11 +76,13 @@ export class callableComponent{
         this.apiComponent = new ApiComponent(config);
     }
 
+    //渲染嵌入式app
     public render(selector:string):void
     {
-        this.controller = renderApiComponent(this.apiComponent,document.getElementById(selector),this.apiComponent.getName(),Reflect.get(window,"tagLib"));
+        this.controller = apiRender(this.apiComponent,document.getElementById(selector),this.apiComponent.getName(),Reflect.get(window,"tagLib"));
     }
 
+    //与嵌入式app交互
     public commit(method:string, ...args:any[]):any
     {
         return this.controller[method](args);

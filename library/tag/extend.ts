@@ -1,4 +1,4 @@
-import {Component} from "../class/component";
+import {Component} from "../../class/component";
 
 export function extendTag(component:{
     name:string,

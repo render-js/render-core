@@ -1,4 +1,4 @@
-import {checkStyleLabel} from "../../core/action/styleUtility";
+import {checkStyleLabel} from "../../core/utility/styleUtility";
 
 export function loadStyle(data:string,tag:string):void {
 
@@ -10,7 +10,7 @@ export function loadStyle(data:string,tag:string):void {
 
         style.appendChild(text)
 
-        style.setAttribute("tag",tag);
+        style.setAttribute("tag",tag.toUpperCase());
 
         let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
 
