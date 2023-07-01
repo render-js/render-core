@@ -1,2 +1,2 @@
-# renderjs
-> Framework
+# renderJs
+> The extendable javascript web framework

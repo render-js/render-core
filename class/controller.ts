@@ -4,13 +4,15 @@ export class Controller{
 
     root:ParentNode;
 
-    owner:Component;
+    proto:Component;
 
-    references:Map<string, Element>;
+    preRender:boolean;
+    
+    link:Map<string, HTMLDivElement>;
+
+    to:Component[];
 
     raw_data:{};
 
     proxyForMethods:{};
-
-    proxyForExecutor:{};
 }

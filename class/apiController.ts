@@ -4,11 +4,9 @@ export class ApiController{
 
     root:ParentNode;
 
-    owner:ApiComponent;
+    proto:ApiComponent;
 
     raw_data:{};
 
     proxyForMethods:{};
-
-    proxyForExecutor:{};
 }
