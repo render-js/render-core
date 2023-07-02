@@ -13,10 +13,10 @@ export function resolveProps(node:Element, properties:{} | []):any{
 
     let props:Map<string, string> = new Map<string, string>();
 
-    for (let key in Object.getOwnPropertyNames(properties)) {
-
-        props[key] = attrs.getNamedItem(key).value;
-    }
+    // for (let key  in Object.getOwnPropertyNames(properties)) {
+    //
+    //     props[key] = attrs.getNamedItem(key).value;
+    // }
 
     return getProxyForInject(props);
 }

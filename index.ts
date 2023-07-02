@@ -3,6 +3,7 @@ import ApiComponent from "./class/apiComponent";
 import meta from "./meta/meta";
 import {renderHtml} from "./runtime/runtime";
 import {apiRender} from "./core/render/apiRender";
+import {ApiController} from "./class/apiController";
 
 //页面RenderJs
 export class RenderJS{
@@ -79,7 +80,7 @@ export class EmbedRenderJs{
     //渲染嵌入式app
     public render(selector:string):void
     {
-        this.controller = apiRender(this.apiComponent,document.getElementById(selector),this.apiComponent.getName(),Reflect.get(window,"tagLib"));
+        this.controller = apiRender(this.apiComponent,document.getElementById(selector),this.apiComponent.getName(),Reflect.get(window,"tagLib"),new ApiController());
     }
 
     //与嵌入式app交互

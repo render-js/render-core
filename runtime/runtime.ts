@@ -1,6 +1,8 @@
 import {Component} from "../class/component";
 import {isUnKnown} from "../core/utility/checkUtility";
 import {resolver} from "../core/utility/miscUtility";
+import {ApiController} from "../class/apiController";
+import {Controller} from "../class/controller";
 
 //检查元素是否为基元素
 export function renderHtml(collection:HTMLCollection,tagLib:Map<string, Component>):void

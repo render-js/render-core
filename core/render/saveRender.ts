@@ -11,13 +11,28 @@ import {resolver_html} from "../cmd/v-html";
 import {resolver_txt} from "../cmd/v-txt";
 import {resolver_model} from "../cmd/v-model";
 import {resolver_Ref} from "../cmd/v-ref";
-import {isUnKnown} from "../utility/checkUtility";
 import {resolver_bind} from "../cmd/v-bind";
+import {findComponent} from "./initRender";
 import {ApiController} from "../../class/apiController";
-import {depthRender} from "./depthRender";
+
 
 //渲染自定义标签
-export function initRender(proto: Component, parent: ParentNode, child:Element, tagLib:Map<string, Component>):void{
+export function saveRender(proto: Component, parent: ParentNode, child:Element, tagLib:Map<string, Component>,link:Controller | ApiController,name:string):void{
+
+    //获取控制对象
+    let controller:Controller = new Controller();
+    controller.proto = proto;
+
+    //复制原始数据对象到控制对象
+    controller.raw_data = link.link.get(name);
+
+    //数据渲染对象
+    controller.proxyForMethods = getProxyObject(controller.raw_data, controller);
+
+    //beforeRender
+    let beforeRender = proto.getBeforeRender().bind(controller.raw_data);
+    beforeRender();
+
     //生成DOM
     let temp:HTMLDivElement = document.createElement("div");
     temp.innerHTML = proto.getTemplate();
@@ -29,30 +44,17 @@ export function initRender(proto: Component, parent: ParentNode, child:Element, 
     //解析元素上的静态属性
     let props = resolveProps(tagTemplate,proto);
 
-    //获得模板样式元素
-    let tagStyle:Element = content.lastElementChild;
-    //向head位置添加该组件的样式
-    loadStyle(tagStyle.childNodes[0].nodeValue,proto.getName());
+    if (tagTemplate.hasAttribute("name"))
+    {
+        controller.preRender = true;
+    }
 
-    //获取控制对象
-    let controller:Controller = new Controller();
-    controller.proto = proto;
-
-    //复制原始数据对象到控制对象
-    controller.raw_data = Object.create(proto.getData());
     //注入props
     getCodeSpaceForProps(controller.raw_data,getProxyForInject(props));
     //注入query
     getCodeSpaceForQuery(controller.raw_data,resolveQueries());
     //注入ref
     getCodeSpaceForRef(controller.raw_data,resolver_Ref(tagTemplate.children));
-
-    //数据渲染对象
-    controller.proxyForMethods = getProxyObject(controller.raw_data, controller);
-
-    //beforeRender
-    let beforeRender = proto.getBeforeRender().bind(controller.raw_data);
-    beforeRender();
 
     //给所有元素添加上npm=tag标志
     addLabel(tagTemplate.children,proto.getName());
@@ -67,13 +69,17 @@ export function initRender(proto: Component, parent: ParentNode, child:Element, 
     //渲染属性
     resolver_bind(tagTemplate.children,controller.proxyForMethods);
 
+    //获得模板样式元素
+    let tagStyle:Element = content.lastElementChild;
+    //向head位置添加该组件的样式
+    loadStyle(tagStyle.childNodes[0].nodeValue,proto.getName());
+
     //beforeMount
     let beforeMount = proto.getBeforeMount().bind(controller.raw_data);
     beforeMount();
 
     //mount
     let renderSpace:Element = document.createElement("div");
-    controller.root = renderSpace;
     parent.replaceChild(renderSpace,child);
     while (tagTemplate.hasChildNodes()){
         renderSpace.append(tagTemplate.firstChild);
@@ -83,20 +89,13 @@ export function initRender(proto: Component, parent: ParentNode, child:Element, 
     let afterRender = proto.getAfterRender().bind(controller.raw_data);
     afterRender();
 
-    //深度渲染
-    findComponent(controller.root.children,tagLib,controller);
-}
-
-//继续渲染
-export function findComponent(collection:HTMLCollection,tagLib:Map<string, Component>,link:Controller | ApiController):void
-{
-    for (let i:number = 0; i < collection.length; i++)
-    {
-        if (isUnKnown(collection[i].nodeName))
-        {
-            depthRender(tagLib.get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],tagLib,link);
-        }else {
-            findComponent(collection[i].children,tagLib,link);
-        }
+    if (controller.preRender){
+        controller.link.set(tagTemplate.getAttribute("name"),controller.raw_data);
     }
+
+    //指定渲染空间
+    controller.root = renderSpace;
+
+    //深度渲染
+    findComponent(tagTemplate.children,tagLib,controller);
 }

@@ -16,7 +16,7 @@ export function addLabel(nodes:HTMLCollection,component:string):void
 
 export function resolver(element:Element,tagLib:Map<string, Component>):void
 {
-    initRender(tagLib.get(element.nodeName.toUpperCase()),element.parentNode,element,tagLib,new Controller())
+    initRender(tagLib.get(element.nodeName.toUpperCase()),element.parentNode,element,tagLib)
 }
 
 export function bindModelForUpdater(nodes:HTMLCollection,data:{}):void

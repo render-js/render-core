@@ -1,23 +1,21 @@
 import {loadStyle} from "../../library/loader/loader";
 import {addLabel} from "../utility/miscUtility";
 import {getProxyObjectForApi} from "../proxy/getProxy";
-import {isUnKnown} from "../utility/checkUtility";
 import {Component} from "../../class/component";
 import ApiComponent from "../../class/apiComponent";
 import {ApiController} from "../../class/apiController";
 import {getApiCodeSpace, getCodeSpaceForRef} from "../utility/injectUtility";
-import {initRender} from "./initRender";
+import {findComponent} from "./initRender";
 import {resolver_Ref} from "../cmd/v-ref";
 import {resolver_html} from "../cmd/v-html";
 import {resolver_txt} from "../cmd/v-txt";
 import {resolver_model} from "../cmd/v-model";
 import {resolver_bind} from "../cmd/v-bind";
-import {Controller} from "../../class/controller";
 import {resolver_event} from "../cmd/v-on";
 
 
 //渲染自定义标签
-export function apiRender(proto: ApiComponent, parent: ParentNode, attr: string, tagLib:Map<string, Component>):any{
+export function apiRender(proto: ApiComponent, parent: ParentNode, attr: string, tagLib:Map<string, Component>,link:ApiController):any{
 
     //获取控制对象
     let apiController:ApiController = new ApiController();
@@ -78,24 +76,10 @@ export function apiRender(proto: ApiComponent, parent: ParentNode, attr: string,
     apiController.root = parent;
 
     //深度渲染
-    findComponent(tagTemplate.children,tagLib)
+    findComponent(tagTemplate.children,tagLib,link);
 
     //返回api对象
     getApiCodeSpace(apiController.raw_data,proto.getMethods());
 
     return apiController.raw_data;
-}
-
-//继续渲染
-export function findComponent(collection:HTMLCollection,tagLib:Map<string, Component>):void
-{
-    for (let i:number=0;i<collection.length;i++)
-    {
-        if (isUnKnown(collection[i].nodeName))
-        {
-            initRender(tagLib.get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],tagLib,new Controller());
-        }else {
-            findComponent(collection[i].children,tagLib)
-        }
-    }
 }

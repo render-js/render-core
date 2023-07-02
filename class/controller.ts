@@ -8,7 +8,12 @@ export class Controller{
 
     preRender:boolean;
     
-    link:Map<string, HTMLDivElement>;
+    link:Map<string,{}>;
+
+    constructor() {
+        this.link = new Map<string, {}>();
+        this.preRender = false;
+    }
 
     to:Component[];
 
