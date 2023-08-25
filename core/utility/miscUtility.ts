@@ -1,7 +1,3 @@
-import {Component} from "../../class/component";
-import {initRender} from "../render/initRender";
-import {Controller} from "../../class/controller";
-
 export function addLabel(nodes:HTMLCollection,component:string):void
 {
     for (let i:number=0;i<nodes.length;i++){
@@ -12,11 +8,6 @@ export function addLabel(nodes:HTMLCollection,component:string):void
 
         addLabel(kk,component)
     }
-}
-
-export function resolver(element:Element,tagLib:Map<string, Component>):void
-{
-    initRender(tagLib.get(element.nodeName.toUpperCase()),element.parentNode,element,tagLib)
 }
 
 export function bindModelForUpdater(nodes:HTMLCollection,data:{}):void

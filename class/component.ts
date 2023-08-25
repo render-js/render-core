@@ -6,7 +6,6 @@ interface RenderBase{
     getComputed():{};
     getMethods():{};
     getWatcher():{};
-    getExecutor():{};
     getBeforeRender():()=>void
     getAfterRender():()=>void
     getBeforeUpdate():()=>void
@@ -21,7 +20,7 @@ export class Component implements RenderBase{
 
     private readonly template: string;
 
-    private readonly props?:{};
+    private readonly props?:{} | string[];
 
     private readonly data:{};
 
@@ -30,8 +29,6 @@ export class Component implements RenderBase{
     private readonly computed?:{};
 
     private readonly watcher?:{};
-
-    private readonly executor?:{};
 
     private readonly beforeRender?:() => void;
 
@@ -48,7 +45,7 @@ export class Component implements RenderBase{
     constructor(config:{
         name:string,
         template:string,
-        props?:{},
+        props?:{} | string[],
         data?:{},
         computed?:{},
         methods?:{},
@@ -67,7 +64,7 @@ export class Component implements RenderBase{
         this.template = config.template;
         //添加数据
         if (typeof config.props == "undefined"){
-            this.props = {};
+            this.props = [];
         }else {
             this.props = config.props;
         }
@@ -94,12 +91,6 @@ export class Component implements RenderBase{
             this.watcher = {};
         }else {
             this.watcher = config.watcher;
-        }
-        //添加处理器属性
-        if (typeof config.executor == "undefined"){
-            this.executor = {};
-        }else {
-            this.executor = config.executor;
         }
         //生命周期函数
         if (typeof config.beforeRender == "undefined"){
@@ -160,10 +151,6 @@ export class Component implements RenderBase{
 
     getWatcher(): {} {
         return this.watcher;
-    }
-
-    getExecutor(): {} {
-        return this.executor;
     }
 
     getBeforeRender(): () => void {

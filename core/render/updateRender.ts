@@ -1,68 +1,48 @@
 import {Controller} from "../../class/controller";
-import {resolver_event} from "../cmd/v-on";
-import {resolver_html} from "../cmd/v-html";
-import {resolver_txt} from "../cmd/v-txt";
-import {resolver_bind} from "../cmd/v-bind";
-import {addLabel, bindModelForUpdater} from "../utility/miscUtility";
-import {depthFindComponent} from "./depthRender";
+import {bindModelForUpdater} from "../utility/miscUtility";
+import {findComponent} from "./initRender";
+import {getTemplate} from "../../library/template/template";
+import {cmdForUpdate} from "../../library/cmd/cmd";
 
-export function updateRender(updater:Controller):void{
+export function updateRender(controller:Controller):void{
     //生成DOM
-    let temp:HTMLDivElement = document.createElement("div");
-    temp.innerHTML = updater.proto.getTemplate();
-    let template:HTMLTemplateElement = temp.getElementsByTagName("template")[0];
-    let tagTemplate:Element = template.content.children[0];
+    let tagTemplate:Element = getTemplate(controller.proto)
 
-    let updateRawData:{} = updater.proxyForMethods;
+    //清除保存的发布对象
+    controller.to = [];
 
     //beforeRender
-    let beforeRender = updater.proto.getBeforeRender().bind(updateRawData);
+    let beforeRender = controller.proto.getBeforeRender().bind(controller.raw_data);
     beforeRender();
 
-    //beforeUpdate
-    let beforeUpdate = updater.proto.getBeforeUpdate().bind(updateRawData);
-    beforeUpdate();
-
-    //updateRender actions
-    addLabel(tagTemplate.children,updater.proto.getName());
-
-    resolver_event(tagTemplate.children,updater.proto.getMethods(),updater.proxyForMethods);
-
-    resolver_html(tagTemplate.children,updater.proxyForMethods);
-
-    resolver_txt(tagTemplate.children,updater.proxyForMethods);
-
-    resolver_bind(tagTemplate.children,updater.proxyForMethods);
-
-    //afterUpdate
-    let afterUpdate =  updater.proto.getAfterUpdate().bind(updateRawData);
-    afterUpdate();
+    //解析指令
+    cmdForUpdate(tagTemplate,controller.proto,controller);
 
     //beforeUnmount
-    let beforeUnmount = updater.proto.getBeforeUnmount().bind(updateRawData);
+    let beforeUnmount = controller.proto.getBeforeUnmount().bind(controller.raw_data);
     beforeUnmount();
 
     //unmount
-    while (updater.root.hasChildNodes()){
-        updater.root.removeChild(updater.root.firstChild);
+    while (controller.root.hasChildNodes()){
+        controller.root.removeChild(controller.root.firstChild);
     }
 
     //beforeMount
-    let beforeMount = updater.proto.getBeforeMount().bind(updateRawData);
+    let beforeMount = controller.proto.getBeforeMount().bind(controller.raw_data);
     beforeMount();
 
     //mount
     while (tagTemplate.hasChildNodes()){
-        updater.root.appendChild(tagTemplate.firstChild);
+        controller.root.appendChild(tagTemplate.firstChild);
     }
 
     //afterRender
-    let afterRender = updater.proto.getAfterRender().bind(updateRawData);
+    let afterRender = controller.proto.getAfterRender().bind(controller.raw_data);
     afterRender();
 
     //获取定位
-    bindModelForUpdater(updater.root.children,updater.proxyForMethods);
+    bindModelForUpdater(controller.root.children,controller.proxyForMethods);
 
     //深度渲染
-    depthFindComponent(updater.root.children,Reflect.get(window,"tagLib"),updater);
+    findComponent(controller.root.children,controller);
 }

@@ -1,37 +1,43 @@
+import {isUnKnown} from "../utility/checkUtility";
+
 export function resolver_bind(nodes:HTMLCollection,data:{}):void
 {
 
     for (let i:number=0;i<nodes.length;i++){
 
-        let attributes:string[] = nodes[i].getAttributeNames()
+        //对系统元素进行属性绑定
+        if (isUnKnown(nodes[i].nodeName)){
 
-        for (let j:number=0;j<attributes.length;j++){
+            let attributes:string[] = nodes[i].getAttributeNames()
 
-            let result:RegExpMatchArray = attributes[j].match(/^v-bind:([a-z]+)$/g)
+            for (let j:number=0;j<attributes.length;j++){
 
-            if (result === null){
+                let result:RegExpMatchArray = attributes[j].match(/^v-bind:([a-z]+)$/g)
 
-            }else {
+                if (result === null){
 
-                for (let k:number=0;k<result.length;k++){
+                }else {
 
-                    let property:string = result[k].substring(7)
+                    for (let k:number=0;k<result.length;k++){
 
-                    let dataName:string = nodes[i].getAttribute(result[k])
+                        let property:string = result[k].substring(7)
 
-                    nodes[i].removeAttribute(result[k])
+                        let dataName:string = nodes[i].getAttribute(result[k])
 
-                    try {
-                        nodes[i].setAttribute(property,JSON.stringify(data[dataName]));
-                    }catch (e) {
-                        nodes[i].setAttribute(property,data[dataName]);
+                        nodes[i].removeAttribute(result[k])
+
+                        try {
+                            nodes[i].setAttribute(property,JSON.stringify(data[dataName]));
+                        }catch (e) {
+                            nodes[i].setAttribute(property,data[dataName]);
+                        }
                     }
                 }
             }
+
+            let subElements:HTMLCollection = nodes[i].children
+
+            resolver_bind(subElements,data);
         }
-
-        let subElements:HTMLCollection = nodes[i].children
-
-        resolver_bind(subElements,data);
     }
 }

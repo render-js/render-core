@@ -1,12 +1,16 @@
 //注入对象
-export function getCodeSpaceForProps(data:{},$props:{}):void
+import {Controller} from "../../class/controller";
+import {ApiController} from "../../class/apiController";
+import {PageController} from "../../class/pageController";
+
+export function getCodeSpaceForProps(data:{}, $props:Map<string, object>):void
 {
     Reflect.set(data,"$props",$props);
 }
 
-export function getCodeSpaceForQuery(data:{},$query:{}):void
+export function getCodeSpaceForQuery(data:{},$query:Map<string, any>):void
 {
-    Reflect.set(data,"$query",$query);
+    Reflect.set(data,"$queries",$query);
 }
 
 //注入对象
@@ -16,18 +20,34 @@ export function getCodeSpaceForRef(data:{},$ref:Map<string, Element>):void
 }
 
 
-
-//注入对象
-export function getApiCodeSpace(data:{},method:{}):void
+export function getCommitMethod(controller:Controller | ApiController |PageController):any
 {
-    let list:string[] = Object.getOwnPropertyNames(method);
-
-    list.forEach(function (value:string):void{
-        Reflect.set(data,value,method[value].bind(data));
-    })
+    let commit = function (method:string, ...args:any[]):any{
+        this.receiver(method,args);
+    }
+    return commit.bind(controller);
 }
 
-export function getCommitDataMethod():any
+//注入对象
+export function getCodeSpaceForCommit(data:{},commit:any):void
 {
+    Reflect.set(data,"$commit",commit);
+}
 
+
+export function getPublishMethod(controller:Controller | ApiController | PageController):any
+{
+    let publisher = function (method:string,...args:any[]):void{
+        for (let i=0; i< this.to.length; i++){
+            this.to[i].receiver(method,args);
+        }
+    }
+
+    return publisher.bind(controller);
+}
+
+//注入对象
+export function getCodeSpaceForPublish(data:{},publisher:any):void
+{
+    Reflect.set(data,"$publish",publisher);
 }

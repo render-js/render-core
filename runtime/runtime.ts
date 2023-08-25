@@ -1,11 +1,9 @@
-import {Component} from "../class/component";
 import {isUnKnown} from "../core/utility/checkUtility";
-import {resolver} from "../core/utility/miscUtility";
-import {ApiController} from "../class/apiController";
-import {Controller} from "../class/controller";
+import {PageController} from "../class/pageController";
+import {Render} from "../core/render/initRender";
 
 //检查元素是否为基元素
-export function renderHtml(collection:HTMLCollection,tagLib:Map<string, Component>):void
+export function renderHtml(collection:HTMLCollection, link:PageController):void
 {
     //遍历element节点，判断是否为自定义标签
     for (let i:number = 0; i < collection.length; i++)
@@ -13,10 +11,14 @@ export function renderHtml(collection:HTMLCollection,tagLib:Map<string, Componen
         if (isUnKnown(collection[i].nodeName.toUpperCase()))
         {
             //自定义标签
-            resolver(collection[i],tagLib);
+            Render(Reflect.get(window,"tagLib").get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],link)
         }else {
             //非自定义标签，深度解析
-            renderHtml(collection[i].children,tagLib);
+            renderHtml(collection[i].children,link);
         }
     }
+}
+
+export function reloadPage():void{
+    this.run();
 }

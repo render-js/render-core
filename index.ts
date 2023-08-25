@@ -1,23 +1,40 @@
 import {Component} from "./class/component";
-import ApiComponent from "./class/apiComponent";
 import meta from "./meta/meta";
-import {renderHtml} from "./runtime/runtime";
-import {apiRender} from "./core/render/apiRender";
-import {ApiController} from "./class/apiController";
+import {reloadPage, renderHtml} from "./runtime/runtime";
+import {themeStyle} from "./core/utility/styleUtility";
+// @ts-ignore
+import {routerController} from "render-security/class/Router";
+// @ts-ignore
+import {redirect} from "render-security/utility/redirect";
+import {PageController} from "./class/pageController";
+import {App} from "./meta/app";
 
 //页面RenderJs
 export class RenderJS{
 
-    //版本号
-    public readonly version:string;
+    //meta数据
+    public readonly config:{};
 
     //自定义标签库
     readonly tagLib:Map<string, Component>;
 
+    //security
+    private routerC:routerController;
+
+    private readonly page:PageController;
+
     //构造函数
     constructor() {
         this.tagLib = new Map<string,Component>();
-        this.version = meta.version;
+        this.page = new PageController();
+        this.config = {};
+        Reflect.set(this.config,"version",meta.version)
+        Reflect.set(this.config,"theme",meta.style)
+    }
+
+    //添加路由器
+    public addRouter(router:routerController):void{
+        this.routerC = router
     }
 
     //添加自定义标签
@@ -45,47 +62,41 @@ export class RenderJS{
     //运行renderJs
     public run():void
     {
+        if (this.routerC){
+            this.routerC.data.beforeRouter()
+            if (typeof this.routerC.getRule(location.href) === "boolean"){
+                this.render();
+            }else {
+                if(this.routerC.getRule(location.href).beforeRouter()){
+                    this.render();
+                }else {
+                    redirect("/http/400.html");
+                }
+            }
+            this.routerC.data.afterRouter()
+        }else {
+            this.render();
+        }
+    }
+
+    private render(){
+        //保存全局tagLib对象
         Reflect.set(window,"tagLib",this.tagLib);
-        renderHtml(document.body.children,this.tagLib)
-    }
-}
 
-//嵌入式RenderJs
-export class EmbedRenderJs{
+        //获取styleLib对象
+        let styleLib = new Map<string,Map<string, string>>();
+        this.tagLib.forEach(function (component){
+            themeStyle(component,styleLib);
+        })
 
-    //嵌入式控制对象
-    private readonly apiComponent:ApiComponent;
+        Reflect.set(window,"styleLib",styleLib);
 
-    //嵌入式交互对象
-    private controller:{};
+        Reflect.set(window,"context",new App())
 
-    //构造函数
-    constructor(config:{
-        name:string,
-        template:string,
-        data?:{},
-        computed?:{},
-        methods?:{},
-        watcher?:{},
-        beforeRender?:()=>void,
-        afterRender?:()=>void,
-        beforeUpdate?:()=>void,
-        afterUpdate?:()=>void,
-        beforeMount?:()=>void,
-        beforeUnmount?:()=>void;
-    }) {
-        this.apiComponent = new ApiComponent(config);
-    }
+        Reflect.set(window,"router",this.routerC);
 
-    //渲染嵌入式app
-    public render(selector:string):void
-    {
-        this.controller = apiRender(this.apiComponent,document.getElementById(selector),this.apiComponent.getName(),Reflect.get(window,"tagLib"),new ApiController());
-    }
-
-    //与嵌入式app交互
-    public commit(method:string, ...args:any[]):any
-    {
-        return this.controller[method](args);
+        //开始渲染
+        renderHtml(document.body.children,this.page);
+        window.onload = reloadPage.bind(this);
     }
 }

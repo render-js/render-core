@@ -1,15 +1,12 @@
-import {getProxyForInject} from "../proxy/getProxy";
-
-export function resolver_Ref(el:HTMLCollection):Map<string, Element>
+export function resolver_Refs(el:HTMLCollection, refs:Map<string, Element>):void
 {
-    let ref:Map<string, Element> = new Map<string, Element>();
-
     for (let i:number = 0; i < el.length; i++)
     {
         if (el[i].hasAttribute("ref"))
         {
-            ref.set(el[i].getAttribute("ref"),el[i]);
+            refs.set(el[i].getAttribute("ref"),el[i]);
+        }else {
+            resolver_Refs(el[i].children,refs);
         }
     }
-    return  getProxyForInject(ref);
 }

@@ -1,23 +1,30 @@
 import ApiComponent from "./apiComponent";
-import {Component} from "./component";
+import {Controller} from "./controller";
 
 export class ApiController{
 
-    root:ParentNode;
+    public root:ParentNode;
 
-    proto:ApiComponent;
+    public proto:ApiComponent;
 
-    preRender:boolean;
+    public preRender:boolean;
 
-    link:Map<string,{}>;
+    public link:Map<string,{}>;
+
+    public to:Controller[];
+
+    public raw_data:{};
+
+    public proxyForMethods:{};
 
     constructor() {
         this.link = new Map<string, {}>();
+        this.preRender = false;
     }
 
-    to:Component[];
-
-    raw_data:{};
-
-    proxyForMethods:{};
+    //接收器
+    public receiver(method:string, ...args:any[]):any
+    {
+        return this.proto.getMethods()[method].apply(this.proxyForMethods,args);
+    }
 }
