@@ -1,0 +1,20 @@
+{
+  "name": "render-core",
+  "version": "1.0.27",
+  "description": "The router for render-js",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//render-js/render-core.git"
+  },
+  "author": "mutian",
+  "license": "MIT",
+  "dependencies": {
+    "render-security": "^1.0.4",
+    "render-status": "^1.0.0"
+  }
+}

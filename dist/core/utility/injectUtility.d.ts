@@ -1,0 +1,10 @@
+import { Controller } from "../../class/controller";
+import { ApiController } from "../../class/apiController";
+import { PageController } from "../../class/pageController";
+export declare function getCodeSpaceForProps(data: {}, $props: Map<string, object>): void;
+export declare function getCodeSpaceForQuery(data: {}, $query: Map<string, any>): void;
+export declare function getCodeSpaceForRef(data: {}, $ref: Map<string, Element>): void;
+export declare function getCommitMethod(controller: Controller | ApiController | PageController): any;
+export declare function getCodeSpaceForCommit(data: {}, commit: any): void;
+export declare function getPublishMethod(controller: Controller | ApiController | PageController): any;
+export declare function getCodeSpaceForPublish(data: {}, publisher: any): void;
