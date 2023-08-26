@@ -3,7 +3,7 @@ import {Component} from "../../class/component";
 export function extendTag(component:{
     name:string,
     template:string,
-    data?:{},
+    data?:()=>{},
     computed?:{},
     methods?:{},
     components?:{},

@@ -10,6 +10,7 @@ export class PageController {
     //观察者
     public to:Controller[];
 
+    //旧数据对象空间
     public link:Map<string,{}>;
 
     //构造函数
@@ -27,10 +28,12 @@ export class PageController {
 
     }
 
+    //设置当前页面的渲染元素
     set crtTag(element){
         this.currentTag = element;
     }
 
+    //返回当前页面的渲染元素
     get crtTag(){
         return this.currentTag;
     }

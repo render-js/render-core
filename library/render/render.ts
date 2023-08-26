@@ -6,7 +6,7 @@ import {Component} from "../../class/component";
 import {ApiController} from "../../class/apiController";
 import {PageController} from "../../class/pageController";
 import {findComponent} from "../../core/render/initRender";
-import {inject} from "../inject/inject";
+import {inject, injectComputed, injectMethod, injectProps, injectWatcher} from "../inject/inject";
 import {cmd} from "../cmd/cmd";
 
 export function init_render(proto:Component,parent:ParentNode,child:Element,link:Controller | ApiController | PageController,tagTemplate:Element):void{
@@ -24,6 +24,12 @@ export function init_render(proto:Component,parent:ParentNode,child:Element,link
 
     //数据渲染代理对象
     controller.proxyForMethods = getProxyObject(controller.raw_data, controller);
+
+    injectComputed(controller,proto);
+
+    injectWatcher(controller,proto);
+
+    injectMethod(controller,proto);
 
     //注入commit
     getCodeSpaceForCommit(controller.raw_data,getCommitMethod(link));
@@ -44,6 +50,11 @@ export function init_render(proto:Component,parent:ParentNode,child:Element,link
 
     //mount
     let renderSpace:Element = document.createElement("div");
+    //给box添加样式
+    renderSpace.setAttribute("style",proto.getBoxStyle());
+    //指定渲染空间
+    controller.root = renderSpace;
+    //开始渲染
     parent.replaceChild(renderSpace,child);
     while (tagTemplate.hasChildNodes()){
         renderSpace.append(tagTemplate.firstChild);
@@ -53,10 +64,13 @@ export function init_render(proto:Component,parent:ParentNode,child:Element,link
     let afterRender = proto.getAfterRender().bind(controller.raw_data);
     afterRender();
 
-    //指定渲染空间
-    controller.root = renderSpace;
+    injectProps(controller,tagTemplate);
 
+    //将本控制对象保存到父控制对象的发布数组中
     link.to.push(controller)
+
+    //将执行空间保存到父控制对象
+    link.link.set(child.getAttribute("name"),controller.raw_data);
 
     //深度渲染
     findComponent(tagTemplate.children,controller);
@@ -78,6 +92,12 @@ export function post_render(proto:Component,parent:ParentNode,child:Element,link
     //保持数据代理对象
     controller.proxyForMethods = getProxyObject(controller.raw_data, controller);
 
+    injectComputed(controller,proto);
+
+    injectWatcher(controller,proto);
+
+    injectMethod(controller,proto);
+
     //注入commit
     getCodeSpaceForCommit(controller.raw_data,getCommitMethod(link));
     //注入receiver
@@ -96,7 +116,11 @@ export function post_render(proto:Component,parent:ParentNode,child:Element,link
 
     //mount
     let renderSpace:Element = document.createElement("div");
+    //给box添加样式
+    renderSpace.setAttribute("style",proto.getBoxStyle());
+    //指定渲染空间
     controller.root = renderSpace;
+    //开始渲染
     parent.replaceChild(renderSpace,child);
     while (tagTemplate.hasChildNodes()){
         renderSpace.append(tagTemplate.firstChild);
@@ -106,7 +130,12 @@ export function post_render(proto:Component,parent:ParentNode,child:Element,link
     let afterRender = proto.getAfterRender().bind(controller.raw_data);
     afterRender();
 
-    link.to.push(controller)
+    injectProps(controller,tagTemplate);
+
+    link.to.push(controller);
+
+    //将执行空间保存到父控制对象
+    link.link.set(child.getAttribute("name"),controller.raw_data);
 
     //深度渲染
     findComponent(controller.root.children,controller);
@@ -128,6 +157,12 @@ export function raw_render(proto:Component,parent:ParentNode,child:Element,link:
     //数据渲染对象
     controller.proxyForMethods = getProxyObject(controller.raw_data, controller);
 
+    injectComputed(controller,proto);
+
+    injectWatcher(controller,proto);
+
+    injectMethod(controller,proto);
+
     //注入commit
     getCodeSpaceForCommit(controller.raw_data,getCommitMethod(link));
     //注入receiver
@@ -146,7 +181,11 @@ export function raw_render(proto:Component,parent:ParentNode,child:Element,link:
 
     //mount
     let renderSpace:Element = document.createElement("div");
+    //给box添加样式
+    renderSpace.setAttribute("style",proto.getBoxStyle());
+    //指定渲染空间
     controller.root = renderSpace;
+    //开始渲染
     parent.replaceChild(renderSpace,child);
     while (tagTemplate.hasChildNodes()){
         renderSpace.append(tagTemplate.firstChild);
@@ -155,6 +194,8 @@ export function raw_render(proto:Component,parent:ParentNode,child:Element,link:
     //afterRender
     let afterRender = proto.getAfterRender().bind(controller.raw_data);
     afterRender();
+
+    injectProps(controller,tagTemplate);
 
     link.to.push(controller)
 

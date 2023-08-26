@@ -97,6 +97,5 @@ export class RenderJS{
 
         //开始渲染
         renderHtml(document.body.children,this.page);
-        window.onload = reloadPage.bind(this);
     }
 }

@@ -3,6 +3,7 @@ import {bindModelForUpdater} from "../utility/miscUtility";
 import {findComponent} from "./initRender";
 import {getTemplate} from "../../library/template/template";
 import {cmdForUpdate} from "../../library/cmd/cmd";
+import {injectProps} from "../../library/inject/inject";
 
 export function updateRender(controller:Controller):void{
     //生成DOM
@@ -39,6 +40,8 @@ export function updateRender(controller:Controller):void{
     //afterRender
     let afterRender = controller.proto.getAfterRender().bind(controller.raw_data);
     afterRender();
+
+    injectProps(controller,tagTemplate);
 
     //获取定位
     bindModelForUpdater(controller.root.children,controller.proxyForMethods);

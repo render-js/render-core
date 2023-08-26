@@ -1,7 +1,7 @@
 {
   "name": "render-core",
-  "version": "1.0.27",
-  "description": "The router for render-js",
+  "version": "1.0.35",
+  "description": "The core for render-js",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {

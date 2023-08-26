@@ -1,6 +1,7 @@
 interface RenderBase{
     getName():string;
     getTemplate():string;
+    getBoxStyle(): string;
     getProps(): {};
     getData():{};
     getComputed():{};
@@ -20,9 +21,11 @@ export class Component implements RenderBase{
 
     private readonly template: string;
 
+    private readonly boxStyle?: string
+
     private readonly props?:{} | string[];
 
-    private readonly data:{};
+    private readonly data?:{};
 
     private readonly methods?:{};
 
@@ -45,12 +48,12 @@ export class Component implements RenderBase{
     constructor(config:{
         name:string,
         template:string,
+        boxStyle?: string,
         props?:{} | string[],
         data?:{},
         computed?:{},
         methods?:{},
         watcher?:{},
-        executor?:{}
         beforeRender?:()=>void,
         afterRender?:()=>void,
         beforeUpdate?:()=>void,
@@ -62,63 +65,69 @@ export class Component implements RenderBase{
         this.name = config.name;
         //标签模板样式
         this.template = config.template;
+        //添加box样式
+        if (typeof config.boxStyle === "undefined"){
+            this.boxStyle = "";
+        }else {
+            this.boxStyle = config.boxStyle;
+        }
         //添加数据
-        if (typeof config.props == "undefined"){
+        if (typeof config.props === "undefined"){
             this.props = [];
         }else {
             this.props = config.props;
         }
         //添加数据
-        if (typeof config.data == "undefined"){
+        if (typeof config.data === "undefined"){
             this.data = {};
         }else {
             this.data = config.data;
         }
         //添加计算属性
-        if (config.computed == "undefined"){
+        if (typeof config.computed === "undefined"){
             this.computed = {};
         }else {
             this.computed = config.computed;
         }
         //添加方法属性
-        if (typeof config.methods == "undefined"){
+        if (typeof config.methods === "undefined"){
             this.methods = {};
         }else {
             this.methods = config.methods;
         }
         //添加监控属性
-        if (typeof config.watcher == "undefined"){
+        if (typeof config.watcher === "undefined"){
             this.watcher = {};
         }else {
             this.watcher = config.watcher;
         }
         //生命周期函数
-        if (typeof config.beforeRender == "undefined"){
+        if (typeof config.beforeRender === "undefined"){
             this.beforeRender = function (){}
         }else {
             this.beforeRender = config.beforeRender;
         }
-        if (typeof config.afterRender == "undefined"){
+        if (typeof config.afterRender === "undefined"){
             this.afterRender = function (){}
         }else {
             this.afterRender = config.afterRender;
         }
-        if (typeof config.beforeUpdate == "undefined"){
+        if (typeof config.beforeUpdate === "undefined"){
             this.beforeUpdate = function (){}
         }else {
             this.beforeUpdate = config.beforeUpdate;
         }
-        if (typeof config.afterUpdate == "undefined"){
+        if (typeof config.afterUpdate === "undefined"){
             this.afterUpdate = function (){}
         }else {
             this.afterUpdate = config.afterUpdate;
         }
-        if (typeof config.beforeMount == "undefined"){
+        if (typeof config.beforeMount === "undefined"){
             this.beforeMount = function (){}
         }else {
             this.beforeMount = config.beforeMount;
         }
-        if (typeof config.beforeUnmount == "undefined"){
+        if (typeof config.beforeUnmount === "undefined"){
             this.beforeUnmount = function (){}
         }else {
             this.beforeUnmount = config.beforeUnmount;
@@ -133,11 +142,15 @@ export class Component implements RenderBase{
         return this.template;
     }
 
+    getBoxStyle():string{
+        return this.boxStyle;
+    }
+
     getProps(): {}{
         return this.props;
     }
 
-    getData(): {}{
+    getData():{}{
         return this.data;
     }
 
