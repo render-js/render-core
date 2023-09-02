@@ -1,4 +1,4 @@
-import ApiComponent from "./apiComponent";
+import ApiComponent from "../component/apiComponent";
 import {Controller} from "./controller";
 
 export class ApiController{

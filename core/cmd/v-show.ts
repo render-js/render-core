@@ -10,14 +10,15 @@ export function resolver_show(elements:HTMLCollection,data:{}):void{
 
             elements[i].removeAttribute("v-show")
 
-            if (data[dataName] instanceof Boolean){
-                if (data[dataName] === true){
-                    // @ts-ignore
-                    elements[i].style.visibility = true;
-                }else {
-                    // @ts-ignore
-                    elements[i].style.visibility = false;
-                }
+            if (data[dataName] === true){
+                // @ts-ignore
+                elements[i].style.visibility = "visible";
+            }else if (data[dataName] === false) {
+                // @ts-ignore
+                elements[i].style.visibility = "hidden";
+            }
+            else {
+                console.log("v-show instruct should be used with boolean!");
             }
         }
 

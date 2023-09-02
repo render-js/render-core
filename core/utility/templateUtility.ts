@@ -1,5 +1,5 @@
-import {Component} from "../../class/component";
-import ApiComponent from "../../class/apiComponent";
+import {Component} from "../../class/component/component";
+import ApiComponent from "../../class/component/apiComponent";
 
 export function getTemplate(proto:Component | ApiComponent):Element{
     //生成DOM

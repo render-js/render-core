@@ -4,10 +4,15 @@ import {resolver_html} from "../../core/cmd/v-html";
 import {resolver_txt} from "../../core/cmd/v-txt";
 import {resolver_model} from "../../core/cmd/v-model";
 import {resolver_bind} from "../../core/cmd/v-bind";
-import {Component} from "../../class/component";
-import {Controller} from "../../class/controller";
-import {ApiController} from "../../class/apiController";
-import ApiComponent from "../../class/apiComponent";
+import {Component} from "../../class/component/component";
+import {Controller} from "../../class/controller/controller";
+import {ApiController} from "../../class/controller/apiController";
+import ApiComponent from "../../class/component/apiComponent";
+import {resolver_show} from "../../core/cmd/v-show";
+import {resolver_render} from "../../core/cmd/v-render";
+import {resolver_if} from "../../core/cmd/v-if";
+import {resolver_switch} from "../../core/cmd/v-switch";
+import {resolver_for_each, resolver_for_of} from "../../core/cmd/v-for";
 
 export function cmd(tagTemplate:Element,proto:Component | ApiComponent,controller:Controller | ApiController):void{
     //给所有元素添加上npm=tag标志
@@ -24,6 +29,21 @@ export function cmd(tagTemplate:Element,proto:Component | ApiComponent,controlle
     resolver_bind(tagTemplate.children,controller.proxyForMethods);
 }
 
+export function afterCmd(templateSpace:ParentNode, proto:Component | ApiComponent, controller:Controller | ApiController):void{
+    //v-show
+    resolver_show(templateSpace.children,controller.proxyForMethods);
+    //v-render
+    resolver_render(templateSpace.children,controller.proxyForMethods);
+    //v-if
+    resolver_if(templateSpace.children,controller.proxyForMethods);
+    //v-switch
+    resolver_switch(templateSpace.children,controller.proxyForMethods);
+    //v-for-each
+    resolver_for_each(templateSpace.children,controller.proxyForMethods);
+    //v-for-of
+    resolver_for_of(templateSpace.children,controller.proxyForMethods);
+}
+
 export function cmdForUpdate(tagTemplate:Element,proto:Component,controller:Controller | ApiController):void{
     //给所有元素添加上npm=tag标志
     addLabel(tagTemplate.children,proto.getName());
@@ -35,4 +55,8 @@ export function cmdForUpdate(tagTemplate:Element,proto:Component,controller:Cont
     resolver_txt(tagTemplate.children,controller.proxyForMethods);
     //绑定数据
     resolver_model(tagTemplate.children,controller.proxyForMethods);
+    //v-show
+    resolver_show(tagTemplate.children,controller.proxyForMethods);
+    //v-render
+    resolver_render(tagTemplate.children,controller.proxyForMethods);
 }

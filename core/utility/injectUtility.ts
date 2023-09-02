@@ -1,7 +1,7 @@
 //注入对象
-import {Controller} from "../../class/controller";
-import {ApiController} from "../../class/apiController";
-import {PageController} from "../../class/pageController";
+import {Controller} from "../../class/controller/controller";
+import {ApiController} from "../../class/controller/apiController";
+import {PageController} from "../../class/controller/pageController";
 
 export function getCodeSpaceForProps(data:{}, $props:Map<string, object>):void
 {
@@ -20,12 +20,20 @@ export function getCodeSpaceForRef(data:{},$ref:Map<string, Element>):void
 }
 
 
-export function getCommitMethod(controller:Controller | ApiController |PageController):any
+export function getCommitMethod(controller:Controller | ApiController | PageController):any
 {
     let commit = function (method:string, ...args:any[]):any{
         this.receiver(method,args);
     }
     return commit.bind(controller);
+}
+
+export function getSetterMethod(controller:Controller | ApiController | PageController):any
+{
+    let setter = function (property:string,value:any):any{
+        this[property] = value;
+    }
+    return setter.bind(controller.raw_data);
 }
 
 //注入对象
@@ -50,4 +58,9 @@ export function getPublishMethod(controller:Controller | ApiController | PageCon
 export function getCodeSpaceForPublish(data:{},publisher:any):void
 {
     Reflect.set(data,"$publish",publisher);
+}
+
+export function getCodeSpaceForProperty(data:{},setter:any):void
+{
+    Reflect.set(data,"$setter",setter);
 }

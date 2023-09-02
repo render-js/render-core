@@ -10,14 +10,18 @@ export function resolver_render(elements:HTMLCollection,data:{}):void{
 
             elements[i].removeAttribute("v-render")
 
-            if (data[dataName] instanceof Boolean){
-                if (data[dataName] === true){
-                    // @ts-ignore
-                    elements[i].style.display = "block";
-                }else {
-                    // @ts-ignore
-                    elements[i].style.display = "none";
-                }
+            if (data[dataName] === true){
+                // @ts-ignore
+                elements[i].style.display = "block";
+
+            }else if (data[dataName] === false) {
+                // @ts-ignore
+                elements[i].style.display = "none";
+
+            }else {
+
+                console.log("v-render instruct should be used with boolean!");
+                
             }
         }
 

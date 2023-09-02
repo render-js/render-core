@@ -7,6 +7,8 @@ export class PageController {
 
     private currentTag:Element;
 
+    public raw_data:{};
+
     //观察者
     public to:Controller[];
 

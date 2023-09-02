@@ -1,4 +1,4 @@
-export function resolver_txt(elements:HTMLCollection,data:{}):void{
+export function resolver_txt(elements:HTMLCollection,data:any):void{
 
     for (let i:number = 0; i < elements.length; i++){
 

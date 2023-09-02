@@ -1,11 +1,16 @@
-import {Controller} from "../../class/controller";
+import {Controller} from "../../class/controller/controller";
 import {bindModelForUpdater} from "../utility/miscUtility";
-import {findComponent} from "./initRender";
-import {getTemplate} from "../../library/template/template";
-import {cmdForUpdate} from "../../library/cmd/cmd";
-import {injectProps} from "../../library/inject/inject";
+import {afterCmd, cmdForUpdate} from "../../library/cmd/cmd";
+import {injectRefs} from "../inject/inject";
+import {findComponent} from "./delivery";
+import {getTemplate} from "../utility/templateUtility";
 
-export function updateRender(controller:Controller):void{
+/**
+ * 更新渲染方法
+ * @param controller
+ */
+export function update_Render(controller:Controller):void{
+
     //生成DOM
     let tagTemplate:Element = getTemplate(controller.proto)
 
@@ -37,11 +42,14 @@ export function updateRender(controller:Controller):void{
         controller.root.appendChild(tagTemplate.firstChild);
     }
 
+    injectRefs(controller,tagTemplate);
+
+    //渲染后处理
+    afterCmd(controller.root, controller.proto, controller);
+
     //afterRender
     let afterRender = controller.proto.getAfterRender().bind(controller.raw_data);
     afterRender();
-
-    injectProps(controller,tagTemplate);
 
     //获取定位
     bindModelForUpdater(controller.root.children,controller.proxyForMethods);

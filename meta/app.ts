@@ -1,12 +1,8 @@
 // @ts-ignore
 import {status_write} from "render-status";
-import {reloadStyle} from "../library/style/style";
+import {reloadStyle} from "../core/utility/styleUtility";
 
 export class App{
-    constructor() {
-
-    }
-
     //更改会话样式
     public setTheme(theme:string):void{
         status_write({

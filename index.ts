@@ -1,4 +1,4 @@
-import {Component} from "./class/component";
+import {Component} from "./class/component/component";
 import meta from "./meta/meta";
 import {reloadPage, renderHtml} from "./runtime/runtime";
 import {themeStyle} from "./core/utility/styleUtility";
@@ -6,7 +6,7 @@ import {themeStyle} from "./core/utility/styleUtility";
 import {routerController} from "render-security/class/Router";
 // @ts-ignore
 import {redirect} from "render-security/utility/redirect";
-import {PageController} from "./class/pageController";
+import {PageController} from "./class/controller/pageController";
 import {App} from "./meta/app";
 
 //页面RenderJs

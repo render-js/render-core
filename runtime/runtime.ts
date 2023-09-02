@@ -1,6 +1,6 @@
 import {isUnKnown} from "../core/utility/checkUtility";
-import {PageController} from "../class/pageController";
-import {Render} from "../core/render/initRender";
+import {PageController} from "../class/controller/pageController";
+import {Render} from "../core/render/delivery";
 
 //检查元素是否为基元素
 export function renderHtml(collection:HTMLCollection, link:PageController):void
