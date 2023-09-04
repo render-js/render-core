@@ -8,6 +8,7 @@ import {mount} from "../../library/lifecycle/mount";
 import {injectRefs} from "../inject/inject";
 import {afterMethodsTypeTwo} from "../../library/lifecycle/afterMethods";
 import { findComponent } from "./delivery";
+import {resolver_solt} from "../cmd/v-solt";
 
 /**
  * 该函数用于渲染不需要记录状态的组件
@@ -20,6 +21,9 @@ import { findComponent } from "./delivery";
 export function raw_render(proto:Component, parent:ParentNode, child:Element, link:Controller | ApiController | PageController, tagTemplate:Element):void{
     //获取控制对象
     let controller:Controller = new Controller();
+
+    //解析solt
+    resolver_solt(child,controller);
 
     //控制对象预处理
     controllerCycleTypeTwo(controller,proto,child,link,tagTemplate);

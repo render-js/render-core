@@ -13,6 +13,8 @@ import {resolver_render} from "../../core/cmd/v-render";
 import {resolver_if} from "../../core/cmd/v-if";
 import {resolver_switch} from "../../core/cmd/v-switch";
 import {resolver_for_each, resolver_for_of} from "../../core/cmd/v-for";
+import {extract_solt} from "../../core/cmd/v-solt";
+import {express_langulage} from "../../core/cmd/v-el";
 
 export function cmd(tagTemplate:Element,proto:Component | ApiComponent,controller:Controller | ApiController):void{
     //给所有元素添加上npm=tag标志
@@ -27,6 +29,8 @@ export function cmd(tagTemplate:Element,proto:Component | ApiComponent,controlle
     resolver_model(tagTemplate.children,controller.proxyForMethods);
     //渲染属性
     resolver_bind(tagTemplate.children,controller.proxyForMethods);
+    //solt
+    extract_solt(tagTemplate.children,controller);
 }
 
 export function afterCmd(templateSpace:ParentNode, proto:Component | ApiComponent, controller:Controller | ApiController):void{
@@ -42,6 +46,8 @@ export function afterCmd(templateSpace:ParentNode, proto:Component | ApiComponen
     resolver_for_each(templateSpace.children,controller.proxyForMethods);
     //v-for-of
     resolver_for_of(templateSpace.children,controller.proxyForMethods);
+    //v-el
+    express_langulage(controller.root,controller.proxyForMethods);
 }
 
 export function cmdForUpdate(tagTemplate:Element,proto:Component,controller:Controller | ApiController):void{

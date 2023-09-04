@@ -29,6 +29,13 @@ export function getSetter(data:{},updater:Controller){
         //更新值
         obj[prop] = value
 
+        //检查是否有watcher
+        try {
+            obj[prop]();
+        }catch (e) {
+            console.log(e.message);
+        }
+
         //更新前操作
         this.proto.getBeforeUpdate();
 

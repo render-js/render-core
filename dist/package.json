@@ -1,6 +1,6 @@
 {
   "name": "render-core",
-  "version": "1.0.66",
+  "version": "1.0.84",
   "description": "The core for render-js",
   "main": "index.js",
   "types": "index.d.ts",

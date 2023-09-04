@@ -7,6 +7,8 @@ export class ApiController{
 
     public proto:ApiComponent;
 
+    public solt:Map<string, any>;
+
     public preRender:boolean;
 
     public link:Map<string,{}>;
@@ -20,6 +22,7 @@ export class ApiController{
     constructor() {
         this.link = new Map<string, {}>();
         this.preRender = false;
+        this.solt = new Map<string,any>();
     }
 
     //接收器

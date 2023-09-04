@@ -11,7 +11,12 @@ export function resolver_html(elements:HTMLCollection,data:{}):void{
             elements[i].removeAttribute("v-html")
 
             // @ts-ignore
-            elements[i].innerHTML = data[dataName]
+            try {
+                elements[i].innerHTML = data[dataName]()
+            }catch (e) {
+                elements[i].innerHTML = data[dataName]
+            }
+
         }
 
         let subElements:HTMLCollection = elements[i].children

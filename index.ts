@@ -1,6 +1,6 @@
 import {Component} from "./class/component/component";
 import meta from "./meta/meta";
-import {reloadPage, renderHtml} from "./runtime/runtime";
+import {renderHtml} from "./runtime/runtime";
 import {themeStyle} from "./core/utility/styleUtility";
 // @ts-ignore
 import {routerController} from "render-security/class/Router";

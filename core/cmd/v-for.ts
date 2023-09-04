@@ -1,5 +1,10 @@
 import {extractForArray, extractForMap} from "../utility/vForUtility";
 
+/**
+ * 展开数据
+ * @param elements
+ * @param data
+ */
 export function resolver_for_of(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
@@ -33,6 +38,11 @@ export function resolver_for_of(elements:HTMLCollection,data:{}):void{
     }
 }
 
+/**
+ * 展开数据
+ * @param elements
+ * @param data
+ */
 export function resolver_for_each(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
@@ -46,10 +56,10 @@ export function resolver_for_each(elements:HTMLCollection,data:{}):void{
             elements[i].removeAttribute("v-for-each")
 
             if (data[dataName] instanceof Object){
-                for (const key in data[dataName]) {
-                    extractForMap(elements[i].parentNode, elements[i], key, data[dataName][key]);
-                    i++;
-                }
+
+                extractForMap(elements[i].parentNode, elements[i], data[dataName]);
+                i++;
+
             }else {
                 console.log("Instruction v-for-of need an object datatype to extract!");
             }

@@ -4,6 +4,6 @@ export function extractForArray(baseRoot:ParentNode, temp:Node, index:number, da
     part_render_array(baseRoot,temp,index,data);
 }
 
-export function extractForMap(baseRoot:ParentNode, temp:Node, key:string, data:any):void{
-    part_render_map(baseRoot,temp,key,data);
+export function extractForMap(baseRoot:ParentNode, temp:Node, data:any):void{
+    part_render_map(baseRoot,temp,data);
 }

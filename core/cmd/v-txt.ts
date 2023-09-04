@@ -11,11 +11,13 @@ export function resolver_txt(elements:HTMLCollection,data:any):void{
             elements[i].removeAttribute("v-txt")
 
             // @ts-ignore
-            elements[i].innerText = data[dataName]
+            try {
+                elements[i].innerHTML = data[dataName]();
+            }catch (e) {
+                elements[i].innerHTML = data[dataName];
+            }
         }
 
-        let subElements:HTMLCollection = elements[i].children
-
-        resolver_txt(subElements,data)
+        resolver_txt(elements[i].children,data);
     }
 }

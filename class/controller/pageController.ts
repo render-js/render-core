@@ -7,6 +7,9 @@ export class PageController {
 
     private currentTag:Element;
 
+    //solt
+    public solt:Map<string, any>;
+
     public raw_data:{};
 
     //观察者
@@ -22,6 +25,7 @@ export class PageController {
         this.link = new Map<string, {}>();
         this.to = Array();
         this.crtTag = null;
+        this.solt = new Map<string,any>();
     }
 
     //接收器
