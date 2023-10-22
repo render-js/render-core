@@ -1,14 +1,13 @@
 import {Component} from "../../class/component/component";
-import {Controller} from "../../class/controller/controller";
-import {ApiController} from "../../class/controller/apiController";
+import {ComponentController} from "../../class/controller/componentController";
 import {PageController} from "../../class/controller/pageController";
-import {controllerCycleTypeTwo} from "../../library/lifecycle/controllerCycle";
-import {afterCmd, cmd} from "../../library/cmd/cmd";
-import {mount} from "../../library/lifecycle/mount";
+import {controllerCycleTypeTwo} from "../lifecycle/controllerCycle";
+import {afterCmd, cmdUtility} from "../utility/cmdUtility";
+import {mount, unBox} from "../lifecycle/mount";
 import {injectRefs} from "../inject/inject";
-import {afterMethodsTypeTwo} from "../../library/lifecycle/afterMethods";
+import {afterMethodsTypeTwo} from "../lifecycle/afterMethods";
 import { findComponent } from "./delivery";
-import {resolver_solt} from "../cmd/v-solt";
+import {resolver_solt} from "../cmd/solt/v-solt";
 
 /**
  * 该函数用于渲染不需要记录状态的组件
@@ -18,9 +17,10 @@ import {resolver_solt} from "../cmd/v-solt";
  * @param link
  * @param tagTemplate
  */
-export function raw_render(proto:Component, parent:ParentNode, child:Element, link:Controller | ApiController | PageController, tagTemplate:Element):void{
+export function raw_render(proto:Component, parent:ParentNode, child:Element, link:ComponentController | PageController, tagTemplate:Element):void{
+
     //获取控制对象
-    let controller:Controller = new Controller();
+    let controller:ComponentController = new ComponentController();
 
     //解析solt
     resolver_solt(child,controller);
@@ -28,32 +28,33 @@ export function raw_render(proto:Component, parent:ParentNode, child:Element, li
     //控制对象预处理
     controllerCycleTypeTwo(controller,proto,child,link,tagTemplate);
 
-    //beforeRender
-    let beforeRender = proto.getBeforeRender().bind(controller.raw_data);
-    beforeRender();
+    //beforeRender,可以获取数据而不触发更新
+    proto.getBeforeRender().call(controller.raw_data);
 
-    //解析指令
-    cmd(tagTemplate,proto,controller);
 
-    //beforeMount
-    let beforeMount = proto.getBeforeMount().bind(controller.raw_data);
-    beforeMount();
+
+    //解析指令（模板处理）
+    cmdUtility(tagTemplate,proto,controller);
 
     //mount
     mount(controller,proto,parent,child,tagTemplate);
 
-    injectRefs(controller,tagTemplate);
+    //获取注入引用资源
+    injectRefs(controller);
 
     //渲染后处理
     afterCmd(controller.root,proto,controller);
 
-    //afterRender
-    let afterRender = proto.getAfterRender().bind(controller.raw_data);
-    afterRender();
-
-    //后处理
+    //后处理（数据渲染）
     afterMethodsTypeTwo(controller,child,link);
+
+    //afterRender，可以操作渲染后的dom
+    proto.getAfterRender().call(controller.proxyForMethods);
 
     //深度渲染
     findComponent(controller.root.children,controller);
+
+    if (proto.getMode() === "insert"){
+        unBox(controller.root)
+    }
 }

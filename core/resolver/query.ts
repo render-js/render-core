@@ -1,8 +1,11 @@
+/**
+ * This function is used to resolve the http parameters.
+ */
 export function resolve_Queries():Map<string, any>
 {
     let query:Map<string, any> = new Map<string, any>();
 
-    if (location.search !== undefined){
+    if (location.search !== ""){
 
         let parameters:string = location.search.replace("?","")
 
@@ -12,7 +15,7 @@ export function resolve_Queries():Map<string, any>
 
             let results:string[] = value.split("=")
 
-            Reflect.set(query,results[0],results[1]);
+            query.set(results[0],results[1]);
         })
     }
 

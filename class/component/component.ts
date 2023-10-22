@@ -1,25 +1,15 @@
-interface RenderBase{
-    getName():string;
-    getTemplate():string;
-    getBoxStyle(): string;
-    getProps(): {};
-    getData():{};
-    getComputed():{};
-    getMethods():{};
-    getWatcher():{};
-    getBeforeRender():()=>void
-    getAfterRender():()=>void
-    getBeforeUpdate():()=>void
-    getAfterUpdate():()=>void
-    getBeforeMount():()=>void
-    getBeforeUnmount():()=>void
-}
+import {RenderBase} from "../tips/componentTip";
 
+/**
+ * This is the component class.
+ */
 export class Component implements RenderBase{
 
     private readonly name: string;
 
     private readonly template: string;
+
+    private readonly mode:string;
 
     private readonly boxStyle?: string
 
@@ -37,17 +27,10 @@ export class Component implements RenderBase{
 
     private readonly afterRender?:() => void;
 
-    private readonly beforeUpdate?:() => void;
-
-    private readonly afterUpdate?:() => void;
-
-    private readonly beforeMount?:() => void;
-
-    private readonly beforeUnmount?:() => void;
-
     constructor(config:{
         name:string,
         template:string,
+        mode?:string,
         boxStyle?: string,
         props?:{} | string[],
         data?:{},
@@ -56,15 +39,17 @@ export class Component implements RenderBase{
         watcher?:{},
         beforeRender?:()=>void,
         afterRender?:()=>void,
-        beforeUpdate?:()=>void,
-        afterUpdate?:()=>void,
-        beforeMount?:()=>void,
-        beforeUnmount?:()=>void;
     }) {
         //标签名称
         this.name = config.name;
         //标签模板样式
         this.template = config.template;
+        //添加box样式
+        if (typeof config.mode === "undefined"){
+            this.mode = "box";
+        }else {
+            this.mode = config.mode;
+        }
         //添加box样式
         if (typeof config.boxStyle === "undefined"){
             this.boxStyle = "";
@@ -112,26 +97,6 @@ export class Component implements RenderBase{
         }else {
             this.afterRender = config.afterRender;
         }
-        if (typeof config.beforeUpdate === "undefined"){
-            this.beforeUpdate = function (){}
-        }else {
-            this.beforeUpdate = config.beforeUpdate;
-        }
-        if (typeof config.afterUpdate === "undefined"){
-            this.afterUpdate = function (){}
-        }else {
-            this.afterUpdate = config.afterUpdate;
-        }
-        if (typeof config.beforeMount === "undefined"){
-            this.beforeMount = function (){}
-        }else {
-            this.beforeMount = config.beforeMount;
-        }
-        if (typeof config.beforeUnmount === "undefined"){
-            this.beforeUnmount = function (){}
-        }else {
-            this.beforeUnmount = config.beforeUnmount;
-        }
     }
 
     getName(): string {
@@ -140,6 +105,10 @@ export class Component implements RenderBase{
 
     getTemplate(): string {
         return this.template;
+    }
+
+    getMode():string{
+        return this.mode;
     }
 
     getBoxStyle():string{
@@ -172,21 +141,5 @@ export class Component implements RenderBase{
 
     getAfterRender(): () => void {
         return this.afterRender;
-    }
-
-    getBeforeUpdate(): () => void {
-        return this.beforeUpdate;
-    }
-
-    getAfterUpdate(): () => void {
-        return this.afterUpdate;
-    }
-
-    getBeforeMount(): () => void {
-        return this.beforeMount;
-    }
-
-    getBeforeUnmount(): () => void {
-        return this.beforeUnmount;
     }
 }

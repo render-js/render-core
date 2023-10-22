@@ -1,7 +1,6 @@
-import {Controller} from "../../class/controller/controller";
+import {ComponentController} from "../../class/controller/componentController";
 import {Component} from "../../class/component/component";
 import {isUnKnown} from "../utility/checkUtility";
-import {ApiController} from "../../class/controller/apiController";
 import {PageController} from "../../class/controller/pageController";
 import {init_render} from "./initRender";
 import {post_render} from "./PostRender";
@@ -10,7 +9,8 @@ import {getTemplate} from "../utility/templateUtility";
 import {styleResolve} from "../utility/styleUtility";
 
 //渲染自定义标签
-export function Render(proto: Component, parent: ParentNode, child:Element, link:Controller | ApiController | PageController):void{
+export function Render(proto: Component, parent: ParentNode, child:Element, link:ComponentController | PageController):void{
+
     //获得模板元素
     let tagTemplate:Element = getTemplate(proto);
 
@@ -41,7 +41,7 @@ export function Render(proto: Component, parent: ParentNode, child:Element, link
 }
 
 //拓展标签深度渲染
-export function findComponent(collection:HTMLCollection, link:Controller | ApiController | PageController):void
+export function findComponent(collection:HTMLCollection, link:ComponentController | PageController):void
 {
     for (let i:number = 0; i < collection.length; i++)
     {

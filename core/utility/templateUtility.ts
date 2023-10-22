@@ -1,7 +1,10 @@
 import {Component} from "../../class/component/component";
-import ApiComponent from "../../class/component/apiComponent";
 
-export function getTemplate(proto:Component | ApiComponent):Element{
+/**
+ *
+ * @param proto
+ */
+export function getTemplate(proto:Component):Element{
     //生成DOM
     let temp:HTMLDivElement = document.createElement("div");
 

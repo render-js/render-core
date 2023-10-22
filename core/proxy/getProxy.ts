@@ -1,12 +1,13 @@
-import {Controller} from "../../class/controller/controller";
+import {ComponentController} from "../../class/controller/componentController";
 import {update_Render} from "../render/updateRender";
+import {locateInputAddress} from "../utility/sectionUtility";
 
 /**
  * 获取data对象的代理对象
  * @param obj
  * @param updater
  */
-export  function getProxyObject(obj:{},updater:Controller):any{
+export  function getProxyObject(obj:{},updater:ComponentController):any{
     //定义代理方法对象
     let handel:{} = {}
 
@@ -22,30 +23,35 @@ export  function getProxyObject(obj:{},updater:Controller):any{
  * @param data
  * @param updater
  */
-export function getSetter(data:{},updater:Controller){
+export function getSetter(data:{}, updater:ComponentController){
 
     let setter = function (obj,prop,value):boolean{
+
+        if (this.mode !== "box"){
+            console.log("Not box element can not to update data!");
+            return false;
+        }
+
+        //检查是否有watcher
+        try {
+
+            this.watcher[prop](obj[prop],value);
+
+        }catch (error) {
+
+        }
 
         //更新值
         obj[prop] = value
 
-        //检查是否有watcher
-        try {
-            obj[prop]();
-        }catch (e) {
-            console.log(e.message);
-        }
-
-        //更新前操作
-        this.proto.getBeforeUpdate();
-
         //执行更新
         update_Render(this);
 
-        //更新后操作
-        this.proto.getAfterUpdate()
+        locateInputAddress(this);
+        Reflect.deleteProperty(this,"origin");
 
         return true;
     }
+
     return setter.bind(updater);
 }

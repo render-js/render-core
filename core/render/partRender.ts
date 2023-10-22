@@ -1,5 +1,5 @@
-import {resolver_array_single} from "../cmd/v-index";
-import {resolver_map_single} from "../cmd/v-key";
+import {resolver_array_single} from "../cmd/loop/v-index";
+import {resolver_map_single} from "../cmd/loop/v-key";
 
 /**
  * 该函数用于处理数组类型数据的展开

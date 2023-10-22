@@ -2,7 +2,11 @@ import {isUnKnown} from "../core/utility/checkUtility";
 import {PageController} from "../class/controller/pageController";
 import {Render} from "../core/render/delivery";
 
-//检查元素是否为基元素
+/**
+ *
+ * @param collection
+ * @param link
+ */
 export function renderHtml(collection:HTMLCollection, link:PageController):void
 {
     //遍历element节点，判断是否为自定义标签
@@ -17,8 +21,4 @@ export function renderHtml(collection:HTMLCollection, link:PageController):void
             renderHtml(collection[i].children,link);
         }
     }
-}
-
-export function reloadPage():void{
-    this.run();
 }

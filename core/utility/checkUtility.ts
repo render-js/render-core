@@ -1,4 +1,4 @@
-import metaTagLib from "../../runtime/database/metaTagLib";
+import metaTagLib from "../../runtime/metaTagLib";
 
 export function isUnKnown(element:string):boolean
 {

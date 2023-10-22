@@ -1,19 +1,21 @@
-import {Controller} from "./controller";
+import {ComponentController} from "./componentController";
 
 export class PageController {
 
     //方法
     private methods:{};
 
+    //当前解析tag
     private currentTag:Element;
 
     //solt
     public solt:Map<string, any>;
 
+    //原始数据
     public raw_data:{};
 
     //观察者
-    public to:Controller[];
+    public to:ComponentController[];
 
     //旧数据对象空间
     public link:Map<string,{}>;
@@ -31,11 +33,11 @@ export class PageController {
     //接收器
     public receiver(method:string, ...args:any[]):void
     {
-
+        this.methods[method].call(window,args);
     }
 
     //设置当前页面的渲染元素
-    set crtTag(element){
+    set crtTag(element:Element){
         this.currentTag = element;
     }
 

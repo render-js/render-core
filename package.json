@@ -1,5 +1,5 @@
 {
-  "name": "renderjs",
+  "name": "render-js",
   "version": "1.0.0",
   "description": "The extendable javascript web framework",
   "main": "index.js",
@@ -11,10 +11,12 @@
     "type": "git",
     "url": "https://github.com//render-js/render-core.git"
   },
-  "author": "mutian",
+  "author": {
+    "name": "mutian",
+    "email": "mutian-xiangcai@outlook.com"
+  },
   "license": "MIT",
   "dependencies": {
-    "render-security": "1.0.5",
-    "render-status": "^1.0.0"
+    "render-status": "1.0.3"
   }
 }

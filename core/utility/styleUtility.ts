@@ -1,8 +1,12 @@
 import {Component} from "../../class/component/component";
-import {loadStyle} from "../../library/loader/loader";
+import {loadStyle} from "../loader/loader";
 // @ts-ignore
 import {sessionStorageEngin_read} from "render-status/read/read";
 
+/**
+ *
+ * @param tag
+ */
 export function checkStyleLabel(tag:string):boolean
 {
     //获取所有的style标签
@@ -19,27 +23,51 @@ export function checkStyleLabel(tag:string):boolean
     return false;
 }
 
+/**
+ *
+ * @param component
+ * @param styleLib
+ */
 export function themeStyle(component:Component,styleLib:Map<string, object>):void {
-    let template = component.getTemplate();
-    let dom = document.createElement("div");
+
+    let template:string = component.getTemplate();
+
+    let dom:HTMLDivElement = document.createElement("div");
+
     dom.innerHTML = template;
 
-    let styles = dom.getElementsByTagName("template")[0].content.querySelectorAll("style");
+    let styles:NodeListOf<HTMLStyleElement> = dom.getElementsByTagName("template")[0].content.querySelectorAll("style");
 
-    let kk = new Map<string,string>()
-    for (let i=0; i<styles.length; i++) {
+    let kk:Map<string, string> = new Map<string,string>()
+
+    for (let i:number=0; i<styles.length; i++) {
+
         kk.set(styles[i].getAttribute("theme"),styles[i].innerText);
     }
+
     styleLib.set(component.getName().toUpperCase(),kk);
 }
 
+/**
+ *
+ * @param tag
+ */
 export function styleResolve(tag:string):void{
 
-    let theme = sessionStorageEngin_read("theme")
+    // @ts-ignore
+    let theme = window.context.getFiled("system_theme");
 
     if (Reflect.get(window,"styleLib").get(tag.toUpperCase()).get(theme) === undefined){
 
         console.log("tag:"+tag+" has no theme "+theme);
+
+        if (Reflect.get(window,"styleLib").get(tag.toUpperCase()).get("default") === undefined){
+
+            console.log("tag:"+tag+" has no theme "+"default");
+        }else {
+
+            loadStyle(tag,"default",Reflect.get(window,"styleLib").get(tag.toUpperCase()).get("default"));
+        }
 
     }else {
 
@@ -48,6 +76,10 @@ export function styleResolve(tag:string):void{
     }
 }
 
+/**
+ *
+ * @param theme
+ */
 export function reloadStyle(theme:string):void{
 
     Reflect.get(window,"styleLib").forEach(function (value,key){
@@ -60,17 +92,19 @@ export function reloadStyle(theme:string):void{
 
                 let style:HTMLStyleElement = document.createElement('style')
 
-                let text:Text = document.createTextNode(value.get(theme));
+                if (value.get(theme)){
+                    let text:Text = document.createTextNode(value.get(theme));
 
-                style.appendChild(text)
+                    style.appendChild(text)
 
-                style.setAttribute("tag",key.toUpperCase());
+                    style.setAttribute("tag",key.toUpperCase());
 
-                style.setAttribute("theme",theme);
+                    style.setAttribute("theme",theme);
 
-                let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
+                    let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
 
-                head.replaceChild(style,styles[i]);
+                    head.replaceChild(style,styles[i]);
+                }
             }
         }
     })

@@ -5,8 +5,8 @@ import {
 } from "../utility/injectUtility";
 import {resolveProps} from "../resolver/props";
 import {resolve_Queries} from "../resolver/query";
-import {resolver_Refs} from "../cmd/v-ref";
-import {Controller} from "../../class/controller/controller";
+import {resolver_Refs} from "../cmd/ref/v-ref";
+import {ComponentController} from "../../class/controller/componentController";
 import {Component} from "../../class/component/component";
 
 /**
@@ -14,7 +14,7 @@ import {Component} from "../../class/component/component";
  * @param controller
  * @param tagTemplate
  */
-export function inject(controller:Controller,tagTemplate:Element):void{
+export function inject(controller:ComponentController, tagTemplate:Element):void{
     //注入props
     getCodeSpaceForProps(controller.raw_data,resolveProps(Reflect.get(window,"context").crtTag,controller.proto.getProps()));
 
@@ -25,11 +25,13 @@ export function inject(controller:Controller,tagTemplate:Element):void{
 /**
  *
  * @param controller
- * @param tagTemplate
  */
-export function injectRefs(controller:Controller,tagTemplate:Element):void{
-    let refs = new Map<string,Element>();
+export function injectRefs(controller:ComponentController):void{
+
+    let refs:Map<string, Element> = new Map<string,Element>();
+
     resolver_Refs(controller.root.children, refs);
+
     getCodeSpaceForRef(controller.raw_data,refs);
 }
 
@@ -38,22 +40,16 @@ export function injectRefs(controller:Controller,tagTemplate:Element):void{
  * @param controller
  * @param proto
  */
-export function injectMethod(controller:Controller,proto:Component):void{
-        let methods:string[] = Object.getOwnPropertyNames(proto.getMethods());
-        methods.forEach(function (value) {
-            Reflect.set(controller.raw_data,value,proto.getMethods()[value].bind(controller.proxyForMethods));
-        })
-}
+export function injectMethod(controller:ComponentController, proto:Component):void{
 
-/**
- *
- * @param controller
- * @param proto
- */
-export function injectWatcher(controller:Controller,proto:Component):void{
-    let methods:string[] = Object.getOwnPropertyNames(proto.getWatcher());
-    methods.forEach(function (value) {
-        Reflect.set(controller.raw_data,value,proto.getWatcher()[value].bind(controller.raw_data));
+    let methods:string[] = Object.getOwnPropertyNames(proto.getMethods());
+
+    methods.forEach(function (value:string):void {
+        if (value.match(/^raw_[a-zA-Z0-9_]*/) !== null){
+            Reflect.set(controller.raw_data,value,proto.getMethods()[value].bind(controller.raw_data));
+        }else {
+            Reflect.set(controller.raw_data,value,proto.getMethods()[value].bind(controller.proxyForMethods));
+        }
     })
 }
 
@@ -62,9 +58,27 @@ export function injectWatcher(controller:Controller,proto:Component):void{
  * @param controller
  * @param proto
  */
-export function injectComputed(controller:Controller,proto:Component):void{
+export function injectWatcher(controller:ComponentController, proto:Component):void{
+
+    let methods:string[] = Object.getOwnPropertyNames(proto.getWatcher());
+
+    methods.forEach(function (value:string):void {
+
+        Reflect.set(controller.watcher,value,proto.getWatcher()[value].bind(controller.raw_data));
+    })
+}
+
+/**
+ *
+ * @param controller
+ * @param proto
+ */
+export function injectComputed(controller:ComponentController, proto:Component):void{
+
     let methods:string[] = Object.getOwnPropertyNames(proto.getComputed());
-    methods.forEach(function (value) {
-        Reflect.set(controller.raw_data,value,proto.getComputed()[value].bind(controller.proxyForMethods));
+
+    methods.forEach(function (value:string):void {
+
+        Reflect.set(controller.computed,value,proto.getComputed()[value].bind(controller.raw_data));
     })
 }
