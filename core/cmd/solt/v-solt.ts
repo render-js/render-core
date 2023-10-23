@@ -42,13 +42,13 @@ export function extract_solt(elements:HTMLCollection, controller:ComponentContro
 
     for (let i:number = 0; i < elements.length;i++){
 
-        let result:boolean = elements[i].hasAttribute("v-solt");
+        let result:boolean = elements[i].hasAttribute("@solt");
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-solt");
+            let dataName:string = elements[i].getAttribute("@solt");
 
-            elements[i].removeAttribute("v-solt");
+            elements[i].removeAttribute("@solt");
 
             if (!dataName){
 

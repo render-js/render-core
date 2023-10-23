@@ -7,13 +7,13 @@ export function resolver_render(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-render")
+        let result:boolean = elements[i].hasAttribute("@render")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-render")
+            let dataName:string = elements[i].getAttribute("@render")
 
-            elements[i].removeAttribute("v-render")
+            elements[i].removeAttribute("@render")
 
             if (data[dataName] === true){
                 // @ts-ignore
@@ -25,7 +25,7 @@ export function resolver_render(elements:HTMLCollection,data:{}):void{
 
             }else {
 
-                console.log("v-render instruct should be used with boolean!");
+                console.log("@render instruct should be used with boolean!");
                 
             }
         }

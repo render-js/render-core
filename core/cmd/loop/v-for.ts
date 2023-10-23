@@ -9,13 +9,13 @@ export function resolver_for_of(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-for-of")
+        let result:boolean = elements[i].hasAttribute("@for-of")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-for-of")
+            let dataName:string = elements[i].getAttribute("@for-of")
 
-            elements[i].removeAttribute("v-for-of")
+            elements[i].removeAttribute("@for-of")
 
             if (data[dataName] instanceof Array){
 
@@ -28,7 +28,7 @@ export function resolver_for_of(elements:HTMLCollection,data:{}):void{
                 elements[i].parentNode.removeChild(elements[i]);
             }else {
 
-                console.log("Instruction v-for-of need an array datatype to extract!");
+                console.log("Instruction @for-of need an array datatype to extract!");
             }
         }
 
@@ -47,13 +47,13 @@ export function resolver_for_each(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-for-each")
+        let result:boolean = elements[i].hasAttribute("@for-each")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-for-each")
+            let dataName:string = elements[i].getAttribute("@for-each")
 
-            elements[i].removeAttribute("v-for-each")
+            elements[i].removeAttribute("@for-each")
 
             if (data[dataName] instanceof Object){
 
@@ -61,7 +61,7 @@ export function resolver_for_each(elements:HTMLCollection,data:{}):void{
                 i++;
 
             }else {
-                console.log("Instruction v-for-of need an object datatype to extract!");
+                console.log("Instruction @for-of need an object datatype to extract!");
             }
 
             //将模板节点删除

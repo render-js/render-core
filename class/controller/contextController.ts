@@ -1,10 +1,13 @@
 // @ts-ignore
 import {status_read, status_write} from "render-status";
 import {reloadStyle} from "../../core/utility/styleUtility";
+import meta from "../../meta/meta";
 
 export class ContextController{
 
     private fileds:{};
+
+    private meta:{};
 
     constructor() {
         this.fileds = {
@@ -16,6 +19,8 @@ export class ContextController{
                 }
             }
         };
+
+        this.meta = meta;
     }
 
     public saveFileds(fileds:{}):void{
@@ -108,5 +113,13 @@ export class ContextController{
 
             return null;
         }
+    }
+
+    /**
+     * 返回系统数据
+     * @param filed
+     */
+    public getMeta(filed:string):string{
+        return this.meta[filed];
     }
 }

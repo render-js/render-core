@@ -17,7 +17,7 @@ export function resolver_bind(nodes:HTMLCollection,data:{}):void
 
             for (let j:number=0;j<attributes.length;j++){
 
-                let result:RegExpMatchArray = attributes[j].match(/^v-bind:([a-z]+)$/g)
+                let result:RegExpMatchArray = attributes[j].match(/^@bind:([a-z]+)$/g)
 
                 if (result === null){
 
@@ -25,7 +25,7 @@ export function resolver_bind(nodes:HTMLCollection,data:{}):void
 
                     for (let k:number=0;k<result.length;k++){
 
-                        let property:string = result[k].substring(7)
+                        let property:string = result[k].substring(6)
 
                         let dataName:string = nodes[i].getAttribute(result[k])
 

@@ -53,9 +53,11 @@ export function getAllPropsByObject(node:Element,object:{}):any{
 
                 case "float":props.set(objectKey,parseFloat(node.getAttribute(objectKey)));break;
 
-                case "object":props.set(objectKey,JSON.parse(node.getAttribute(objectKey)));break;
+                case "boole":props.set(objectKey,parseFloat(node.getAttribute(objectKey)));break;
 
-                case "array":props.set(objectKey,JSON.parse(node.getAttribute(objectKey)));break;
+                case "string":props.set(objectKey,node.getAttribute(objectKey));break;
+
+                case "json":props.set(objectKey,JSON.parse(node.getAttribute(objectKey)));break;
 
                 default :props.set(objectKey,node.getAttribute(objectKey));break;
             }

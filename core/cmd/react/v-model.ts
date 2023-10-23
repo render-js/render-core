@@ -9,11 +9,11 @@ export function resolver_model(nodes:HTMLCollection, data:{}):void{
 
     for (let i:number=0;i<nodes.length;i++){
 
-        if (nodes[i].hasAttribute("v-model")){
+        if (nodes[i].hasAttribute("@model")){
 
-            let dataName:string = nodes[i].getAttribute("v-model")
+            let dataName:string = nodes[i].getAttribute("@model")
 
-            nodes[i].removeAttribute("v-model")
+            nodes[i].removeAttribute("@model")
 
             let tagName:string = nodes[i].tagName
 

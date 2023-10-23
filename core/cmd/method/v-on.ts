@@ -16,14 +16,14 @@ export function resolver_event(elements:HTMLCollection,methods:{},data:{}):void
         for (let j:number = 0; j < attributes.length; j++){
 
             //检查属性名称以及匹配绑定方法
-            let result:RegExpMatchArray = attributes[j].match(/^v-on:([a-z]+)$/g)
+            let result:RegExpMatchArray = attributes[j].match(/^@on:([a-z]+)$/g)
 
             //如何属性匹配
             if (result !== null){
 
                 for (let k:number = 0; k < result.length; k++){
 
-                    let action:string = result[k].substring(5)
+                    let action:string = result[k].substring(4)
 
                     let method:string = elements[i].getAttribute(result[k])
 

@@ -7,13 +7,13 @@ export function resolver_show(elements:HTMLCollection,data:{}):void{
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-show")
+        let result:boolean = elements[i].hasAttribute("@show")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-show")
+            let dataName:string = elements[i].getAttribute("@show")
 
-            elements[i].removeAttribute("v-show")
+            elements[i].removeAttribute("@show")
 
             if (data[dataName] === true){
                 // @ts-ignore
@@ -23,7 +23,7 @@ export function resolver_show(elements:HTMLCollection,data:{}):void{
                 elements[i].style.visibility = "hidden";
             }
             else {
-                console.log("v-show instruct should be used with boolean!");
+                console.log("@show instruct should be used with boolean!");
             }
         }
 

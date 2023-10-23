@@ -10,18 +10,18 @@ import {extractForArray} from "../../utility/vForUtility";
 export function resolver_array_single(element:Element, index:number, data:any):void{
 
     //解析data
-    if (element.hasAttribute("v-data")){
+    if (element.hasAttribute("@data")){
 
-        element.removeAttribute("v-data");
+        element.removeAttribute("@data");
 
         // @ts-ignore
         element.innerText = data;
     }
 
     //解析index
-    if (element.hasAttribute("v-index")){
+    if (element.hasAttribute("@index")){
 
-        element.removeAttribute("v-index");
+        element.removeAttribute("@index");
 
         // @ts-ignore
         element.innerText = index;
@@ -41,18 +41,18 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
     for (let i:number = 0; i < elements.length; i++){
 
         //解析data
-        if (elements[i].hasAttribute("v-data")){
+        if (elements[i].hasAttribute("@data")){
 
-            elements[i].removeAttribute("v-data")
+            elements[i].removeAttribute("@data")
 
             // @ts-ignore
             elements[i].innerText = data;
         }
 
         //解析index
-        if (elements[i].hasAttribute("v-index")){
+        if (elements[i].hasAttribute("@index")){
 
-            elements[i].removeAttribute("v-index");
+            elements[i].removeAttribute("@index");
 
             // @ts-ignore
             elements[i].innerText = index;
@@ -60,9 +60,9 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
         if (elements[i]){
             //检查v-for-item,该指令不可以用在根元素上
-            if (elements[i].hasAttribute("v-for-item")){
+            if (elements[i].hasAttribute("@for-item")){
 
-                elements[i].removeAttribute("v-for-item");
+                elements[i].removeAttribute("@for-item");
 
                 part_render_map(elements[i].parentNode, elements[i], data);
                 i++;
@@ -74,9 +74,9 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
         if (elements[i]){
             //检查v-for-array
-            if (elements[i].hasAttribute("v-for-index")){
+            if (elements[i].hasAttribute("@for-index")){
 
-                elements[i].removeAttribute("v-for-index");
+                elements[i].removeAttribute("@for-index");
 
                 data.forEach(function (value,index) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);

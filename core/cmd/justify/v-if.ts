@@ -10,13 +10,13 @@ export function resolver_if(elements:HTMLCollection, data:{}):void{
     //在当前级别下寻找到v-if
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-if")
+        let result:boolean = elements[i].hasAttribute("@if")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-if")
+            let dataName:string = elements[i].getAttribute("@if")
 
-            elements[i].removeAttribute("v-if")
+            elements[i].removeAttribute("@if")
 
             if (data[dataName] === true){
                 // @ts-ignore

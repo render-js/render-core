@@ -15,7 +15,7 @@ export function resolver_switch(elements:HTMLCollection, data:{}):void{
         for (let j:number = 0; j < attributes.length; j++){
 
             //检查属性名称以及匹配绑定方法
-            let result:RegExpMatchArray = attributes[j].match(/^v-switch:([a-z]+)$/g)
+            let result:RegExpMatchArray = attributes[j].match(/^@switch:([a-z]+)$/g)
 
             //如何属性匹配
             if (result !== null){

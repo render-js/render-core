@@ -52,7 +52,7 @@ export class RenderJS implements RenderTip{
      *
      * @param config
      */
-    configApp(config: {}): void {
+    public configApp(config: {}): void {
         this.application.saveFileds(config);
         this.application.storeFileds();
         this.application.loadFileds();
@@ -62,7 +62,7 @@ export class RenderJS implements RenderTip{
      *
      * @param cinfig
      */
-    configContext(cinfig: {}): void {
+    public configContext(cinfig: {}): void {
         this.context.saveFileds(cinfig);
         this.context.storeFileds();
         this.context.loadFileds();
@@ -72,7 +72,7 @@ export class RenderJS implements RenderTip{
      *
      * @param callable
      */
-    use(callable): void {
+    public use(callable): void {
         callable(this);
     }
 

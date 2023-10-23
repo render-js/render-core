@@ -10,13 +10,13 @@ export function resolver_txt(elements:HTMLCollection, data:{}, controller:Compon
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("v-txt")
+        let result:boolean = elements[i].hasAttribute("@txt")
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("v-txt")
+            let dataName:string = elements[i].getAttribute("@txt")
 
-            elements[i].removeAttribute("v-txt")
+            elements[i].removeAttribute("@txt")
 
             if (data[dataName] === undefined){
 

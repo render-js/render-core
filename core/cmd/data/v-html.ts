@@ -10,11 +10,11 @@ export function resolver_html(elements:HTMLCollection,data:{},controller:Compone
 
     for (let i:number = 0; i < elements.length;i++){
 
-        if (elements[i].hasAttribute("v-html")){
+        if (elements[i].hasAttribute("@html")){
 
-            let dataName:string = elements[i].getAttribute("v-html")
+            let dataName:string = elements[i].getAttribute("@html")
 
-            elements[i].removeAttribute("v-html")
+            elements[i].removeAttribute("@html")
 
             if (data[dataName] === undefined){
 
