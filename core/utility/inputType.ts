@@ -15,3 +15,8 @@ export function assignType(target:any,doc:any,controller:ComponentController):vo
     // @ts-ignore
     target.value = controller.proxyForMethods[target.getAttribute("name")];
 }
+
+export function checkType(target:any):void{
+    // @ts-ignore
+    target.checked = "checked";
+}

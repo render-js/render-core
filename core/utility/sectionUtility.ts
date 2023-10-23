@@ -1,5 +1,5 @@
 import {ComponentController} from "../../class/controller/componentController";
-import {assignType, textType} from "./inputType";
+import {assignType, checkType, textType} from "./inputType";
 
 /**
  *
@@ -16,7 +16,7 @@ export function locateInputAddress(controller:ComponentController):void{
 
         switch (doc.tag){
             case "INPUT":locateInput(target,doc,controller);break;
-            case "SELECT":locateSelect(target,doc,controller);break;
+            case "SELECT":locateSelect(target,doc);break;
             case "TEXTAREA":locateTextArea(target,doc,controller);break
         }
     }
@@ -34,7 +34,7 @@ function locateInput(target:any,doc:any,controller:ComponentController):void{
         case "tel":textType(target,doc,controller);break;
         case "search":textType(target,doc,controller);break;
         case "range":assignType(target,doc,controller);break;
-        case "radio":assignType(target,doc,controller);break;
+        case "radio":checkType(target);break;
         case "password":textType(target,doc,controller);break;
         case "number":textType(target,doc,controller);break;
         case "month":assignType(target,doc,controller);break;
@@ -58,7 +58,7 @@ function locateTextArea(target:any,doc:any, controller:ComponentController):void
     target.setSelectionRange(doc.start, doc.start);
 }
 
-function locateSelect(target:any,doc:any, controller:ComponentController):void{
+function locateSelect(target:any,doc:any):void{
     // @ts-ignore
     let list = target.getElementsByTagName("option")
     for (let i =0; i<list.length;i++){

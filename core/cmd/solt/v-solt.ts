@@ -10,24 +10,22 @@ export function resolver_solt(tagTemplate:Element, controller:ComponentControlle
 
     if (tagTemplate.hasChildNodes()){
 
-        if (tagTemplate.children.length > 0){
+        let list:NodeListOf<Element> = tagTemplate.querySelectorAll("solt");
 
-            for (let i = 0; i < tagTemplate.children.length; i++) {
+        if (list.length !== 0){
 
-                if (tagTemplate.children[i].nodeName.toUpperCase() === "SOLT"){
+            list.forEach(function (value) {
 
-                    if (tagTemplate.children[i].hasAttribute("name")){
+                if (value.hasAttribute("name")){
 
-                        controller.solt.set(tagTemplate.children[i].getAttribute("name"),tagTemplate.children[i].innerHTML);
+                    controller.solt.set(value.getAttribute("name"),value.innerHTML);
 
-                    }else {
+                }else {
 
-                        controller.solt.set("default",tagTemplate.children[i].innerHTML);
-                    }
+                    controller.solt.set("default",value.innerHTML);
                 }
-            }
+            })
         }else {
-
             controller.solt.set("default",tagTemplate.innerHTML);
         }
     }

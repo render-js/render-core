@@ -31,8 +31,6 @@ export function raw_render(proto:Component, parent:ParentNode, child:Element, li
     //beforeRender,可以获取数据而不触发更新
     proto.getBeforeRender().call(controller.raw_data);
 
-
-
     //解析指令（模板处理）
     cmdUtility(tagTemplate,proto,controller);
 
