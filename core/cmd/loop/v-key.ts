@@ -9,11 +9,11 @@ import {extractForArray} from "../../utility/vForUtility";
 export function resolver_map_single(element:Element, data:any):void{
 
     //检查v-data
-    if (element.hasAttribute("@key")){
+    if (element.hasAttribute("@section")){
 
-        let property:string = element.getAttribute("@key");
+        let property:string = element.getAttribute("@section");
 
-        element.removeAttribute("@key");
+        element.removeAttribute("@section");
 
         // @ts-ignore
         element.innerText = data[property];
@@ -33,11 +33,11 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
     for (let i:number = 0; i < elements.length; i++){
 
         //检查v-key
-        if (elements[i].hasAttribute("@key")){
+        if (elements[i].hasAttribute("@section")){
 
-            let property = elements[i].getAttribute("@key");
+            let property = elements[i].getAttribute("@section");
 
-            elements[i].removeAttribute("@key");
+            elements[i].removeAttribute("@section");
 
             // @ts-ignore
             elements[i].innerText = data[property];
@@ -45,11 +45,11 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
         if (elements[i]){
             //检查v-for-item
-            if (elements[i].hasAttribute("@for-item")){
+            if (elements[i].hasAttribute("@document-document")){
 
-                let  property = elements[i].getAttribute("@for-item");
+                let  property = elements[i].getAttribute("@document-document");
 
-                elements[i].removeAttribute("@for-item");
+                elements[i].removeAttribute("@document-document");
 
                 part_render_map(elements[i].parentNode, elements[i], data[property]);
                 i++;
@@ -61,11 +61,11 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
         if (elements[i]){
             //检查v-for-array
-            if (elements[i].hasAttribute("@for-index")){
+            if (elements[i].hasAttribute("@document-list")){
 
-                let property:string = elements[i].getAttribute("@for-index");
+                let property:string = elements[i].getAttribute("@document-list");
 
-                elements[i].removeAttribute("@for-index");
+                elements[i].removeAttribute("@document-list");
 
                 data[property].forEach(function (value,index) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);

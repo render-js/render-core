@@ -60,9 +60,9 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
         if (elements[i]){
             //检查v-for-item,该指令不可以用在根元素上
-            if (elements[i].hasAttribute("@for-item")){
+            if (elements[i].hasAttribute("@list-document")){
 
-                elements[i].removeAttribute("@for-item");
+                elements[i].removeAttribute("@list-document");
 
                 part_render_map(elements[i].parentNode, elements[i], data);
                 i++;
@@ -74,9 +74,9 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
         if (elements[i]){
             //检查v-for-array
-            if (elements[i].hasAttribute("@for-index")){
+            if (elements[i].hasAttribute("@list-list")){
 
-                elements[i].removeAttribute("@for-index");
+                elements[i].removeAttribute("@list-list");
 
                 data.forEach(function (value,index) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);
