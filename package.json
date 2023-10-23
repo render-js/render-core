@@ -1,6 +1,6 @@
 {
   "name": "render-js",
-  "version": "1.0.0",
+  "version": "1.3.2",
   "description": "The extendable javascript web framework",
   "main": "index.js",
   "types": "index.d.ts",
