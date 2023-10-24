@@ -43,7 +43,7 @@ function cycleBridge(controller:ComponentController, proto:Component, child:Elem
     controller.mode = proto.getMode();
 
     //向raw_data中注入元数据
-    inject(controller,tagTemplate);
+    inject(controller);
 
     //数据渲染代理对象
     controller.proxyForMethods = getProxyObject(controller.raw_data, controller);

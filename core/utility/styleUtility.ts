@@ -109,3 +109,35 @@ export function reloadStyle(theme:string):void{
         }
     })
 }
+
+/**
+ *
+ * @param tag
+ * @param theme
+ */
+export function changeStyle(tag:string, theme:string):void{
+
+    let styleTxt = Reflect.get(window,"styleLib").get(tag.toUpperCase()).get(theme);
+
+    if (styleTxt === undefined){
+
+        console.log("Dont`t find this style!");
+
+    }else {
+        let style:HTMLStyleElement = document.createElement('style')
+
+        let text:Text = document.createTextNode(styleTxt);
+
+        style.appendChild(text)
+
+        style.setAttribute("tag",tag.toUpperCase());
+
+        style.setAttribute("theme",theme);
+
+        let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
+
+        let target:Element = head.querySelector("style"+"[tag="+tag.toUpperCase()+"]");
+
+        head.replaceChild(style,target);
+    }
+}

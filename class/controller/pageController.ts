@@ -1,4 +1,5 @@
 import {ComponentController} from "./componentController";
+import {changeStyle} from "../../core/utility/styleUtility";
 
 export class PageController {
 
@@ -37,12 +38,21 @@ export class PageController {
     }
 
     //设置当前页面的渲染元素
-    set crtTag(element:Element){
+    public set crtTag(element:Element){
         this.currentTag = element;
     }
 
     //返回当前页面的渲染元素
-    get crtTag(){
+    public get crtTag(){
         return this.currentTag;
+    }
+
+    /**
+     * Change the tag theme
+     * @param tag
+     * @param style
+     */
+    public changeTheme(tag:any,style:string):void{
+        changeStyle(tag,style);
     }
 }

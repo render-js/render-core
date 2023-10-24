@@ -12,9 +12,11 @@ import {Component} from "../../class/component/component";
 /**
  * 向raw_data中注入props和Query
  * @param controller
- * @param tagTemplate
  */
-export function inject(controller:ComponentController, tagTemplate:Element):void{
+export function inject(controller:ComponentController):void{
+    //注入name
+    Reflect.set(controller.raw_data,"$name",controller.proto.getName());
+
     //注入props
     getCodeSpaceForProps(controller.raw_data,resolveProps(Reflect.get(window,"context").crtTag,controller.proto.getProps()));
 

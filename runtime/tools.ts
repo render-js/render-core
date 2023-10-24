@@ -34,7 +34,7 @@ export function registerTagLib(application:RenderJS, component:Component | Compo
 }
 
 /**
- *
+ * The entrancy of render
  * @param renderjs
  */
 export function render(renderjs:RenderJS):void{
