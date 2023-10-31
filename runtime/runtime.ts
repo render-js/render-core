@@ -1,6 +1,7 @@
 import {isUnKnown} from "../core/utility/checkUtility";
 import {PageController} from "../class/controller/pageController";
 import {Render} from "../core/render/delivery";
+import {Component} from "../class/component/component";
 
 /**
  *
@@ -14,8 +15,15 @@ export function renderHtml(collection:HTMLCollection, link:PageController):void
     {
         if (isUnKnown(collection[i].nodeName.toUpperCase()))
         {
-            //自定义标签
-            Render(Reflect.get(window,"tagLib").get(collection[i].nodeName.toUpperCase()),collection[i].parentNode,collection[i],link)
+            let component:Component = Reflect.get(window,"tagLib").get(collection[i].nodeName.toUpperCase());
+
+            if (component === undefined){
+
+                console.log(collection[i].nodeName.toUpperCase()+" can't be found in renderJs, you should firstly register in renderJs");
+            }else {
+                //自定义标签
+                Render(component,collection[i].parentNode,collection[i],link)
+            }
         }else {
             //非自定义标签，深度解析
             renderHtml(collection[i].children,link);
