@@ -32,9 +32,9 @@ export function resolver_bind(nodes:HTMLCollection,data:{}):void
                         nodes[i].removeAttribute(result[k])
 
                         try {
-                            nodes[i].setAttribute(property,JSON.stringify(data[dataName]));
-                        }catch (e) {
                             nodes[i].setAttribute(property,data[dataName]);
+                        }catch (e) {
+                            console.error(e.message);
                         }
                     }
                 }

@@ -4,10 +4,10 @@ import {PageController} from "../../class/controller/pageController";
 import {inject, injectComputed, injectMethod, injectWatcher} from "../inject/inject";
 import {getProxyObject} from "../proxy/getProxy";
 import {
-    getCodeSpaceForCommit, getCodeSpaceForProperty,
+    getCodeSpaceForCommit,
     getCodeSpaceForPublish,
-    getCommitMethod,
-    getPublishMethod, getSetterMethod
+    getCommitMethod, getGetCodeSpaceForProperty, getGetterMethod,
+    getPublishMethod, getSetCodeSpaceForProperty, getSetterMethod
 } from "../utility/injectUtility";
 import {dataInject} from "../utility/dataUtility";
 
@@ -61,5 +61,8 @@ function cycleBridge(controller:ComponentController, proto:Component, child:Elem
     getCodeSpaceForPublish(controller.raw_data,getPublishMethod(controller));
 
     //注入setter
-    getCodeSpaceForProperty(controller.raw_data,getSetterMethod(controller))
+    getSetCodeSpaceForProperty(controller.raw_data,getSetterMethod(controller));
+
+    //注入getter
+    getGetCodeSpaceForProperty(controller.raw_data,getGetterMethod(controller));
 }

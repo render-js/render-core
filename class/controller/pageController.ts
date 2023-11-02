@@ -15,6 +15,8 @@ export class PageController {
     //原始数据
     public raw_data:{};
 
+    public proxyForMethods:{};
+
     //观察者
     public to:ComponentController[];
 

@@ -18,14 +18,18 @@ export function resolver_txt(elements:HTMLCollection, data:{}, controller:Compon
 
             elements[i].removeAttribute("@txt")
 
-            if (data[dataName] === undefined){
+            try {
+                if (data[dataName] === undefined){
 
-                // @ts-ignore
-                elements[i].innerText = controller.computed[dataName].call();
-            }else {
+                    // @ts-ignore
+                    elements[i].innerText = controller.computed[dataName]();
+                }else {
 
-                // @ts-ignore
-                elements[i].innerText = data[dataName];
+                    // @ts-ignore
+                    elements[i].innerText = data[dataName];
+                }
+            }catch (error){
+                console.error("Can not find data:"+dataName+" in the component");
             }
         }
 

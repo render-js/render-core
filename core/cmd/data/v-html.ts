@@ -16,16 +16,19 @@ export function resolver_html(elements:HTMLCollection,data:{},controller:Compone
 
             elements[i].removeAttribute("@html")
 
-            if (data[dataName] === undefined){
+            try {
+                if (data[dataName] === undefined){
 
-                elements[i].innerHTML = controller.computed[dataName].call();
-            }else {
+                    elements[i].innerHTML = controller.computed[dataName]();
+                }else {
 
-                elements[i].innerHTML = data[dataName];
+                    elements[i].innerHTML = data[dataName];
+                }
+            }catch (error){
+                console.error("Can not find data:"+dataName+" in the component");
             }
 
         }
-
         resolver_html(elements[i].children,data,controller);
     }
 }

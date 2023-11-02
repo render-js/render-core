@@ -29,7 +29,11 @@ export function resolver_event(elements:HTMLCollection,methods:{},data:{}):void
 
                     elements[i].removeAttribute(result[k])
 
-                    elements[i].addEventListener(action,methods[method].bind(data))
+                    try {
+                        elements[i].addEventListener(action,methods[method].bind(data))
+                    }catch (error) {
+                        console.error("Can not find method:"+method+" in the component");
+                    }
                 }
             }
         }

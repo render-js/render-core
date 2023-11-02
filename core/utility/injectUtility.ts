@@ -32,7 +32,15 @@ export function getSetterMethod(controller:ComponentController | PageController)
     let setter = function (property:string,value:any):any{
         this[property] = value;
     }
-    return setter.bind(controller.raw_data);
+    return setter.bind(controller.proxyForMethods);
+}
+
+export function getGetterMethod(controller:ComponentController | PageController):any
+{
+    let setter = function (property:string):any{
+        return this[property];
+    }
+    return setter.bind(controller.proxyForMethods);
 }
 
 //注入对象
@@ -59,7 +67,12 @@ export function getCodeSpaceForPublish(data:{},publisher:any):void
     Reflect.set(data,"$publish",publisher);
 }
 
-export function getCodeSpaceForProperty(data:{},setter:any):void
+export function getSetCodeSpaceForProperty(data:{},setter:any):void
 {
-    Reflect.set(data,"$setter",setter);
+    Reflect.set(data,"$set",setter);
+}
+
+export function getGetCodeSpaceForProperty(data:{},getter:any):void
+{
+    Reflect.set(data,"$get",getter);
 }
