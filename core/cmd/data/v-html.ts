@@ -18,7 +18,7 @@ export function resolver_html(elements:HTMLCollection,data:{},controller:Compone
 
             if (data[dataName] === undefined){
 
-                elements[i].innerHTML = controller.computed[dataName]();
+                elements[i].innerHTML = controller.computed[dataName].call();
             }else {
 
                 elements[i].innerHTML = data[dataName];

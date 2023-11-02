@@ -22,7 +22,7 @@ export function getCodeSpaceForRef(data:{},$ref:Map<string, Element>):void
 export function getCommitMethod(controller:ComponentController | PageController):any
 {
     let commit = function (method:string, ...args:any[]):any{
-        this.receiver(method,args);
+        return this.receiver(method,args);
     }
     return commit.bind(controller);
 }
