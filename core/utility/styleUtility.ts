@@ -28,7 +28,7 @@ export function checkStyleLabel(tag:string):boolean
  * @param component
  * @param styleLib
  */
-export function themeStyle(component:Component,styleLib:Map<string, object>):void {
+export function themeStyle(component:Component, styleLib:Map<string, object>):void {
 
     let template:string = component.getTemplate();
 
@@ -55,7 +55,7 @@ export function themeStyle(component:Component,styleLib:Map<string, object>):voi
 export function styleResolve(tag:string):void{
 
     // @ts-ignore
-    let theme = window.context.getFiled("system_theme");
+    let theme = window.context.getField("system_theme");
 
     if (Reflect.get(window,"styleLib").get(tag.toUpperCase()).get(theme) === undefined){
 
@@ -140,4 +140,35 @@ export function changeStyle(tag:string, theme:string):void{
 
         head.replaceChild(style,target);
     }
+}
+
+export function changeTheme(theme:string):void{
+
+    Reflect.get(window,"styleLib").forEach(function (value, key){
+
+        let styles:HTMLCollection = document.getElementsByTagName("style")
+
+        for (let i:number = 0; i< styles.length; i++){
+
+            if (styles[i].getAttribute("tag") === key){
+
+                let style:HTMLStyleElement = document.createElement('style')
+
+                if (value.get(theme)){
+
+                    let text:Text = document.createTextNode(value.get(theme));
+
+                    style.appendChild(text)
+
+                    style.setAttribute("tag",key.toUpperCase());
+
+                    style.setAttribute("theme",theme);
+
+                    let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
+
+                    head.replaceChild(style,styles[i]);
+                }
+            }
+        }
+    })
 }

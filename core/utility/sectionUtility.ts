@@ -1,5 +1,5 @@
 import {ComponentController} from "../../class/controller/componentController";
-import {assignType, checkType, textType} from "./inputType";
+import {assignType, checkType, fileType, textType} from "./inputType";
 
 /**
  *
@@ -39,7 +39,7 @@ function locateInput(target:any,doc:any,controller:ComponentController):void{
         case "number":textType(target,doc,controller);break;
         case "month":assignType(target,doc,controller);break;
         case "hidden":assignType(target,doc,controller);break;
-        case "file":textType(target,doc,controller);break;
+        case "file":fileType(target,doc,controller);break;
         case "datetime-local":assignType(target,doc,controller);break;
         case "datetime":assignType(target,doc,controller);break;
         case "checkbox":assignType(target,doc,controller);break;

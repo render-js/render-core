@@ -8,18 +8,18 @@ export function redirect(url:string,parameters:{}):void{
         let params:string[] = Object.getOwnPropertyNames(parameters);
 
         if (params.length !== 0){
-            let querys = "";
+            let queries = "";
 
             params.forEach(function (value) {
-                if (querys === ""){
-                    querys = querys + value + "=" + parameters[value].toString();
+                if (queries === ""){
+                    queries = queries + value + "=" + parameters[value].toString();
                 }else {
-                    querys = querys + "&" + value + "=" + parameters[value].toString();
+                    queries = queries + "&" + value + "=" + parameters[value].toString();
                 }
             })
-            querys = encodeURI(querys);
+            queries = encodeURI(queries);
 
-            location.href = url + "?" + querys;
+            location.href = url + "?" + queries;
         }else {
             location.href = url;
         }

@@ -15,7 +15,7 @@ export function inputUtility(element:Element, space:Object):void{
         case "number":editType(element,space);break;
         case "month":assignType(element,space);break;
         case "hidden":editType(element,space);break;
-        case "file":editType(element,space);break;
+        case "file":filesType(element,space);break;
         case "datetime-local":assignType(element,space);break;
         case "datetime":assignType(element,space);break;
         case "checkbox":assignType(element,space);break;
@@ -39,6 +39,14 @@ function editType(element:Element, space:Object):void{
     })
 }
 
+export function filesType(element:Element, space:Object):void{
+
+    Reflect.set(space,"origin",{
+        tag: element.tagName,
+        id:element.getAttribute("id")
+    });
+}
+
 export function selectUtility(element:Element, space:Object):void{
 
     Reflect.set(space,"origin",{
@@ -49,7 +57,7 @@ export function selectUtility(element:Element, space:Object):void{
     });
 }
 
-export function textareaUtiltiy(element:Element, space:Object):void{
+export function textareaUtility(element:Element, space:Object):void{
 
     Reflect.set(space,"origin",{
         tag: element.tagName,

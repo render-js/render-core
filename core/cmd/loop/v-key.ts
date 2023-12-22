@@ -47,7 +47,7 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
             //检查v-for-item
             if (elements[i].hasAttribute("@document-document")){
 
-                let  property = elements[i].getAttribute("@document-document");
+                let  property:string = elements[i].getAttribute("@document-document");
 
                 elements[i].removeAttribute("@document-document");
 
@@ -56,6 +56,7 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
                 //删除节点
                 elements[i].parentNode.removeChild(elements[i]);
+                i--;
             }
         }
 
@@ -67,13 +68,14 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
                 elements[i].removeAttribute("@document-list");
 
-                data[property].forEach(function (value,index) {
+                data[property].forEach(function (value: any, index: number) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);
                     i++;
                 })
 
                 //删除节点
                 elements[i].parentNode.removeChild(elements[i]);
+                i--;
             }
         }
 

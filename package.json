@@ -15,8 +15,5 @@
     "name": "mutian",
     "email": "mutian-xiangcai@outlook.com"
   },
-  "license": "MIT",
-  "dependencies": {
-    "render-status": "1.0.3"
-  }
+  "license": "MIT"
 }

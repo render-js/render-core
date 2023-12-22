@@ -24,7 +24,7 @@ export function cmdUtility(tagTemplate:Element, proto:Component, controller:Comp
     //给所有元素添加上npm=tag标志
     addLabel(tagTemplate.children,proto.getName());
     //将元素事件绑定到元素上
-    resolver_event(tagTemplate.children,proto.getMethods(),controller.proxyForMethods);
+    resolver_event(tagTemplate.children,proto.getMethods(),controller.proxyForMethods,controller.raw_data);
     //渲染html
     resolver_html(tagTemplate.children,controller.proxyForMethods,controller);
     //渲染text

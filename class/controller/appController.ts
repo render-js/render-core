@@ -1,7 +1,7 @@
-// @ts-ignore
-import {status_read, status_write} from "render-status";
 import {AppTip} from "../tips/appTip";
 import {locate, redirect} from "../../http/redirect/redirect";
+import {status_read, status_write} from "../../index";
+
 
 /**
  * This class is associated with localStorage.
@@ -9,35 +9,44 @@ import {locate, redirect} from "../../http/redirect/redirect";
 export class AppController implements AppTip{
 
     //内部数据库
-    private fileds:{};
+    private readonly fields:{};
 
     //系统变量
     constructor() {
-        this.fileds = {
-            system_theme:{
+        this.fields = {
+            system_theme: {
                 data: "default",
                 react: true,
-                callback:function (value,context):void{
-                    context.setFiled("system_theme",value);
+                push: true,
+                callback:function (value, context){
+                    context.saveFields({
+                        "system_theme":{
+                            data: value,
+                            react: true,
+                            down: false
+                        }
+                    });
+                    context.storeFields();
+                    context.loadFields();
                 }
             }
         };
     }
 
     /**
-     * This method is used to add customed data.
-     * @param fileds
+     * This method is used to add custom data.
+     * @param fields
      */
-    public saveFileds(fileds:{}):void{
+    public saveFields(fields:{}):void{
 
-        for (let filedsKey in fileds) {
+        for (let fieldsKey in fields) {
 
-            if (Reflect.has(this.fileds,filedsKey)){
+            if (Reflect.has(this.fields,fieldsKey)){
 
-                console.log("This filed is a systemed filed, please have a new name for the filed:"+filedsKey);
+                console.log("This filed is a system filed, please have a new name for the filed:"+fieldsKey);
             }else {
 
-                Reflect.set(this.fileds,filedsKey,fileds[filedsKey]);
+                Reflect.set(this.fields,fieldsKey,fields[fieldsKey]);
             }
         }
     }
@@ -46,44 +55,64 @@ export class AppController implements AppTip{
      * 更新数据
      * @private
      */
-    public loadFileds():void{
+    public loadFields():void{
 
-        for (let filedsKey in this.fileds) {
+        for (let fieldsKey in this.fields) {
 
-            if (this.fileds[filedsKey].react){
+            if (this.fields[fieldsKey].react){
                 if (status_read({
                     type: "local",
-                    fields:[filedsKey]
-                })[filedsKey]){
-                    this.fileds[filedsKey].data = status_read({
+                    fields:[fieldsKey]
+                })[fieldsKey]){
+                    this.fields[fieldsKey].data = status_read({
                         type: "local",
-                        fields:[filedsKey]
-                    })[filedsKey];
+                        fields:[fieldsKey]
+                    })[fieldsKey]["data"];
                 }
+            }
+
+            if (this.fields[fieldsKey].push){
+                // @ts-ignore
+                this.fields[fieldsKey].callback(this.fields[fieldsKey]["data"],window.context);
             }
         }
     }
 
     /**
-     * store fileds
+     * store fields
      */
-    public storeFileds():void{
-        for (let filedsKey in this.fileds) {
+    public storeFields():void{
+        for (let fieldsKey in this.fields) {
 
-            let data = {};
-
-            Reflect.set(data,filedsKey,this.fileds[filedsKey]);
-
-            status_write({
+            if (!status_read({
                 type: "local",
-                fields:data
-            })
+                fields:[fieldsKey]
+            })[fieldsKey]){
+                let data = {};
+
+                Reflect.set(data,fieldsKey,{
+                    data: this.fields[fieldsKey]["data"]
+                });
+
+                status_write({
+                    type: "local",
+                    fields:data
+                })
+            }
         }
     }
 
-    public setFiled(filed:string,value:any):void{
+    /**
+     *
+     * @param field
+     * @param value
+     */
+    public setField(field:string,value:any):void{
+
         let data = {};
-        Reflect.set(data,filed,value);
+        Reflect.set(data,field,{
+            data: value
+        });
 
         //写入数
         status_write({
@@ -92,24 +121,18 @@ export class AppController implements AppTip{
         });
 
         //更新数据
-        this.loadFileds();
-
-        //执行回调
-        if (this.fileds[filed].callback){
-            // @ts-ignore
-            this.fileds[filed].callback(value,window.context);
-        }
+        this.loadFields();
     }
 
     /**
      * 获取数据
-     * @param filed
+     * @param field
      */
-    public getFiled(filed:string):any{
+    public getField(field:string):any{
 
-        if (this.fileds[filed]){
+        if (this.fields[field]){
 
-            return this.fileds[filed].data;
+            return this.fields[field].data;
 
         }else {
             return null;

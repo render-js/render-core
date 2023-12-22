@@ -25,7 +25,7 @@ export  function getProxyObject(obj:{},updater:ComponentController):any{
  */
 export function getSetter(data:{}, updater:ComponentController){
 
-    let setter = function (obj,prop,value):boolean{
+    let setter = function (obj: { [x: string]: any; }, prop: string | number, value: any):boolean{
 
         if (this.mode !== "box"){
             console.log("Not box element can not to update data!");

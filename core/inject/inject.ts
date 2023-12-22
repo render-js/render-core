@@ -47,7 +47,7 @@ export function injectMethod(controller:ComponentController, proto:Component):vo
     let methods:string[] = Object.getOwnPropertyNames(proto.getMethods());
 
     methods.forEach(function (value:string):void {
-        if (value.match(/^raw_[a-zA-Z0-9_]*/) !== null){
+        if (value.match(/^\$\$[a-zA-Z0-9_]*/) !== null){
             Reflect.set(controller.raw_data,value,proto.getMethods()[value].bind(controller.raw_data));
         }else {
             Reflect.set(controller.raw_data,value,proto.getMethods()[value].bind(controller.proxyForMethods));

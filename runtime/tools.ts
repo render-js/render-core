@@ -2,10 +2,11 @@ import {Component} from "../class/component/component";
 import {RenderJS} from "../index";
 import {themeStyle} from "../core/utility/styleUtility";
 import {renderHtml} from "./runtime";
+import {changeApplicationTheme, changeSessionTheme, changeTagTheme} from "../func/Theme";
 
 /**
- * This function is used to save the protype component class in the window object.
- * So, you can hava a tip that we customed a property named 'tagLib' in the window object.
+ * This function is used to save the prototype component class in the window object.
+ * So, you can hava a tip that we custom a property named 'tagLib' in the window object.
  * @param application
  * @param component
  */
@@ -34,7 +35,7 @@ export function registerTagLib(application:RenderJS, component:Component | Compo
 }
 
 /**
- * The entrancy of render
+ * The entrance of render
  * @param renderjs
  */
 export function render(renderjs:RenderJS):void{
@@ -42,8 +43,18 @@ export function render(renderjs:RenderJS):void{
     //获取styleLib对象
     renderjs.tagLib.forEach(function (component:Component):void{
 
-        themeStyle(component,renderjs.styleLib);
+        themeStyle(component, renderjs.styleLib);
     })
+
+    renderjs.configContext({});
+
+    renderjs.configApp({});
+
+    renderjs.registerElements("changeTagTheme",changeTagTheme)
+
+    renderjs.registerElements("changeSessionTheme",changeSessionTheme)
+
+    renderjs.registerElements("changeApplicationTheme",changeApplicationTheme)
 
     //开始渲染
     renderHtml(document.body.children,renderjs.page);

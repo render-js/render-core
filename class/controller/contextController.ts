@@ -1,68 +1,59 @@
-// @ts-ignore
-import {status_read, status_write} from "render-status";
-import {reloadStyle} from "../../core/utility/styleUtility";
-import meta from "../../meta/meta";
+import {status_read, status_write} from "../../index";
 
 export class ContextController{
 
-    private fileds:{};
-
-    private meta:{};
+    private readonly fields:{};
 
     constructor() {
-        this.fileds = {
-            system_theme:{
-                data: "default",
-                react: true,
-                callback:function (value):void {
-                    reloadStyle(value);
-                }
-            }
-        };
-
-        this.meta = meta;
+        this.fields = {};
     }
 
-    public saveFileds(fileds:{}):void{
+    public saveFields(fields:{}):void{
 
-        for (let filedsKey in fileds) {
+        for (let fieldsKey in fields) {
 
-            if (Reflect.has(this.fileds,filedsKey)){
+            if (Reflect.has(this.fields,fieldsKey)){
 
-                console.log("This filed is a systemed filed, please have a new name for the filed:"+filedsKey);
+                console.log("This field is a system field, please have a new name for the field:"+fieldsKey);
 
             }else {
 
-                Reflect.set(this.fileds,filedsKey,fileds[filedsKey]);
+                Reflect.set(this.fields,fieldsKey,fields[fieldsKey]);
             }
         }
     }
 
-    public loadFileds():void{
+    public loadFields():void{
 
-        for (let filedsKey in this.fileds) {
+        for (let fieldsKey in this.fields) {
 
-            if (this.fileds[filedsKey].react){
+            if (this.fields[fieldsKey].react){
 
                 if (status_read({
                     type: "session",
-                    fields:[filedsKey]
-                })[filedsKey]){
-                    this.fileds[filedsKey].data = status_read({
+                    fields:[fieldsKey]
+                })[fieldsKey]){
+                    this.fields[fieldsKey].data = status_read({
                         type: "session",
-                        fields:[filedsKey]
-                    })[filedsKey];
+                        fields:[fieldsKey]
+                    })[fieldsKey]["data"];
                 }
+            }
+
+            if (this.fields[fieldsKey].down){
+                // @ts-ignore
+                this.fields[fieldsKey].callback(this.fields[fieldsKey]["data"],window.appSite)
             }
         }
     }
 
-    public storeFileds():void{
-        for (let filedsKey in this.fileds) {
-
+    public storeFields():void{
+        for (let fieldsKey in this.fields) {
             let data = {};
 
-            Reflect.set(data,filedsKey,this.fileds[filedsKey]);
+            Reflect.set(data,fieldsKey,{
+                data: this.fields[fieldsKey]["data"]
+            });
 
             status_write({
                 type: "session",
@@ -73,14 +64,16 @@ export class ContextController{
 
     /**
      * 写入数据
-     * @param filed
+     * @param field
      * @param value
      */
-    public setFiled(filed:string,value:any):void{
+    public setField(field:string, value:any):void{
 
         let data = {};
 
-        Reflect.set(data,filed,value);
+        Reflect.set(data,field,{
+            data: value
+        });
 
         //写入数据
         status_write({
@@ -89,37 +82,21 @@ export class ContextController{
         });
 
         //更新数据
-        // @ts-ignore
-        this.loadFileds();
-
-        //数据回调
-        if (this.fileds[filed]){
-            // @ts-ignore
-            this.fileds[filed].callback(value,window.appSite);
-        }
+        this.loadFields();
     }
 
     /**
      * 获取数据
-     * @param filed
+     * @param field
      */
-    public getFiled(filed:string):any{
+    public getField(field:string):any{
 
-        if (this.fileds[filed]){
+        if (this.fields[field]){
 
-            return this.fileds[filed].data;
+            return this.fields[field].data;
 
         }else {
-
             return null;
         }
-    }
-
-    /**
-     * 返回系统数据
-     * @param filed
-     */
-    public getMeta(filed:string):string{
-        return this.meta[filed];
     }
 }

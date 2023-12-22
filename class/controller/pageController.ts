@@ -33,13 +33,20 @@ export class PageController {
         this.solt = new Map<string,any>();
     }
 
-    //接收器
+    /**
+     *
+     * @param method
+     * @param args
+     */
     public receiver(method:string, ...args:any[]):void
     {
-        this.methods[method].call(window,args);
+        Reflect.get(window,method).call(window,args);
     }
 
-    //设置当前页面的渲染元素
+    /**
+     *
+     * @param element
+     */
     public set crtTag(element:Element){
         this.currentTag = element;
     }
@@ -47,14 +54,5 @@ export class PageController {
     //返回当前页面的渲染元素
     public get crtTag(){
         return this.currentTag;
-    }
-
-    /**
-     * Change the tag theme
-     * @param tag
-     * @param style
-     */
-    public changeTheme(tag:any,style:string):void{
-        changeStyle(tag,style);
     }
 }

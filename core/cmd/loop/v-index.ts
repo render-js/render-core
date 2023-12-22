@@ -69,6 +69,8 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
                 //删除节点
                 elements[i].parentNode.removeChild(elements[i]);
+
+                i--;
             }
         }
 
@@ -78,13 +80,15 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
                 elements[i].removeAttribute("@list-list");
 
-                data.forEach(function (value,index) {
+                data.forEach(function (value: any, index: number) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);
                     i++;
                 })
 
                 //删除节点
                 elements[i].parentNode.removeChild(elements[i]);
+
+                i--;
             }
         }
 

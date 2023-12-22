@@ -1,4 +1,4 @@
-import {inputUtility, selectUtility, textareaUtiltiy} from "./inputUtility";
+import {inputUtility, selectUtility, textareaUtility} from "./inputUtility";
 
 /**
  *
@@ -12,7 +12,7 @@ export function compositionstart(evt){
  *
  * @param evt
  */
-export function listerner(evt){
+export function listener(evt){
     if (!evt.target.hasAttribute("flag")){
 
         //Get the event element
@@ -21,12 +21,16 @@ export function listerner(evt){
         switch (element.nodeName.toUpperCase()){
             case "INPUT": inputUtility(element,this);break;
             case "SELECT":selectUtility(element,this);break;
-            case "TEXTAREA":textareaUtiltiy(element,this);break;
+            case "TEXTAREA":textareaUtility(element,this);break;
             default:console.error("Can`t bind this type input tag!");break
         }
 
         //Update the value
-        this[element.name] = element.value
+        if (element.type === "file"){
+            this[element.name] = element.files;
+        }else{
+            this[element.name] = element.value;
+        }
     }
 }
 
@@ -45,7 +49,7 @@ export  function compositionend (evt){
     switch (element.nodeName.toUpperCase()){
         case "INPUT": inputUtility(element,this);break;
         case "SELECT":selectUtility(element,this);break;
-        case "TEXTAREA":textareaUtiltiy(element,this);break;
+        case "TEXTAREA":textareaUtility(element,this);break;
         default:console.error("Can`t bind this type input tag!");break
     }
 

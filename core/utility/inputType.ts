@@ -16,6 +16,11 @@ export function assignType(target:any,doc:any,controller:ComponentController):vo
     target.value = controller.proxyForMethods[target.getAttribute("name")];
 }
 
+export function fileType(target:any,doc:any,controller:ComponentController):void{
+    // @ts-ignore
+    target.files = controller.proxyForMethods[target.getAttribute("name")];
+}
+
 export function checkType(target:any):void{
     // @ts-ignore
     target.checked = "checked";

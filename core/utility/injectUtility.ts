@@ -53,7 +53,7 @@ export function getCodeSpaceForCommit(data:{},commit:any):void
 export function getPublishMethod(controller:ComponentController | PageController):any
 {
     let publisher = function (method:string,...args:any[]):void{
-        for (let i=0; i< this.to.length; i++){
+        for (let i:number = 0; i < this.to.length; i++){
             this.to[i].receiver(method,args);
         }
     }

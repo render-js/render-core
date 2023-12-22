@@ -19,7 +19,7 @@ export function renderHtml(collection:HTMLCollection, link:PageController):void
 
             if (component === undefined){
 
-                console.log(collection[i].nodeName.toUpperCase()+" can't be found in renderJs, you should firstly register in renderJs");
+                console.error(collection[i].nodeName.toUpperCase()+" can't be found in renderJs, you should firstly register in renderJs");
             }else {
                 //自定义标签
                 Render(component,collection[i].parentNode,collection[i],link)

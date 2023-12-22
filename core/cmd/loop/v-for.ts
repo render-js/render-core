@@ -19,13 +19,15 @@ export function resolver_for_of(elements:HTMLCollection,data:{}):void{
 
             if (data[dataName] instanceof Array){
 
-                data[dataName].forEach(function (value,index) {
+                data[dataName].forEach(function (value: any, index: number) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);
                     i++;
                 })
 
                 //将模板节点删除
                 elements[i].parentNode.removeChild(elements[i]);
+
+                i--;
             }else {
 
                 console.log("Instruction @list need an array datatype to extract!");
@@ -66,6 +68,8 @@ export function resolver_for_each(elements:HTMLCollection,data:{}):void{
 
             //将模板节点删除
             elements[i].parentNode.removeChild(elements[i]);
+
+            i--;
         }
 
         if (elements[i]){
