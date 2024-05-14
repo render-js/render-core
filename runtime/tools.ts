@@ -2,7 +2,6 @@ import {Component} from "../class/component/component";
 import {RenderJS} from "../index";
 import {themeStyle} from "../core/utility/styleUtility";
 import {renderHtml} from "./runtime";
-import {changeApplicationTheme, changeSessionTheme, changeTagTheme} from "../func/Theme";
 
 /**
  * This function is used to save the prototype component class in the window object.
@@ -45,16 +44,6 @@ export function render(renderjs:RenderJS):void{
 
         themeStyle(component, renderjs.styleLib);
     })
-
-    renderjs.configContext({});
-
-    renderjs.configApp({});
-
-    renderjs.registerElements("changeTagTheme",changeTagTheme)
-
-    renderjs.registerElements("changeSessionTheme",changeSessionTheme)
-
-    renderjs.registerElements("changeApplicationTheme",changeApplicationTheme)
 
     //开始渲染
     renderHtml(document.body.children,renderjs.page);

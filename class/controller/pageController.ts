@@ -1,5 +1,4 @@
 import {ComponentController} from "./componentController";
-import {changeStyle} from "../../core/utility/styleUtility";
 
 export class PageController {
 

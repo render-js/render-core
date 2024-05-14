@@ -3,17 +3,13 @@ import {PageController} from "./class/controller/pageController";
 import {registerTagLib, render} from "./runtime/tools";
 import {AppController} from "./class/controller/appController";
 import {RenderTip} from "./class/tips/renderTip";
-import {ContextController} from "./class/controller/contextController";
-import {localStorageEngine_read, sessionStorageEngin_read} from "./status/read/read";
-import {localStorageEngine_write, sessionStorageEngin_write} from "./status/write/write";
+import {changeStyle, changeTheme} from "./core/utility/styleUtility";
+import {registerElements} from "./core/utility/miscUtility";
 
 /**
  * This class is the application class.
  */
 export class RenderJS implements RenderTip{
-
-    //Meta data
-    public readonly config:{};
 
     //Custom tagLib
     public readonly tagLib:Map<string, Component>;
@@ -23,9 +19,6 @@ export class RenderJS implements RenderTip{
 
     //Application controller
     private readonly application:AppController;
-
-    //Context controller
-    private readonly context:ContextController;
 
     //Page controller
     public page:PageController;
@@ -40,41 +33,15 @@ export class RenderJS implements RenderTip{
         //initiate the application controller
         this.application = new AppController();
 
-        //initiate the context controller
-        this.context = new ContextController();
-
         //initiate the page controller
         this.page = new PageController();
-
-        //initiate the config object
-        this.config = {};
     }
 
     /**
-     *
-     * @param config
-     */
-    public configApp(config: {}): void {
-        this.application.saveFields(config);
-        this.application.storeFields();
-        this.application.loadFields();
-    }
-
-    /**
-     *
-     * @param config
-     */
-    public configContext(config: {}): void {
-        this.context.saveFields(config);
-        this.context.storeFields();
-        this.context.loadFields();
-    }
-
-    /**
-     *
+     * This func is the plugin entry to third vendor
      * @param callable
      */
-    public use(callable): void {
+    public use(callable:(render:RenderJS)=>void): void {
         callable(this);
     }
 
@@ -94,8 +61,7 @@ export class RenderJS implements RenderTip{
         Reflect.set(window,"tagLib",this.tagLib);
         Reflect.set(window,"styleLib",this.styleLib);
         Reflect.set(window,"appSite",this.application);
-        Reflect.set(window,"context",this.context);
-        Reflect.set(window,"page",this.page);
+        Reflect.set(window,"context",this.page);
     }
 
     /**
@@ -106,72 +72,27 @@ export class RenderJS implements RenderTip{
         //挂载对象
         this.mount();
 
+        //注册函数
+        registerElements("changeStyle",changeStyle);
+
+        //注册函数
+        registerElements("changeTheme",changeTheme);
+
+        //plugin
+        this.use((render:RenderJS):void => {
+            sessionStorage.setItem("theme_style","default");
+        })
+
         //execute
         render(this);
     }
 
     /**
-     *
+     * Use the func to register some tool-functions to the windows object.
      * @param name
      * @param func
      */
     public registerElements(name:string, func:any):void{
         Reflect.set(window,name,func);
-    }
-}
-
-/**
- * The tool to register element to window
- * @param name
- * @param func
- */
-export function registerElements(name:string, func:any):void{
-    Reflect.set(window,name,func);
-}
-
-/**
- * This is the read api of status.
- * @param config
- */
-export function status_read(config:{
-    type:string,
-    fields:string[]
-}):any
-{
-    let fields:string[] = config.fields;
-
-    const message:{} = {};
-
-    if (config.type == "session"){
-        fields.forEach((value) => {
-            message[value] = sessionStorageEngin_read(value);
-        })
-    }else {
-        fields.forEach((value) => {
-            message[value] = localStorageEngine_read(value);
-        })
-    }
-    return message;
-}
-
-/**
- * This is the write api of status.
- * @param config
- */
-export function status_write(config:{
-    type:string,
-    fields:{}
-}):void
-{
-    let fields:string[] = Object.getOwnPropertyNames(config.fields);
-
-    if (config.type == "session"){
-        fields.forEach((value) => {
-            sessionStorageEngin_write(value,config.fields);
-        })
-    }else {
-        fields.forEach((value) => {
-            localStorageEngine_write(value,config.fields);
-        })
     }
 }

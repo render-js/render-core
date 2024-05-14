@@ -12,10 +12,12 @@ export function resolver_array_single(element:Element, index:number, data:any):v
     //解析data
     if (element.hasAttribute("@data")){
 
+        let data_index = element.getAttribute("@data");
+
         element.removeAttribute("@data");
 
         // @ts-ignore
-        element.innerText = data;
+        element.innerText = data[data_index];
     }
 
     //解析index
@@ -43,10 +45,12 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
         //解析data
         if (elements[i].hasAttribute("@data")){
 
+            let data_index = elements[i].getAttribute("@data");
+
             elements[i].removeAttribute("@data")
 
             // @ts-ignore
-            elements[i].innerText = data;
+            elements[i].innerText = data[data_index];
         }
 
         //解析index

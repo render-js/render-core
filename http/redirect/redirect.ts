@@ -4,7 +4,9 @@
  * @param parameters
  */
 export function redirect(url:string,parameters:{}):void{
+
     if (parameters !== null){
+
         let params:string[] = Object.getOwnPropertyNames(parameters);
 
         if (params.length !== 0){

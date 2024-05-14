@@ -1,7 +1,5 @@
 import {Component} from "../../class/component/component";
 import {loadStyle} from "../loader/loader";
-// @ts-ignore
-import {sessionStorageEngin_read} from "render-status/read/read";
 
 /**
  *
@@ -54,8 +52,7 @@ export function themeStyle(component:Component, styleLib:Map<string, object>):vo
  */
 export function styleResolve(tag:string):void{
 
-    // @ts-ignore
-    let theme = window.context.getField("system_theme");
+    let theme = sessionStorage.getItem("theme_style");
 
     if (Reflect.get(window,"styleLib").get(tag.toUpperCase()).get(theme) === undefined){
 
@@ -76,39 +73,22 @@ export function styleResolve(tag:string):void{
     }
 }
 
-/**
- *
- * @param theme
- */
-export function reloadStyle(theme:string):void{
+// /**
+//  * 从url中获取主题参数
+//  * @param name
+//  */
+// function getUrlParam(name:string):string {
+//     //构造一个含有目标参数的正则表达式对象
+//     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+//     //匹配目标参数
+//     var r = window.location.search.substr(1).match(reg);
+//     //返回参数值
+//     if(r != null) {
+//         return decodeURI(r[2]);
+//     }
+//     return undefined;
+// }
 
-    Reflect.get(window,"styleLib").forEach(function (value,key){
-
-        let styles:HTMLCollection = document.getElementsByTagName("style")
-
-        for (let i:number = 0; i< styles.length; i++){
-
-            if (styles[i].getAttribute("tag") === key){
-
-                let style:HTMLStyleElement = document.createElement('style')
-
-                if (value.get(theme)){
-                    let text:Text = document.createTextNode(value.get(theme));
-
-                    style.appendChild(text)
-
-                    style.setAttribute("tag",key.toUpperCase());
-
-                    style.setAttribute("theme",theme);
-
-                    let head:HTMLHeadElement = document.getElementsByTagName('head')[0];
-
-                    head.replaceChild(style,styles[i]);
-                }
-            }
-        }
-    })
-}
 
 /**
  *
@@ -142,9 +122,13 @@ export function changeStyle(tag:string, theme:string):void{
     }
 }
 
+/**
+ *
+ * @param theme
+ */
 export function changeTheme(theme:string):void{
 
-    Reflect.get(window,"styleLib").forEach(function (value, key){
+    Reflect.get(window,"styleLib").forEach((value: { get: (arg0: string) => string; }, key: string) => {
 
         let styles:HTMLCollection = document.getElementsByTagName("style")
 
@@ -171,4 +155,6 @@ export function changeTheme(theme:string):void{
             }
         }
     })
+
+    sessionStorage.setItem("theme_style",theme);
 }
