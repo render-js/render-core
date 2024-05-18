@@ -1,5 +1,4 @@
-import { part_render_map} from "../../render/partRender";
-import {extractForArray} from "../../utility/vForUtility";
+import {extractForArray} from "./v-for";
 
 /**
  * 展开数据
@@ -45,28 +44,23 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
         if (elements[i]){
             //检查v-for-item
-            if (elements[i].hasAttribute("@document-document")){
+            if (elements[i].hasAttribute("@map-document")){
 
-                let  property:string = elements[i].getAttribute("@document-document");
+                let  property:string = elements[i].getAttribute("@map-document");
 
-                elements[i].removeAttribute("@document-document");
+                elements[i].removeAttribute("@map-document");
 
-                part_render_map(elements[i].parentNode, elements[i], data[property]);
-                i++;
-
-                //删除节点
-                elements[i].parentNode.removeChild(elements[i]);
-                i--;
+                resolver_map_single(elements[i],data[property])
             }
         }
 
         if (elements[i]){
             //检查v-for-array
-            if (elements[i].hasAttribute("@document-list")){
+            if (elements[i].hasAttribute("@map-list")){
 
-                let property:string = elements[i].getAttribute("@document-list");
+                let property:string = elements[i].getAttribute("@map-list");
 
-                elements[i].removeAttribute("@document-list");
+                elements[i].removeAttribute("@map-list");
 
                 data[property].forEach(function (value: any, index: number) {
                     extractForArray(elements[i].parentNode, elements[i], index, value);

@@ -4,7 +4,6 @@ import {registerTagLib, render} from "./runtime/tools";
 import {AppController} from "./class/controller/appController";
 import {RenderTip} from "./class/tips/renderTip";
 import {changeStyle, changeTheme} from "./core/utility/styleUtility";
-import {registerElements} from "./core/utility/miscUtility";
 
 /**
  * This class is the application class.
@@ -95,4 +94,13 @@ export class RenderJS implements RenderTip{
     public registerElements(name:string, func:any):void{
         Reflect.set(window,name,func);
     }
+}
+
+/**
+ * Use the func to register some tool-functions to the windows object.
+ * @param name
+ * @param func
+ */
+export function registerElements(name:string, func:any):void{
+    Reflect.set(window,name,func);
 }

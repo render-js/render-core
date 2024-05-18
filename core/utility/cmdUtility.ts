@@ -10,9 +10,10 @@ import {resolver_show} from "../cmd/justify/v-show";
 import {resolver_render} from "../cmd/justify/v-render";
 import {resolver_if} from "../cmd/justify/v-if";
 import {resolver_switch} from "../cmd/justify/v-switch";
-import {resolver_for_each, resolver_for_of} from "../cmd/loop/v-for";
+import {resolver_for_of} from "../cmd/loop/v-for";
 import {extract_solt} from "../cmd/solt/v-solt";
 import {resolver_experssion} from "../cmd/data/v-el";
+import {resolver_for_map} from "../cmd/loop/v-map";
 
 /**
  * This function is used to resolver those commands which should be executed before mount.
@@ -53,7 +54,7 @@ export function afterCmd(templateSpace:ParentNode, proto:Component, controller:C
     //v-switch
     resolver_switch(templateSpace.children,controller.proxyForMethods);
     //v-for-each
-    resolver_for_each(templateSpace.children,controller.proxyForMethods);
+    resolver_for_map(templateSpace.children,controller.proxyForMethods);
     //v-for-of
     resolver_for_of(templateSpace.children,controller.proxyForMethods);
     //v-el
