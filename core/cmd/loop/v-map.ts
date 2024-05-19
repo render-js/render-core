@@ -19,49 +19,15 @@ export function resolver_for_map(elements:HTMLCollection,data:{}):void{
 
             if (data[dataName] instanceof Object){
 
-                extractForMap(elements[i].parentNode, elements[i], data[dataName]);
-
-                i++;
+                resolver_map_single(elements[i], data[dataName]);
 
             }else {
                 console.log("Instruction @document need an object datatype to extract!");
             }
-
-            //将模板节点删除
-            elements[i].parentNode.removeChild(elements[i]);
-
-            i--;
         }
 
         if (elements[i]){
             resolver_for_map(elements[i].children,data);
         }
     }
-}
-
-/**
- *
- * @param baseRoot
- * @param temp
- * @param data
- */
-export function extractForMap(baseRoot:ParentNode, temp:Node, data:any):void{
-    part_render_map(baseRoot,temp,data);
-}
-
-/**
- * 该函数用于处理字典数据类型的展开
- * @param baseRoot
- * @param temp
- * @param data
- */
-export function part_render_map(baseRoot:ParentNode, temp:Node, data:any):void{
-
-    // @ts-ignore
-    let clone:Element = temp.cloneNode(true);
-
-    resolver_map_single(clone,data);
-
-    //插入模板节点
-    baseRoot.insertBefore(clone,temp);
 }

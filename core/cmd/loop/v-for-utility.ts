@@ -1,4 +1,3 @@
-import {extractForMap} from "./v-map";
 import {resolver_map_single} from "./v-map-utility";
 
 /**
@@ -9,6 +8,17 @@ import {resolver_map_single} from "./v-map-utility";
  */
 export function resolver_array_single(element:Element, index:number, data:any):void{
     //从根元素开始渲染
+
+    //渲染信息
+    if (element.hasAttribute("@for-message")){
+
+        let data_index = element.getAttribute("@for-message");
+
+        element.removeAttribute("@for-message");
+
+        // @ts-ignore
+        element.innerText = data[data_index];
+    }
 
     //解析data
     if (element.hasAttribute("@data")){
@@ -28,17 +38,6 @@ export function resolver_array_single(element:Element, index:number, data:any):v
         element.innerText = index;
     }
 
-    //渲染信息
-    if (element.hasAttribute("@for-message")){
-
-        let data_index = element.getAttribute("@for-message");
-
-        element.removeAttribute("@for-message");
-
-        // @ts-ignore
-        element.innerText = data[data_index];
-    }
-
     resolver_array_multi(element.children, index, data);
 }
 
@@ -51,24 +50,6 @@ export function resolver_array_single(element:Element, index:number, data:any):v
 export function resolver_array_multi(elements:HTMLCollection, index:number, data:any):void{
     //渲染模板子元素
     for (let i:number = 0; i < elements.length; i++){
-
-        //解析data
-        if (elements[i].hasAttribute("@data")){
-
-            elements[i].removeAttribute("@data");
-
-            // @ts-ignore
-            elements[i].innerText = data;
-        }
-
-        //解析index
-        if (elements[i].hasAttribute("@index")){
-
-            elements[i].removeAttribute("@index");
-
-            // @ts-ignore
-            elements[i].innerText = index;
-        }
 
         //渲染文档
         if (elements[i].hasAttribute("@for-document")){
@@ -87,6 +68,24 @@ export function resolver_array_multi(elements:HTMLCollection, index:number, data
 
             // @ts-ignore
             elements[i].innerText = data[data_index];
+        }
+
+        //解析data
+        if (elements[i].hasAttribute("@data")){
+
+            elements[i].removeAttribute("@data");
+
+            // @ts-ignore
+            elements[i].innerText = data;
+        }
+
+        //解析index
+        if (elements[i].hasAttribute("@index")){
+
+            elements[i].removeAttribute("@index");
+
+            // @ts-ignore
+            elements[i].innerText = index;
         }
 
         resolver_array_multi(elements[i].children, index, data);

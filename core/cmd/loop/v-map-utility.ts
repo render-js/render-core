@@ -7,6 +7,18 @@ import {extractForArray} from "./v-for";
  */
 export function resolver_map_single(element:Element, data:any):void{
 
+    if (element.hasAttribute("@map-document")){
+        //检查v-for-item
+        if (element.hasAttribute("@map-document")){
+
+            let property:string = element.getAttribute("@map-document");
+
+            element.removeAttribute("@map-document");
+
+            resolver_map_single(element,data[property])
+        }
+    }
+
     //检查v-data
     if (element.hasAttribute("@section")){
 
@@ -31,6 +43,38 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
     for (let i:number = 0; i < elements.length; i++){
 
+        if (elements[i].hasAttribute("@map-document")){
+            //检查v-for-item
+            if (elements[i].hasAttribute("@map-document")){
+
+                let property:string = elements[i].getAttribute("@map-document");
+
+                elements[i].removeAttribute("@map-document");
+
+                resolver_map_single(elements[i],data[property])
+            }
+        }
+
+        if (elements[i].hasAttribute("@map-list")){
+            //检查v-for-array
+            if (elements[i].hasAttribute("@map-list")){
+
+                let property:string = elements[i].getAttribute("@map-list");
+
+                elements[i].removeAttribute("@map-list");
+
+                data[property].forEach(function (value: any, index: number) {
+
+                    extractForArray(elements[i].parentNode, elements[i], index, value);
+                    i++;
+                })
+
+                //删除节点
+                elements[i].parentNode.removeChild(elements[i]);
+                i--;
+            }
+        }
+
         //检查v-key
         if (elements[i].hasAttribute("@section")){
 
@@ -40,37 +84,6 @@ export function resolver_map_multi(elements:HTMLCollection, data:any):void{
 
             // @ts-ignore
             elements[i].innerText = data[property];
-        }
-
-        if (elements[i]){
-            //检查v-for-item
-            if (elements[i].hasAttribute("@map-document")){
-
-                let  property:string = elements[i].getAttribute("@map-document");
-
-                elements[i].removeAttribute("@map-document");
-
-                resolver_map_single(elements[i],data[property])
-            }
-        }
-
-        if (elements[i]){
-            //检查v-for-array
-            if (elements[i].hasAttribute("@map-list")){
-
-                let property:string = elements[i].getAttribute("@map-list");
-
-                elements[i].removeAttribute("@map-list");
-
-                data[property].forEach(function (value: any, index: number) {
-                    extractForArray(elements[i].parentNode, elements[i], index, value);
-                    i++;
-                })
-
-                //删除节点
-                elements[i].parentNode.removeChild(elements[i]);
-                i--;
-            }
         }
 
         //深度展开
