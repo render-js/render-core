@@ -1,10 +1,9 @@
-import {AppTip} from "../tips/appTip";
 import {locate, redirect} from "../../http/redirect/redirect";
 
 /**
  * This class is associated with localStorage.
  */
-export class AppController implements AppTip{
+export class AppController{
     /**
      * 资源定向
      * @param url
