@@ -1,4 +1,4 @@
-import {ComponentController} from "../../../class/controller/componentController";
+import {ComponentController} from "../../../class/component/componentController";
 
 /**
  *
@@ -6,7 +6,7 @@ import {ComponentController} from "../../../class/controller/componentController
  * @param data
  * @param controller
  */
-export function resolver_experssion(node:ParentNode, data:{}, controller:ComponentController):void{
+export function resolver_expression(node:ParentNode, data:{}, controller:ComponentController):void{
 
     if (node.hasChildNodes()){
 
@@ -23,6 +23,7 @@ export function resolver_experssion(node:ParentNode, data:{}, controller:Compone
                     try {
 
                         node.childNodes[j].nodeValue = data[property];
+
                     }catch (e){
 
                         node.childNodes[j].nodeValue = controller.computed[property]();
@@ -31,7 +32,7 @@ export function resolver_experssion(node:ParentNode, data:{}, controller:Compone
             }else if(node.childNodes[j].nodeType === 1){
 
                 // @ts-ignore
-                resolver_experssion(node.childNodes[j],data,controller);
+                resolver_expression(node.childNodes[j],data,controller);
             }
         }
     }

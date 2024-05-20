@@ -1,4 +1,4 @@
-import {Component} from "../component/component";
+import {Component} from "./component";
 
 export class ComponentController {
 
@@ -8,6 +8,7 @@ export class ComponentController {
     //指向该控制器的原型对象
     public proto:Component;
 
+    //指示如何渲染该组件
     public mode:string;
 
     //solt
@@ -25,18 +26,27 @@ export class ComponentController {
     //raw_data的代理对象
     public proxyForMethods:{};
 
+    //计算属性
     public computed:{};
 
+    //监控属性
     public watcher:{};
 
     //构造函数
     constructor() {
+
         this.link = new Map<string, {}>();
+
         this.to = Array();
+
         this.raw_data = {};
+
         this.solt = new Map<string,any>();
+
         this.computed = {};
+
         this.watcher = {};
+
         this.mode = "box";
     }
 

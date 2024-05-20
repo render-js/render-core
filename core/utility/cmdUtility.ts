@@ -5,14 +5,14 @@ import {resolver_txt} from "../cmd/data/v-txt";
 import {resolver_model} from "../cmd/react/v-model";
 import {resolver_bind} from "../cmd/property/v-bind";
 import {Component} from "../../class/component/component";
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 import {resolver_show} from "../cmd/justify/v-show";
 import {resolver_render} from "../cmd/justify/v-render";
 import {resolver_if} from "../cmd/justify/v-if";
 import {resolver_switch} from "../cmd/justify/v-switch";
 import {resolver_for_of} from "../cmd/loop/v-for";
 import {extract_solt} from "../cmd/solt/v-solt";
-import {resolver_experssion} from "../cmd/data/v-el";
+import {resolver_expression} from "../cmd/data/v-el";
 import {resolver_for_map} from "../cmd/loop/v-map";
 
 /**
@@ -58,5 +58,5 @@ export function afterCmd(templateSpace:ParentNode, proto:Component, controller:C
     //v-for-of
     resolver_for_of(templateSpace.children,controller.proxyForMethods);
     //v-el
-    resolver_experssion(controller.root,controller.proxyForMethods,controller);
+    resolver_expression(controller.root,controller.proxyForMethods,controller);
 }

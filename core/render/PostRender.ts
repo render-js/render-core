@@ -1,5 +1,5 @@
 import {Component} from "../../class/component/component";
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 import {PageController} from "../../class/controller/pageController";
 import {controllerCycleTypeTwo} from "../lifecycle/controllerCycle";
 import {afterCmd, cmdUtility} from "../utility/cmdUtility";

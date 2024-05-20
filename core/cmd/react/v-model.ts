@@ -22,7 +22,9 @@ export function resolver_model(nodes:HTMLCollection, data:{}):void{
             if (tagName === "INPUT" || tagName === "SELECT" || tagName === "TEXTAREA"){
 
                 nodes[i].addEventListener("compositionstart",compositionstart)
+
                 nodes[i].addEventListener("input",listener.bind(data))
+
                 nodes[i].addEventListener("compositionend",compositionend.bind(data))
             }
         }

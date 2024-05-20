@@ -1,4 +1,4 @@
-import {ComponentController} from "../../../class/controller/componentController";
+import {ComponentController} from "../../../class/component/componentController";
 import {PageController} from "../../../class/controller/pageController";
 
 /**

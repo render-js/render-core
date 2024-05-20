@@ -1,4 +1,4 @@
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 import {update_Render} from "../render/updateRender";
 import {locateInputAddress} from "../utility/sectionUtility";
 
@@ -48,6 +48,7 @@ export function getSetter(data:{}, updater:ComponentController){
         update_Render(this);
 
         locateInputAddress(this);
+
         Reflect.deleteProperty(this,"origin");
 
         return true;

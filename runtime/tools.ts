@@ -35,16 +35,16 @@ export function registerTagLib(application:RenderJS, component:Component | Compo
 
 /**
  * The entrance of render
- * @param renderjs
+ * @param renderJs
  */
-export function render(renderjs:RenderJS):void{
+export function render(renderJs:RenderJS):void{
 
     //获取styleLib对象
-    renderjs.tagLib.forEach(function (component:Component):void{
+    renderJs.tagLib.forEach(function (component:Component):void{
 
-        themeStyle(component, renderjs.styleLib);
+        themeStyle(component, renderJs.styleLib);
     })
 
     //开始渲染
-    renderHtml(document.body.children,renderjs.page);
+    renderHtml(document.body.children,renderJs.page);
 }

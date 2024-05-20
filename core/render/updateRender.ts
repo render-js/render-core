@@ -1,4 +1,4 @@
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 import {afterCmd, cmdUtility,} from "../utility/cmdUtility";
 import {injectRefs} from "../inject/inject";
 import {findComponent} from "./delivery";

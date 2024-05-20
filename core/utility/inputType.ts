@@ -1,4 +1,4 @@
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 
 export function textType(target:any,doc:any,controller:ComponentController):void{
     // @ts-ignore

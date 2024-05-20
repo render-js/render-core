@@ -42,8 +42,10 @@ export class Component implements RenderBase{
     }) {
         //标签名称
         this.name = config.name;
+
         //标签模板样式
         this.template = config.template;
+
         //添加box样式
         if (typeof config.mode === "undefined"){
             this.mode = "box";
@@ -54,46 +56,54 @@ export class Component implements RenderBase{
         if (typeof config.boxStyle === "undefined"){
             this.boxStyle = "";
         }else {
-            this.boxStyle = config.boxStyle;
+            this.boxStyle = config.boxStyle.replace(/^{/,"");
+            this.boxStyle = this.boxStyle.replace(/}$/,"");
         }
-        //添加数据
+
+        //props validate
         if (typeof config.props === "undefined"){
             this.props = [];
         }else {
             this.props = config.props;
         }
+
         //添加数据
         if (typeof config.data === "undefined"){
             this.data = {};
         }else {
             this.data = config.data;
         }
+
         //添加计算属性
         if (typeof config.computed === "undefined"){
             this.computed = {};
         }else {
             this.computed = config.computed;
         }
+
         //添加方法属性
         if (typeof config.methods === "undefined"){
             this.methods = {};
         }else {
             this.methods = config.methods;
         }
+
         //添加监控属性
         if (typeof config.watcher === "undefined"){
             this.watcher = {};
         }else {
             this.watcher = config.watcher;
         }
+
         //生命周期函数
         if (typeof config.beforeRender === "undefined"){
-            this.beforeRender = function (){}
+            this.beforeRender = function ():void{}
         }else {
             this.beforeRender = config.beforeRender;
         }
+
         if (typeof config.afterRender === "undefined"){
-            this.afterRender = function (){}
+            this.afterRender = function ():void{}
         }else {
             this.afterRender = config.afterRender;
         }

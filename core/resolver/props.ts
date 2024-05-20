@@ -18,8 +18,9 @@ export function resolveProps(node:Element, properties:{} | []):any{
  *
  * @param node
  * @param array
+ *
  */
-export function getAllPropsByArray(node:Element,array:Array<string>):any{
+export function getAllPropsByArray(node:Element, array:Array<string>):Map<string, string>{
 
     let props:Map<string, string> = new Map<string,string>();
 
@@ -39,7 +40,7 @@ export function getAllPropsByArray(node:Element,array:Array<string>):any{
  * @param node
  * @param object
  */
-export function getAllPropsByObject(node:Element,object:{}):any{
+export function getAllPropsByObject(node:Element, object:{}):Map<string, any>{
 
     let props:Map<string, any> = new Map<string,any>();
 
@@ -47,7 +48,7 @@ export function getAllPropsByObject(node:Element,object:{}):any{
 
         if (node.getAttribute(objectKey)){
 
-            switch (node.getAttribute(objectKey)){
+            switch (object[objectKey].toLowerCase()){
 
                 case "int":props.set(objectKey,parseInt(node.getAttribute(objectKey)));break;
 
@@ -63,6 +64,5 @@ export function getAllPropsByObject(node:Element,object:{}):any{
             }
         }
     }
-
     return props;
 }

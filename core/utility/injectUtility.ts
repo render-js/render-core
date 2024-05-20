@@ -1,5 +1,5 @@
 //注入对象
-import {ComponentController} from "../../class/controller/componentController";
+import {ComponentController} from "../../class/component/componentController";
 import {PageController} from "../../class/controller/pageController";
 
 export function getCodeSpaceForProps(data:{}, $props:Map<string, object>):void

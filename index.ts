@@ -72,10 +72,10 @@ export class RenderJS implements RenderTip{
         this.mount();
 
         //注册函数
-        registerElements("changeStyle",changeStyle);
+        this.registerElements("changeStyle",changeStyle);
 
         //注册函数
-        registerElements("changeTheme",changeTheme);
+        this.registerElements("changeTheme",changeTheme);
 
         //plugin
         this.use((render:RenderJS):void => {
