@@ -58,6 +58,8 @@ export class Component implements RenderBase{
         }else {
             this.boxStyle = config.boxStyle.replace(/^{/,"");
             this.boxStyle = this.boxStyle.replace(/}$/,"");
+            this.boxStyle = this.boxStyle.replace(/\n/,"");
+            this.boxStyle = this.boxStyle.trim();
         }
 
         //props validate

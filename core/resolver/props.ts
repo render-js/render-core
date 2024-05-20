@@ -48,7 +48,7 @@ export function getAllPropsByObject(node:Element, object:{}):Map<string, any>{
 
         if (node.getAttribute(objectKey)){
 
-            switch (object[objectKey].toLowerCase()){
+            switch (object[objectKey]){
 
                 case "int":props.set(objectKey,parseInt(node.getAttribute(objectKey)));break;
 
