@@ -12,11 +12,14 @@
     "url": "https://github.com//render-js/render-core.git"
   },
   "author": {
-    "name": "mutian",
-    "email": "mutian-xiangcai@outlook.com"
+    "name": "mutian-xiangcai",
+    "email": "mutian_xiangcai@outlook.com"
   },
   "license": "MIT",
   "dependencies": {
-    "typescript": "^5.4.5"
+    "render-refer": "0.0.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }

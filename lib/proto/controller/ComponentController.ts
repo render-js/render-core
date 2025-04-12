@@ -1,4 +1,4 @@
-import {Component} from "./component";
+import {Component} from "render-refer";
 
 export class ComponentController {
 

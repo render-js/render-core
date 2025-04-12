@@ -6,8 +6,9 @@ import {
 import {resolveProps} from "../resolver/props";
 import {resolve_Queries} from "../resolver/query";
 import {resolver_Refs} from "../cmd/ref/v-ref";
-import {ComponentController} from "../../class/component/componentController";
-import {Component} from "../../class/component/component";
+import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {Component} from "render-refer";
+
 
 /**
  * 向raw_data中注入props和Query

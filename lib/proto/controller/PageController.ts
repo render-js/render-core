@@ -1,4 +1,4 @@
-import {ComponentController} from "../component/componentController";
+import {ComponentController} from "./ComponentController";
 
 export class PageController {
 

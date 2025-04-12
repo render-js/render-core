@@ -1,4 +1,4 @@
-import {Component} from "../../class/component/component";
+import {Component} from "../../lib/proto/component";
 
 /**
  *

@@ -1,4 +1,4 @@
-import {ComponentController} from "../../../class/component/componentController";
+import {ComponentController} from "../../../lib/proto/controller/ComponentController";
 
 /**
  *

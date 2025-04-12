@@ -1,14 +1,15 @@
-import {Component} from "./class/component/component";
-import {PageController} from "./class/controller/pageController";
+import {PageController} from "./lib/proto/controller/PageController";
 import {registerTagLib, render} from "./runtime/tools";
-import {AppController} from "./class/controller/appController";
-import {RenderTip} from "./class/tips/renderTip";
 import {changeStyle, changeTheme} from "./core/utility/styleUtility";
+import {AppController} from "./lib/proto/controller/AppController";
+import {AbstractRenderJS, Component} from "render-refer";
+import {PluginGeneric} from "render-refer/generic/PluginGeneric";
+import {RenderGeneric} from "./lib/generic/RenderGeneric";
 
 /**
- * This class is the application class.
+ * This proto is the application proto.
  */
-export class RenderJS implements RenderTip{
+export class RenderJS extends AbstractRenderJS implements RenderGeneric{
 
     //Custom tagLib
     public readonly tagLib:Map<string, Component>;
@@ -23,6 +24,9 @@ export class RenderJS implements RenderTip{
     public page:PageController;
 
     constructor() {
+
+        super();
+
         //initiate the tagLib object
         this.tagLib = new Map<string,Component>();
 
@@ -38,10 +42,9 @@ export class RenderJS implements RenderTip{
 
     /**
      * This func is the plugin entry to third vendor
-     * @param callable
      */
-    public use(callable:(render:RenderJS)=>void): void {
-        callable(this);
+    public use(plugin:PluginGeneric) {
+        plugin.plugin(this);
     }
 
     /**
@@ -55,6 +58,7 @@ export class RenderJS implements RenderTip{
 
     /**
      * mount some base object
+     * @return void
      */
     private mount() {
         Reflect.set(window,"tagLib",this.tagLib);
@@ -65,6 +69,7 @@ export class RenderJS implements RenderTip{
 
     /**
      * This method is the booster method of the render.
+     * @return void
      */
     public run():void
     {
@@ -77,30 +82,16 @@ export class RenderJS implements RenderTip{
         //注册函数
         this.registerElements("changeTheme",changeTheme);
 
-        //plugin
-        this.use((render:RenderJS):void => {
-            sessionStorage.setItem("theme_style","default");
-        })
-
         //execute
         render(this);
-    }
-
-    /**
-     * Use the func to register some tool-functions to the windows object.
-     * @param name
-     * @param func
-     */
-    public registerElements(name:string, func:any):void{
-        Reflect.set(window,name,func);
     }
 }
 
 /**
- * Use the func to register some tool-functions to the windows object.
+ * Inject element to the window environment.
  * @param name
  * @param func
  */
-export function registerElements(name:string, func:any):void{
+export function registerElement(name:string, func:any):void{
     Reflect.set(window,name,func);
 }

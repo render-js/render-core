@@ -34,6 +34,6 @@ export function redirect(url:string,parameters:{}):void{
  * locate the position
  * @param position
  */
-export function locate(position:string):void{
+export function relocate(position:string):void{
     location.hash = position;
 }

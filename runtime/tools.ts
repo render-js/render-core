@@ -1,10 +1,10 @@
-import {Component} from "../class/component/component";
 import {RenderJS} from "../index";
 import {themeStyle} from "../core/utility/styleUtility";
 import {renderHtml} from "./runtime";
+import {Component} from "render-refer";
 
 /**
- * This function is used to save the prototype component class in the window object.
+ * This function is used to save the prototype component proto in the window object.
  * So, you can hava a tip that we custom a property named 'tagLib' in the window object.
  * @param application
  * @param component

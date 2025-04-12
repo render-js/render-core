@@ -1,7 +1,7 @@
 import {isUnKnown} from "../core/utility/checkUtility";
-import {PageController} from "../class/controller/pageController";
+import {PageController} from "../lib/proto/controller/PageController";
 import {Render} from "../core/render/delivery";
-import {Component} from "../class/component/component";
+import {Component} from "render-refer";
 
 /**
  *

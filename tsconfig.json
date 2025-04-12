@@ -1,5 +1,9 @@
 {
   "include": ["./**/*"],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "compilerOptions": {
     "rootDir": "./",
     "module": "ES6",
@@ -16,10 +20,7 @@
       "es2015.proxy",
       "es2015.collection",
       "es2015.reflect"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    ],
+    "moduleResolution": "node"
+  }
 }

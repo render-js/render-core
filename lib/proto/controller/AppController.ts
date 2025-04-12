@@ -1,8 +1,9 @@
-import {locate, redirect} from "../../http/redirect/redirect";
+import {relocate,redirect} from "../../../http/Http";
+
 
 /**
- * This class is associated with localStorage.
- */
+* This proto is associated with localStorage.
+*/
 export class AppController{
     /**
      * 资源定向
@@ -18,6 +19,6 @@ export class AppController{
      * @param position
      */
     public locate(position:string):void{
-        locate(position);
+        relocate(position);
     }
 }

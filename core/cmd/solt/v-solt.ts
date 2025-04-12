@@ -1,5 +1,5 @@
-import {ComponentController} from "../../../class/component/componentController";
-import {PageController} from "../../../class/controller/pageController";
+import {ComponentController} from "../../../lib/proto/controller/ComponentController";
+import {PageController} from "../../../lib/proto/controller/PageController";
 
 /**
  * 此函数用于解析自定义元素solt

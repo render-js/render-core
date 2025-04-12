@@ -1,6 +1,6 @@
-import {ComponentController} from "../../class/component/componentController";
-import {Component} from "../../class/component/component";
-import {PageController} from "../../class/controller/pageController";
+import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {Component} from "../../lib/proto/component";
+import {PageController} from "../../lib/proto/controller/PageController";
 import {inject, injectComputed, injectMethod, injectWatcher} from "../inject/inject";
 import {getProxyObject} from "../proxy/getProxy";
 import {

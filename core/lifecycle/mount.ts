@@ -1,5 +1,5 @@
-import {ComponentController} from "../../class/component/componentController";
-import {Component} from "../../class/component/component";
+import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {Component} from "../../lib/proto/component";
 
 /**
  * This function is used to mount the dom to the html document.

@@ -1,6 +1,6 @@
-import {Component} from "../../class/component/component";
-import {ComponentController} from "../../class/component/componentController";
-import {PageController} from "../../class/controller/pageController";
+import {Component} from "../../lib/proto/component";
+import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {PageController} from "../../lib/proto/controller/PageController";
 import {controllerCycleTypeOne} from "../lifecycle/controllerCycle";
 import {afterCmd, cmdUtility} from "../utility/cmdUtility";
 import {mount, unBox} from "../lifecycle/mount";
