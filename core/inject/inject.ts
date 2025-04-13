@@ -6,7 +6,7 @@ import {
 import {resolveProps} from "../resolver/props";
 import {resolve_Queries} from "../resolver/query";
 import {resolver_Refs} from "../cmd/ref/v-ref";
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {ComponentController} from "../../proto/controller/ComponentController";
 import {Component} from "render-refer";
 
 

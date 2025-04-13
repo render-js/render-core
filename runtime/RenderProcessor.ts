@@ -1,6 +1,6 @@
 import {isUnKnown} from "../core/utility/checkUtility";
-import {PageController} from "../lib/proto/controller/PageController";
-import {Render} from "../core/render/delivery";
+import {PageController} from "../proto/controller/PageController";
+import {delivery} from "../core/render/delivery";
 import {Component} from "render-refer";
 
 /**
@@ -25,7 +25,7 @@ export function renderHtml(collection:HTMLCollection, link:PageController):void
 
             }else {
                 //找到，渲染自定义标签
-                Render(component,collection[i].parentNode,collection[i],link)
+                delivery(component,collection[i].parentNode,collection[i],link)
             }
         }else {
             //非自定义标签，深度解析

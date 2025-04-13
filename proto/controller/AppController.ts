@@ -1,4 +1,4 @@
-import {relocate,redirect} from "../../../http/Http";
+import {relocate,redirect} from "../../http/Http";
 
 
 /**

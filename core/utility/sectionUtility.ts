@@ -1,4 +1,4 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {ComponentController} from "../../proto/controller/ComponentController";
 import {assignType, checkType, fileType, textType} from "./inputType";
 
 /**

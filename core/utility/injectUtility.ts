@@ -1,6 +1,6 @@
 //注入对象
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
-import {PageController} from "../../lib/proto/controller/PageController";
+import {ComponentController} from "../../proto/controller/ComponentController";
+import {PageController} from "../../proto/controller/PageController";
 
 export function getCodeSpaceForProps(data:{}, $props:Map<string, object>):void
 {

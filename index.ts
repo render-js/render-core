@@ -1,10 +1,11 @@
-import {PageController} from "./lib/proto/controller/PageController";
-import {registerTagLib, render} from "./runtime/tools";
+import {PageController} from "./proto/controller/PageController";
+import {render} from "./runtime/Entrance";
 import {changeStyle, changeTheme} from "./core/utility/styleUtility";
-import {AppController} from "./lib/proto/controller/AppController";
+import {AppController} from "./proto/controller/AppController";
 import {AbstractRenderJS, Component} from "render-refer";
 import {PluginGeneric} from "render-refer/generic/PluginGeneric";
-import {RenderGeneric} from "./lib/generic/RenderGeneric";
+import {RenderGeneric} from "./generic/RenderGeneric";
+import {registerTagLib} from "./runtime/TagProcessor";
 
 /**
  * This proto is the application proto.

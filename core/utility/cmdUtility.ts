@@ -4,8 +4,7 @@ import {resolver_html} from "../cmd/data/v-html";
 import {resolver_txt} from "../cmd/data/v-txt";
 import {resolver_model} from "../cmd/react/v-model";
 import {resolver_bind} from "../cmd/property/v-bind";
-import {Component} from "../../lib/proto/component";
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {ComponentController} from "../../proto/controller/ComponentController";
 import {resolver_show} from "../cmd/justify/v-show";
 import {resolver_render} from "../cmd/justify/v-render";
 import {resolver_if} from "../cmd/justify/v-if";
@@ -14,6 +13,7 @@ import {resolver_for_of} from "../cmd/loop/v-for";
 import {extract_solt} from "../cmd/solt/v-solt";
 import {resolver_expression} from "../cmd/data/v-el";
 import {resolver_for_map} from "../cmd/loop/v-map";
+import {Component} from "render-refer";
 
 /**
  * This function is used to resolver those commands which should be executed before mount.

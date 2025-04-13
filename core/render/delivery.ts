@@ -1,15 +1,15 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
-import {Component} from "../../lib/proto/component";
+import {ComponentController} from "../../proto/controller/ComponentController";
 import {isUnKnown} from "../utility/checkUtility";
-import {PageController} from "../../lib/proto/controller/PageController";
+import {PageController} from "../../proto/controller/PageController";
 import {init_render} from "./initRender";
 import {post_render} from "./PostRender";
 import {raw_render} from "./rawRender";
 import {getTemplate} from "../utility/templateUtility";
 import {styleResolve} from "../utility/styleUtility";
+import {Component} from "render-refer";
 
 //渲染自定义标签
-export function Render(proto: Component, parent: ParentNode, child:Element, link:ComponentController | PageController):void{
+export function delivery(proto: Component, parent: ParentNode, child:Element, link:ComponentController | PageController):void{
 
     //获得模板元素
     let tagTemplate:Element = getTemplate(proto);
@@ -47,7 +47,7 @@ export function findComponent(collection:HTMLCollection, link:ComponentControlle
     {
         if (isUnKnown(collection[i].nodeName))
         {
-            Render(Reflect.get(window,"tagLib").get(collection[i].nodeName.toUpperCase()), collection[i].parentNode, collection[i], link);
+            delivery(Reflect.get(window,"tagLib").get(collection[i].nodeName.toUpperCase()), collection[i].parentNode, collection[i], link);
         }else {
             findComponent(collection[i].children,link);
         }

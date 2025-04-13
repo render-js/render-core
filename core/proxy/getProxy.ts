@@ -1,4 +1,4 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {ComponentController} from "../../proto/controller/ComponentController";
 import {update_Render} from "../render/updateRender";
 import {locateInputAddress} from "../utility/sectionUtility";
 

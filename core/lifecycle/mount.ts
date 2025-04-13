@@ -1,6 +1,5 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
-import {Component} from "../../lib/proto/component";
-
+import {ComponentController} from "../../proto/controller/ComponentController";
+import {Component} from "render-refer";
 /**
  * This function is used to mount the dom to the html document.
  * @param controller

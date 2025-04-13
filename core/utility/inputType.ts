@@ -1,4 +1,4 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
+import {ComponentController} from "../../proto/controller/ComponentController";
 
 export function textType(target:any,doc:any,controller:ComponentController):void{
     // @ts-ignore

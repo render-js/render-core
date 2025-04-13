@@ -1,6 +1,5 @@
-import {Component} from "../../lib/proto/component";
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
-import {PageController} from "../../lib/proto/controller/PageController";
+import {ComponentController} from "../../proto/controller/ComponentController";
+import {PageController} from "../../proto/controller/PageController";
 import {controllerCycleTypeTwo} from "../lifecycle/controllerCycle";
 import {afterCmd, cmdUtility} from "../utility/cmdUtility";
 import {mount, unBox} from "../lifecycle/mount";
@@ -8,6 +7,7 @@ import {injectRefs} from "../inject/inject";
 import {afterMethodsTypeOne} from "../lifecycle/afterMethods";
 import {findComponent} from "./delivery";
 import {resolver_solt} from "../cmd/solt/v-solt";
+import {Component} from "render-refer";
 
 /**
  * 该函数用于初次渲染需要记录状态的组件

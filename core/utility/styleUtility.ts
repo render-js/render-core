@@ -1,5 +1,5 @@
-import {Component} from "../../lib/proto/component";
 import {loadStyle} from "../loader/loader";
+import {Component} from "render-refer";
 
 /**
  *

@@ -1,7 +1,6 @@
-import {Component} from "../../lib/proto/component";
+import {Component} from "render-refer";
 
 /**
- *
  * @param proto
  */
 export function getTemplate(proto:Component):Element{

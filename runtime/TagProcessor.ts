@@ -1,7 +1,5 @@
-import {RenderJS} from "../index";
-import {themeStyle} from "../core/utility/styleUtility";
-import {renderHtml} from "./runtime";
 import {Component} from "render-refer";
+import {RenderJS} from "../index";
 
 /**
  * This function is used to save the prototype component proto in the window object.
@@ -31,20 +29,4 @@ export function registerTagLib(application:RenderJS, component:Component | Compo
             }
         })
     }
-}
-
-/**
- * The entrance of render
- * @param renderJs
- */
-export function render(renderJs:RenderJS):void{
-
-    //获取styleLib对象
-    renderJs.tagLib.forEach(function (component:Component):void{
-
-        themeStyle(component, renderJs.styleLib);
-    })
-
-    //开始渲染
-    renderHtml(document.body.children,renderJs.page);
 }

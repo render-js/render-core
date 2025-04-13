@@ -1,6 +1,5 @@
-import {ComponentController} from "../../lib/proto/controller/ComponentController";
-import {Component} from "../../lib/proto/component";
-import {PageController} from "../../lib/proto/controller/PageController";
+import {ComponentController} from "../../proto/controller/ComponentController";
+import {PageController} from "../../proto/controller/PageController";
 import {inject, injectComputed, injectMethod, injectWatcher} from "../inject/inject";
 import {getProxyObject} from "../proxy/getProxy";
 import {
@@ -10,6 +9,7 @@ import {
     getPublishMethod, getSetCodeSpaceForProperty, getSetterMethod
 } from "../utility/injectUtility";
 import {dataInject} from "../utility/dataUtility";
+import {Component} from "render-refer";
 
 /**
  * This function is used to initiate the component controller object.
