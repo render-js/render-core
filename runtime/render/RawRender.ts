@@ -22,14 +22,14 @@ export function raw_render(proto:Component, parent:ParentNode, child:Element, li
     //获取控制对象
     let controller:ComponentController = new ComponentController();
 
-    //解析solt
+    //解析salt
     resolver_solt(child,controller);
 
     //控制对象预处理
     controllerCycleTypeTwo(controller,proto,child,link,tagTemplate);
 
     //beforeRender,可以获取数据而不触发更新
-    proto.getBeforeRender().call(controller.raw_data);
+    proto.getBeforeRender().call(controller.originalData);
 
     //解析指令（模板处理）
     cmdUtility(tagTemplate,proto,controller);
@@ -41,18 +41,18 @@ export function raw_render(proto:Component, parent:ParentNode, child:Element, li
     injectRefs(controller);
 
     //渲染后处理
-    afterCmd(controller.root,proto,controller);
+    afterCmd(controller.componentAttachedRootElement,proto,controller);
 
     //后处理（数据渲染）
     afterMethodsTypeTwo(controller,child,link);
 
     //afterRender，可以操作渲染后的dom
-    proto.getAfterRender().call(controller.proxyForMethods);
+    proto.getAfterRender().call(controller.dataForMethod);
 
     //深度渲染
-    findComponent(controller.root.children,controller);
+    findComponent(controller.componentAttachedRootElement.children,controller);
 
-    if (proto.getMode() === "insert"){
-        unBox(controller.root)
+    if (proto.getConfig()["mode"] === false){
+        unBox(controller.componentAttachedRootElement)
     }
 }

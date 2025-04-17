@@ -9,24 +9,22 @@ import {RenderJS} from "../index";
  */
 export function registerTagLib(application:RenderJS, component:Component | Component[]):void{
 
-    //if the input parameter is an instance of Component,do the code block.
-    if (component instanceof Component) {
-
-        if (!application.tagLib.has(component.getName().toUpperCase()))
-        {
-            application.tagLib.set(component.getName().toUpperCase(),component)
-        }else {
-            console.warn("The Tag:"+component.getName().toUpperCase()+"has been registered!")
-        }
-    }else {
+    if(Array.isArray(component)){
         //if the input parameter is an array of Component,do the code block.
         component.forEach(component =>{
             if (!application.tagLib.has(component.getName().toUpperCase()))
             {
                 application.tagLib.set(component.getName().toUpperCase(),component)
             }else {
-                console.warn("The Tag:"+component.getName().toUpperCase()+"has been registered!")
+                console.warn("The Tag:" + component.getName().toUpperCase() + "has been registered!")
             }
         })
+    }else{
+        if (!application.tagLib.has(component.getName().toUpperCase()))
+        {
+            application.tagLib.set(component.getName().toUpperCase(),component)
+        }else {
+            console.warn("The Tag:"+component.getName().toUpperCase()+"has been registered!")
+        }
     }
 }

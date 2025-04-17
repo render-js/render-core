@@ -1,6 +1,6 @@
 import {ComponentController} from "../../proto/controller/ComponentController";
 import {PageController} from "../../proto/controller/PageController";
-import {controllerCycleTypeOne} from "../lifecycle/controllerCycle";
+import {controllerCycleTypeTwo} from "../lifecycle/controllerCycle";
 import {afterCmd, cmdUtility} from "../utility/cmdUtility";
 import {mount, unBox} from "../lifecycle/mount";
 import {injectRefs} from "../inject/inject";
@@ -10,43 +10,48 @@ import {resolver_solt} from "../cmd/solt/v-solt";
 import {Component} from "render-refer";
 
 /**
- * 该函数用于处理需要更更新时候，需要从父组件提取数据状态的渲染操作
+ * 该函数用于初次渲染需要记录状态的组件
  * @param proto
  * @param parent
  * @param child
  * @param link
  * @param tagTemplate
  */
-export function init_render(proto:Component, parent:ParentNode, child:Element, link:ComponentController | PageController, tagTemplate:Element):void{
+export function post_render(proto:Component, parent:ParentNode, child:Element, link:ComponentController | PageController, tagTemplate:Element):void{
 
     //获取控制对象
     let controller:ComponentController = new ComponentController();
 
-    //解析solt
+    //解析salt
     resolver_solt(child,controller);
 
     //控制对象预处理
-    controllerCycleTypeOne(controller,proto,child,link,tagTemplate);
+    controllerCycleTypeTwo(controller,proto,child,link,tagTemplate);
 
-    //内存中模板处理
+    //beforeRender
+    proto.getBeforeRender().call(controller.originalData);
+
+    //解析指令
     cmdUtility(tagTemplate,proto,controller);
 
     //mount
     mount(controller,proto,parent,child,tagTemplate);
 
-    //获取
     injectRefs(controller);
 
-    //渲染后数据处理
-    afterCmd(controller.root,proto,controller);
+    //渲染后处理
+    afterCmd(controller.componentAttachedRootElement, controller.prototypeOfComponent, controller);
 
     //后处理
     afterMethodsTypeOne(controller,child,link);
 
-    //深度渲染
-    findComponent(tagTemplate.children,controller);
+    //afterRender
+    proto.getAfterRender().call(controller.dataForMethod);
 
-    if (proto.getMode() === "insert"){
-        unBox(controller.root)
+    //深度渲染
+    findComponent(controller.componentAttachedRootElement.children,controller);
+
+    if (proto.getConfig()["mode"] === false){
+        unBox(controller.componentAttachedRootElement)
     }
 }

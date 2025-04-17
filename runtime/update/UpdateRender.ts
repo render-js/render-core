@@ -11,29 +11,29 @@ import {getTemplate} from "../utility/templateUtility";
 export function update_Render(controller:ComponentController):void{
 
     //生成DOM
-    let tagTemplate:Element = getTemplate(controller.proto)
+    let tagTemplate:Element = getTemplate(controller.prototypeOfComponent)
 
     //清除保存的发布对象
-    controller.to = [];
+    controller.slaveComponent = [];
 
     //解析指令
-    cmdUtility(tagTemplate,controller.proto,controller);
+    cmdUtility(tagTemplate,controller.prototypeOfComponent,controller);
 
     //unmount
-    while (controller.root.hasChildNodes()){
-        controller.root.removeChild(controller.root.firstChild);
+    while (controller.componentAttachedRootElement.hasChildNodes()){
+        controller.componentAttachedRootElement.removeChild(controller.componentAttachedRootElement.firstChild);
     }
 
     //mount
     while (tagTemplate.hasChildNodes()){
-        controller.root.appendChild(tagTemplate.firstChild);
+        controller.componentAttachedRootElement.appendChild(tagTemplate.firstChild);
     }
 
     injectRefs(controller);
 
     //渲染后处理
-    afterCmd(controller.root, controller.proto, controller);
+    afterCmd(controller.componentAttachedRootElement, controller.prototypeOfComponent, controller);
 
     //深度渲染
-    findComponent(controller.root.children,controller);
+    findComponent(controller.componentAttachedRootElement.children,controller);
 }
