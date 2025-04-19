@@ -1,6 +1,6 @@
 {
   "name": "render-core",
-  "version": "1.3.68",
+  "version": "1.3.71",
   "description": "The extendable javascript web framework",
   "main": "index.js",
   "types": "index.d.ts",
@@ -16,9 +16,6 @@
     "email": "mutian_xiangcai@outlook.com"
   },
   "license": "MIT",
-  "dependencies": {
-    "render-refer": "0.0.9"
-  },
   "devDependencies": {
     "typescript": "^5.8.3"
   }
