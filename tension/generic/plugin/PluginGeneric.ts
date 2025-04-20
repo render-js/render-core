@@ -1,5 +1,5 @@
-import {HooksGeneric} from "./HooksGeneric";
-import {PrefaceGeneric} from "./PrefaceGeneric";
+import {HooksGeneric} from "./hooks/HooksGeneric";
+import {PrefaceGeneric} from "./preface/PrefaceGeneric";
 
 export interface PluginGeneric{
     plugin(preface:PrefaceGeneric, hooks:HooksGeneric):void;

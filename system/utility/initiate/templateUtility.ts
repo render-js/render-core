@@ -1,6 +1,7 @@
-import {Component} from "../../index";
+import {Component} from "../../../index";
 
 /**
+ * This func used to get the view tag from the template
  * @param proto
  */
 export function getTemplate(proto:Component):Element

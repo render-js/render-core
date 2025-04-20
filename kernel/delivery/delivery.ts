@@ -1,18 +1,48 @@
-import {ContextController} from "../../system/define/ContextController";
-import {isUnKnown} from "../../system/utility/checkUtility";
-import {get_tag_library} from "../../system/recorder/table0/system_func_0";
+import {ContextController} from "../../system/prototype/ContextController";
+import {get_tag_library, set_context_controller} from "../../system/recorder/table0/system_func_0";
 import {init_renderer} from "../renderer/initRender";
 import {post_renderer} from "../renderer/postRender";
 import {raw_renderer} from "../renderer/rawRender";
 import {Component} from "../../index";
-import {renderHtml} from "../../xboot/RenderProcessor";
+import {renderHtml} from "../../xboot/renderProcessor";
+import {tag_unknown_check} from "../../system/recorder/table2/system_func_2";
 
-
+/**
+ *
+ * @param protoTypeComponent
+ * @param componentAttachedRootElement
+ * @param child
+ * @param parentController
+ */
 export function spa_delivery(protoTypeComponent: Component, componentAttachedRootElement: ParentNode, child:Element, parentController:ContextController):void
 {
     raw_renderer(protoTypeComponent,componentAttachedRootElement,child,parentController);
 }
 
+/**
+ *
+ * @param protoTypeComponent
+ */
+export function direct_delivery(protoTypeComponent: Component):void
+{
+    let context:ContextController  = new ContextController({
+        boxMode: true
+    });
+
+    set_context_controller(context);
+
+    let webview:Element = document.querySelector("webview");
+
+    raw_renderer(protoTypeComponent, webview.parentNode, webview, context);
+}
+
+/**
+ *
+ * @param protoTypeComponent
+ * @param componentAttachedRootElement
+ * @param child
+ * @param parentController
+ */
 export function mpa_delivery(protoTypeComponent: Component, componentAttachedRootElement: ParentNode, child:Element, parentController:ContextController):void
 {
     //两种渲染方式
@@ -31,7 +61,7 @@ export function mpa_delivery(protoTypeComponent: Component, componentAttachedRoo
         }
     }else {
 
-        if (isUnKnown(child.nodeName.toUpperCase()))
+        if (tag_unknown_check(child.nodeName.toUpperCase()))
         {
             //从tag库中获取该组件的定义
             let component:Component = get_tag_library().get(child.nodeName.toUpperCase());
@@ -53,12 +83,16 @@ export function mpa_delivery(protoTypeComponent: Component, componentAttachedRoo
 
 }
 
-//拓展标签深度渲染
+/**
+ *
+ * @param collection
+ * @param parentController
+ */
 export function findComponent(collection:HTMLCollection, parentController:ContextController):void
 {
     for (let i:number = 0; i < collection.length; i++)
     {
-        if (isUnKnown(collection[i].nodeName))
+        if (tag_unknown_check(collection[i].nodeName))
         {
             mpa_delivery(get_tag_library().get(collection[i].nodeName.toUpperCase()), collection[i].parentNode, collection[i], parentController);
         }else {

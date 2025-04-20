@@ -23,7 +23,7 @@ export function parse_directive_for_map(elements:HTMLCollection,data:{}):void
                 resolver_map_single(elements[i], data[dataName]);
 
             }else {
-                console.log("Instruction @document need an object datatype to extract!");
+                console.log("Instruction @map need an object datatype to extract!");
             }
         }
 

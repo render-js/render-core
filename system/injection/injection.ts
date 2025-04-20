@@ -1,10 +1,10 @@
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 
 /**
  *
  * @param controller
  */
-export function getCommitMethod(controller:ContextController):any
+export function get_commit_method(controller:ContextController):any
 {
     let commit = function (method:string, ...args:any[]):any{
         return this.receiver(method,args);
@@ -16,22 +16,24 @@ export function getCommitMethod(controller:ContextController):any
  *
  * @param controller
  */
-export function getSetterMethod(controller:ContextController):any
+export function get_publish_method(controller:ContextController):any
 {
-    let setter = function (property:string,value:any):any{
-        this["$plugins"].set(property,value);
+    let publisher = function (method:string,...args:any[]):void{
+        for (let i:number = 0; i < this.to.length; i++){
+            this.to[i].receiver(method,args);
+        }
     }
-    return setter.bind(controller.componentConfig);
+    return publisher.bind(controller);
 }
 
 /**
  *
  * @param controller
  */
-export function getGetterMethod(controller:ContextController):any
+export function get_getter_method(controller:ContextController):any
 {
     let getter = function (property:string):any{
-        return this["$plugins"].get(property);
+        return this[property];
     }
     return getter.bind(controller.componentConfig);
 }
@@ -40,13 +42,10 @@ export function getGetterMethod(controller:ContextController):any
  *
  * @param controller
  */
-export function getPublishMethod(controller:ContextController):any
+export function get_setter_method(controller:ContextController):any
 {
-    let publisher = function (method:string,...args:any[]):void{
-        for (let i:number = 0; i < this.to.length; i++){
-            this.to[i].receiver(method,args);
-        }
+    let setter = function (property:string,value:any):any{
+        Reflect.set(this,property,value);
     }
-
-    return publisher.bind(controller);
+    return setter.bind(controller.componentConfig);
 }

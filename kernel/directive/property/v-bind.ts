@@ -1,4 +1,4 @@
-import {isUnKnown} from "../../../system/utility/checkUtility";
+import {tag_unknown_check} from "../../../system/recorder/table2/system_func_2";
 
 /**
  *
@@ -11,7 +11,7 @@ export function parse_directive_bind(nodes:HTMLCollection,data:{}):void
     for (let i:number=0;i<nodes.length;i++){
 
         //对系统元素进行属性绑定
-        if (!isUnKnown(nodes[i].nodeName)){
+        if (!tag_unknown_check(nodes[i].nodeName)){
 
             let attributes:string[] = nodes[i].getAttributeNames()
 

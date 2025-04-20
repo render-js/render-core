@@ -1,4 +1,4 @@
-import {checkStyleLabel} from "../utility/styleUtility";
+import {checkStyleLabel} from "../utility/style/styleUtility";
 
 /**
  * 加载自定义标签样式

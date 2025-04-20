@@ -5,8 +5,8 @@ export interface ComponentGeneric{
         getBoxStyle(): string;
         getProps(): {};
         getData():{};
-        getComputed():{};
         getMethods():{};
+        getComputed():{};
         getWatcher():{};
         getBeforeRender():()=>void
         getAfterRender():()=>void

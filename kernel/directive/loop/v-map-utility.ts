@@ -7,7 +7,6 @@ import {extractForArray} from "./v-for";
  */
 export function resolver_map_single(element:Element, data:any):void
 {
-
     if (element.hasAttribute("@map-document")){
         //检查v-for-item
         if (element.hasAttribute("@map-document")){

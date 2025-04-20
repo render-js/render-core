@@ -1,18 +1,19 @@
-import {render_for_mpa, render_for_spa} from "./xboot/Entrance";
-import {RenderGeneric} from "./system/generic/RenderGeneric";
-import {registerTagLib} from "./xboot/TagProcessor";
+import {render_for_listen, render_for_render, render_for_weave} from "./xboot/entrance";
+import {RenderGeneric} from "./system/generic/render/RenderGeneric";
+import {registerTagLib} from "./xboot/tagProcessor";
 import {HooksAction} from "./tension/prototype/HooksAction";
-import {ContextController} from "./system/define/ContextController";
-import {PluginGeneric} from "./tension/generic/PluginGeneric";
-import {HooksGeneric} from "./tension/generic/HooksGeneric";
+import {ContextController} from "./system/prototype/ContextController";
+import {PluginGeneric} from "./tension/generic/plugin/PluginGeneric";
+import {HooksGeneric} from "./tension/generic/plugin/hooks/HooksGeneric";
 import {AbstractComponent} from "./tension/prototype/AbstractComponent";
-import {get_router_for_application, set_context_controller} from "./system/recorder/table0/system_func_0";
-import {PrefaceGeneric} from "./tension/generic/PrefaceGeneric";
+import {set_context_controller} from "./system/recorder/table0/system_func_0";
+import {PrefaceGeneric} from "./tension/generic/plugin/preface/PrefaceGeneric";
 import {PrefaceAction} from "./tension/prototype/PrefaceAction";
-import {DefaultRouterPlugin} from "./tension/DefaultRouterPlugin";
+import {SystemInitPlugin} from "./tension/SystemInitPlugin";
+import {RouterGeneric} from "./tension/generic/router/RouterGeneric";
 
 /**
- * This class is used to define the properties type
+ * This class is used to prototype the properties type
  */
 export class PropertyType {
     public static STRING: 'string';
@@ -22,15 +23,31 @@ export class PropertyType {
     public static JSON: 'json';
 }
 
-export abstract class AbstractRenderJS implements RenderGeneric{
-    use_plugin(plugin: AbstractPlugin): void {
-    }
-}
-
+/**
+ * This abstract class is the plugin interface class for those who want to develop plugin for the system
+ */
 export abstract class AbstractPlugin implements PluginGeneric{
 
-    plugin(preface: PrefaceGeneric, hooks:HooksGeneric): void {
+    plugin(preface: PrefaceGeneric, hooks:HooksGeneric): void {}
+}
 
+/**
+ *  This abstract class is the router interface class for those who want to develop router for the system
+ */
+export abstract class AbstractRouter implements RouterGeneric{
+
+    /**
+     * The method must be overwritten by developer
+     */
+    getComponent(): Component {
+        return undefined;
+    }
+
+    /**
+     * The method must be overwritten by developer
+     */
+    getPathVariable(): Map<string, any> {
+        return new Map<string, any>();
     }
 }
 
@@ -60,77 +77,67 @@ export class Component extends AbstractComponent{
 /**
  * This proto is the application proto.
  */
-export class RenderJS extends AbstractRenderJS{
-
-    public routeMode: boolean = false;
+export class RenderJS implements RenderGeneric{
 
     public contextController: ContextController;
 
     constructor() {
 
-        super();
-
-        //initiate the page controller
+        /* initiate the page controller */
         this.contextController = new ContextController({
             boxMode: false,
         });
+
+        /* init the basis extension */
+        this.use_plugin(new SystemInitPlugin());
     }
 
     /**
-     * Inject element to the window environment.
-     * @param name
-     * @param func
-     */
-    public static registerElement(name:string, func:any):void{
-        Reflect.set(window,name,func);
-    }
-
-    /**
-     * This func is the plugin entry to third vendor
+     * This func is used to execute plugins
      */
     public use_plugin(plugin: PluginGeneric) {
         plugin.plugin(new PrefaceAction(), new HooksAction());
     }
 
     /**
-     * You can use the method to register your single component or an array of components.
+     * This unc is used to register component to system
      * @param component
      */
-    public addTag(component: Component | Component[]): void {
+    public add_tag(component: Component): void {
         registerTagLib(component);
     }
 
     /**
-     * This method is the booster method of the render.
-     * @return void
+     * This func is used to work under the route mode
      */
-    public run(component?: Component,root?:string): void
-    {
+    public listen():void{
         set_context_controller(this.contextController);
-
-        if (get_router_for_application() == null){
-            this.use_plugin(new DefaultRouterPlugin({
-                mode: "history",
-                table: [{
-                    path: "",
-                    component: null
-                }]
-            }))
-        }
-
-        if (this.routeMode)
-            this.spa_run(component);
-        else
-            this.mpa_run(root);
+        render_for_listen();
     }
 
-    private spa_run(component?: Component):void
-    {
-        render_for_spa(component);
+    /**
+     * This func is used to work under the directive render mode
+     */
+    public render(component:Component, mounter:string):void{
+        set_context_controller(this.contextController);
+        render_for_render(component, mounter);
     }
 
-    private mpa_run(root?:string):void
-    {
-        render_for_mpa(root);
+    /**
+     * This func is used to work under the weave  mode
+     */
+    public weave(mounter:string):void{
+        set_context_controller(this.contextController);
+        render_for_weave(mounter);
     }
+}
+
+/**
+ * This func is used to extend window environment
+ * @param on
+ * @param func
+ */
+export function extend_window(on:string, func:any):void
+{
+    Reflect.set(window, on, func);
 }

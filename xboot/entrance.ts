@@ -1,16 +1,15 @@
 import {Component} from "../index";
-import {themeStyle} from "../system/utility/styleUtility";
-import {renderHtml} from "./RenderProcessor";
+import {themeStyle} from "../system/utility/style/styleUtility";
+import {renderHtml} from "./renderProcessor";
 import {get_context_controller, get_style_library, get_tag_library} from "../system/recorder/table0/system_func_0";
-import {router_listener_with_router, router_listener_without_router} from "../system/router/router";
+import {router_listener_with_router, router_listener_without_router} from "../kernel/router/router";
 
 /**
- * The entrance of render
+ * The entrance of weave
  * @param root
  */
-export function render_for_mpa(root:string):void{
-
-    //获取styleLib对象
+export function render_for_weave(root?:string):void
+{
     get_tag_library().forEach(function (component:Component):void{
         themeStyle(component, get_style_library());
     })
@@ -37,16 +36,30 @@ export function render_for_mpa(root:string):void{
     }
 }
 
-export function render_for_spa(component?: Component):void{
-
+/**
+ * The entrance of listen
+ */
+export function render_for_listen():void
+{
     get_tag_library().forEach(function (component:Component):void
         {
             themeStyle(component, get_style_library());
         }
-    )
+    );
+    router_listener_with_router(document.querySelector("webview"));
+}
 
-    if (component == null)
-        router_listener_with_router(document.querySelector("webview"));
-    else
-        router_listener_without_router(component, document.querySelector("webview"));
+/**
+ * The entrance of render
+ * @param component
+ * @param mounter
+ */
+export function render_for_render(component: Component, mounter: string):void
+{
+    get_tag_library().forEach(function (component:Component):void
+        {
+            themeStyle(component, get_style_library());
+        }
+    );
+    router_listener_without_router(component, document.getElementById(mounter));
 }

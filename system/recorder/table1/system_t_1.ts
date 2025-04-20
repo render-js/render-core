@@ -1,3 +1,9 @@
 export default {
-    styleTheme: "default"
+    styleTheme: "default",
+    routerMode: false,
+    simpleRouteTable: null,
+    getPathVariable: null,
+    userEnvironment: {
+
+    }
 }

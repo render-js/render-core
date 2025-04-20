@@ -1,4 +1,4 @@
-import {ContextController} from "../prototype/ContextController";
+import {ContextController} from "../../prototype/ContextController";
 import {assignType, checkType, fileType, textType} from "./inputType";
 
 /**
@@ -9,9 +9,7 @@ export function locateInputAddress(controller:ContextController):void
 {
     //判断是否是输入导致的数据更新
     if (controller.dataForMethod.hasOwnProperty("origin")){
-
         let doc:any = Reflect.get(controller.dataForMethod,"origin");
-
         let target:HTMLElement = document.getElementById(doc.id)
 
         switch (doc.tag){
@@ -23,6 +21,12 @@ export function locateInputAddress(controller:ContextController):void
     }
 }
 
+/**
+ *
+ * @param target
+ * @param doc
+ * @param controller
+ */
 function locateInput(target:any,doc:any,controller:ContextController):void
 {
     switch (target.getAttribute("type")){
@@ -49,28 +53,33 @@ function locateInput(target:any,doc:any,controller:ContextController):void
     }
 }
 
-function locateTextArea(target:any, doc:any, controller:ContextController):void
-{
-    // @ts-ignore
-    target.value = controller.dataForMethod[target.getAttribute("name")];
-
-    // @ts-ignore
-    target.focus();
-
-    // @ts-ignore
-    target.setSelectionRange(doc.start, doc.start);
-}
-
+/**
+ *
+ * @param target
+ * @param doc
+ */
 function locateSelect(target:any, doc:any):void
 {
     // @ts-ignore
     let list = target.getElementsByTagName("option")
-
     for (let i =0; i<list.length;i++){
-
-        if (list[i].value === doc.selected){
-
+        if (list[i].value === doc.selected)
             list[i].selected = true;
-        }
     }
+}
+
+/**
+ *
+ * @param target
+ * @param doc
+ * @param controller
+ */
+function locateTextArea(target:any, doc:any, controller:ContextController):void
+{
+    // @ts-ignore
+    target.value = controller.dataForMethod[target.getAttribute("name")];
+    // @ts-ignore
+    target.focus();
+    // @ts-ignore
+    target.setSelectionRange(doc.start, doc.start);
 }

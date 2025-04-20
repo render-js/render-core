@@ -1,7 +1,7 @@
-import {loadStyle} from "../loader/loader";
-import {Component} from "../../index";
-import {get_theme_style, set_theme_style} from "../recorder/table1/system_func_1";
-import {get_style_library} from "../recorder/table0/system_func_0";
+import {loadStyle} from "../../loader/loader";
+import {Component} from "../../../index";
+import {get_theme_style, set_theme_style} from "../../recorder/table1/system_func_1";
+import {get_style_library} from "../../recorder/table0/system_func_0";
 
 /**
  *

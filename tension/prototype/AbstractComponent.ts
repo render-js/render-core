@@ -1,5 +1,7 @@
-import {ComponentGeneric} from "../generic/ComponentGeneric";
-import {OriginalDataGeneric} from "../generic/OriginalDataGeneric";
+import {ComponentGeneric} from "../../system/generic/component/ComponentGeneric";
+import {OriginalDataGeneric} from "../../system/generic/data/OriginalDataGeneric";
+import {ComputedDataGeneric} from "../../system/generic/data/ComputedDataGeneric";
+import {WatcherDataGeneric} from "../../system/generic/data/WatcherDataGeneric";
 
 /**
  * This is the component prototype.
@@ -18,23 +20,19 @@ export abstract class AbstractComponent implements ComponentGeneric{
 
     private readonly props?:{} | string[];
 
-    private readonly data?:{
-        $name?: string,
-        $props?: Map<string,any>,
-        $context?: object
-    };
+    private readonly data?:OriginalDataGeneric;
 
     private readonly methods?:OriginalDataGeneric;
 
-    private readonly computed?:{};
+    private readonly computed?:ComputedDataGeneric;
 
-    private readonly watcher?:{};
+    private readonly watcher?:WatcherDataGeneric;
 
     private readonly beforeRender?:() => void;
 
     private readonly afterRender?:() => void;
 
-    constructor(config:{
+    protected constructor(config:{
         name:string,
         template:string,
         config?:{

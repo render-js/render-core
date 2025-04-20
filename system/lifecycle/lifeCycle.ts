@@ -1,4 +1,4 @@
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 
 /**
  * 该函数用于处理渲染后操作

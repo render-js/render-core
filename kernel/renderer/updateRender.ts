@@ -1,12 +1,12 @@
 import {
     directive_parse_collection_for_after,
     directive_parse_collection_for_before,
-} from "../../system/utility/cmdUtility";
-import {inject_$refs_to_data} from "../../system/injection/inject";
+} from "../../system/utility/directive/cmdUtility";
+import {inject_$refs_to_data} from "../../system/injection/injector";
 import {findComponent} from "../delivery/delivery";
-import {getTemplate} from "../../system/utility/templateUtility";
-import {mountForUpdate} from "../../system/lifecycle/mount";
-import {ContextController} from "../../system/define/ContextController";
+import {getTemplate} from "../../system/utility/initiate/templateUtility";
+import {archive_mount, mountForUpdate} from "../../system/lifecycle/mount";
+import {ContextController} from "../../system/prototype/ContextController";
 
 /**
  * 更新渲染方法
@@ -24,22 +24,17 @@ export function update_Render(currentController:ContextController):void{
 
     //mount
     if (!currentController.componentConfig.boxMode){
-
         let renderSpace:Element = mountForUpdate(tagTemplate);
-
-
-        while (currentController.begin.nextSibling !== currentController.anchor){
-            currentController.componentAttachedRootElement.removeChild(currentController.begin.nextSibling)
-        }
-
-        while (renderSpace.hasChildNodes()){
-            currentController.componentAttachedRootElement.insertBefore(renderSpace.firstChild, currentController.anchor);
-        }
-
-        while (renderSpace.hasChildNodes()){
-
-            currentController.componentAttachedRootElement.insertBefore(renderSpace.firstChild,currentController.anchor);
-        }
+        while (currentController.anchorBegin.nextSibling !== currentController.anchorEnd)
+            currentController.componentAttachedRootElement.removeChild(currentController.anchorBegin.nextSibling)
+        while (renderSpace.hasChildNodes())
+            currentController.componentAttachedRootElement.insertBefore(renderSpace.firstChild, currentController.anchorEnd);
+        while (renderSpace.hasChildNodes())
+            currentController.componentAttachedRootElement.insertBefore(renderSpace.firstChild,currentController.anchorEnd);
+    }
+    else {
+        // @ts-ignore
+        archive_mount(currentController, currentController.prototypeOfComponent, currentController.componentAttachedRootElement.parentNode, currentController.componentAttachedRootElement ,tagTemplate);
     }
 
     //渲染后处理

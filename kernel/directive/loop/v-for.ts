@@ -5,7 +5,7 @@ import {resolver_array_single} from "./v-for-utility";
  * @param elements
  * @param data
  */
-export function parse_directive_for_of(elements:HTMLCollection,data:{}):void
+export function parse_directive_for_of(elements:HTMLCollection, data:{}):void
 {
 
     for (let i:number = 0; i < elements.length; i++){
@@ -35,7 +35,7 @@ export function parse_directive_for_of(elements:HTMLCollection,data:{}):void
                 i--;
             }else {
 
-                console.log("Instruction @list need an array datatype to extract!");
+                console.log("Instruction @for need an array datatype to extract!");
             }
         }
 

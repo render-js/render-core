@@ -1,31 +1,31 @@
-import {ContextController} from "../../system/define/ContextController";
+import {ContextController} from "../../system/prototype/ContextController";
 import {
     directive_parse_collection_for_after,
     directive_parse_collection_for_before
-} from "../../system/utility/cmdUtility";
+} from "../../system/utility/directive/cmdUtility";
 import {archive_mount, extract_mount} from "../../system/lifecycle/mount";
 import {
-    inject_$name_to_data, inject_$plugin_to_config,
-    inject_$props_to_data,
-    inject_$refs_to_data,
+    inject_$commit_to_data, inject_$getter_to_data,
+    inject_$http_to_data,
+    inject_$name_to_data, inject_$pathVariable_to_data, inject_$plugins_to_data,
+    inject_$props_to_data, inject_$publish_to_data,
+    inject_$refs_to_data, inject_$setter_to_data,
     inject_computed_to_controller,
     inject_method_to_data,
     inject_watcher_to_controller,
-} from "../../system/injection/inject";
+} from "../../system/injection/injector";
 import {after_process_for_post} from "../../system/lifecycle/lifeCycle";
 import {findComponent} from "../delivery/delivery";
 import {parse_directive_salt_collect} from "../directive/salt/v-solt";
-import {getTemplate} from "../../system/utility/templateUtility";
-import {loader_tag_style} from "../../system/utility/styleUtility";
-import {get_plugin_library, get_style_library} from "../../system/recorder/table0/system_func_0";
+import {getTemplate} from "../../system/utility/initiate/templateUtility";
+import {loader_tag_style} from "../../system/utility/style/styleUtility";
+import {get_style_library} from "../../system/recorder/table0/system_func_0";
 import {get_proxy_for_computed, get_proxy_for_method, get_proxy_for_watcher} from "../proxyer/getProxy";
-import {dataInject} from "../../system/utility/dataUtility";
+import {dataInject} from "../../system/utility/data/dataUtility";
 import {
-    getCodeSpaceForCommit,
-    getCodeSpaceForPublish, getGetCodeSpaceForProperty,
-    getSetCodeSpaceForProperty
-} from "../../system/utility/injectUtility";
-import {getCommitMethod, getGetterMethod, getPublishMethod, getSetterMethod} from "../../system/injection/injection";
+    get_commit_method, get_getter_method,
+    get_publish_method, get_setter_method
+} from "../../system/injection/injection";
 import {Component} from "../../index";
 
 /**
@@ -47,9 +47,6 @@ export function post_renderer(protoType:Component, parent:ParentNode, child:Chil
     /* some loaders */
     loader_tag_style(protoType.getName(), get_style_library());
 
-    /* some injections to config class */
-    Reflect.set(currentController.componentConfig, "$plugins", get_plugin_library());
-
     /* initiate to controller */
     currentController.parentController = parentController;
     currentController.prototypeOfComponent = protoType;
@@ -64,13 +61,13 @@ export function post_renderer(protoType:Component, parent:ParentNode, child:Chil
     inject_$name_to_data(protoType.getName(), currentController.originalData);
     inject_$props_to_data(child, protoType.getProps() ,currentController.originalData);
     inject_$refs_to_data(tagTemplate, currentController.originalData);
-    inject_$plugin_to_config(currentController.componentConfig);
-
-    //注入commit
-    getCodeSpaceForCommit(currentController.originalData, getCommitMethod(parentController));
-    getCodeSpaceForPublish(currentController.originalData, getPublishMethod(currentController));
-    getSetCodeSpaceForProperty(currentController.originalData, getSetterMethod(currentController));
-    getGetCodeSpaceForProperty(currentController.originalData, getGetterMethod(currentController));
+    inject_$plugins_to_data(currentController.originalData);
+    inject_$http_to_data(currentController.originalData);
+    inject_$pathVariable_to_data(currentController.originalData);
+    inject_$commit_to_data(currentController.originalData,get_commit_method(currentController));
+    inject_$publish_to_data(currentController.originalData,get_publish_method(currentController));
+    inject_$setter_to_data(currentController.originalData,get_setter_method(currentController));
+    inject_$getter_to_data(currentController.originalData,get_getter_method(currentController));
 
     /* initiate method, computed, watcher */
     inject_method_to_data(currentController, protoType);

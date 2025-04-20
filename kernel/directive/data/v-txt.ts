@@ -1,4 +1,4 @@
-import {ContextController} from "../../../system/define/ContextController";
+import {ContextController} from "../../../system/prototype/ContextController";
 /**
  *
  * @param elements

@@ -1,19 +1,19 @@
-import {add_label_to_element} from "./miscUtility";
-import {parse_directive_event} from "../../kernel/directive/method/v-on";
-import {parse_directive_html} from "../../kernel/directive/data/v-html";
-import {parse_directive_txt} from "../../kernel/directive/data/v-txt";
-import {parse_directive_model} from "../../kernel/directive/react/v-model";
-import {parse_directive_bind} from "../../kernel/directive/property/v-bind";
-import {ContextController} from "../prototype/ContextController";
-import {parse_directive_show} from "../../kernel/directive/justify/v-show";
-import {parse_directive_render} from "../../kernel/directive/justify/v-render";
-import {parse_directive_if} from "../../kernel/directive/justify/v-if";
-import {parse_directive_switch} from "../../kernel/directive/justify/v-switch";
-import {parse_directive_for_of} from "../../kernel/directive/loop/v-for";
-import {parse_directive_salt_extract} from "../../kernel/directive/salt/v-solt";
-import {parse_directive_expression} from "../../kernel/directive/data/v-el";
-import {parse_directive_for_map} from "../../kernel/directive/loop/v-map";
-import {Component} from "../../index";
+import {add_label_to_element} from "../initiate/miscUtility";
+import {parse_directive_event} from "../../../kernel/directive/method/v-on";
+import {parse_directive_html} from "../../../kernel/directive/data/v-html";
+import {parse_directive_txt} from "../../../kernel/directive/data/v-txt";
+import {parse_directive_model} from "../../../kernel/directive/react/v-model";
+import {parse_directive_bind} from "../../../kernel/directive/property/v-bind";
+import {ContextController} from "../../prototype/ContextController";
+import {parse_directive_show} from "../../../kernel/directive/justify/v-show";
+import {parse_directive_render} from "../../../kernel/directive/justify/v-render";
+import {parse_directive_if} from "../../../kernel/directive/justify/v-if";
+import {parse_directive_switch} from "../../../kernel/directive/justify/v-switch";
+import {parse_directive_for_of} from "../../../kernel/directive/loop/v-for";
+import {parse_directive_salt_extract} from "../../../kernel/directive/salt/v-solt";
+import {parse_directive_expression} from "../../../kernel/directive/data/v-el";
+import {parse_directive_for_map} from "../../../kernel/directive/loop/v-map";
+import {Component} from "../../../index";
 
 /**
  * This function is used to parse_directive those commands which should be executed before mount.

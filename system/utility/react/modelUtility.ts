@@ -1,7 +1,7 @@
 import {inputUtility, selectUtility, textareaUtility} from "./inputUtility";
 
 /**
- *
+ * This func used to make a flag to the input element
  * @param evt
  */
 export function compositionstart(evt:any):void
@@ -10,7 +10,7 @@ export function compositionstart(evt:any):void
 }
 
 /**
- *
+ * This func used to make a flag to the input element
  * @param evt
  */
 export function listener(evt:any):void
@@ -18,6 +18,7 @@ export function listener(evt:any):void
     if (!evt.target.hasAttribute("flag")){
         //Get the event element
         let element = evt.target
+
         switch (element.nodeName.toUpperCase()){
             case "INPUT": inputUtility(element,this);break;
             case "SELECT":selectUtility(element,this);break;
@@ -26,16 +27,15 @@ export function listener(evt:any):void
         }
 
         //Update the value
-        if (element.type === "file"){
+        if (element.type === "file")
             this[element.name] = element.files;
-        }else{
+        else
             this[element.name] = element.value;
-        }
     }
 }
 
 /**
- *
+ * This func used to make a flag to the input element
  * @param evt
  */
 export  function compositionend (evt:any):void

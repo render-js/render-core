@@ -1,8 +1,8 @@
-import {Component} from "../../index";
+import {Component} from "../../../index";
 
 export interface RouterGeneric{
 
-    getComponentByUrl(url: string): Component;
+    getComponent(): Component;
 
-    getQueriesByUrl(url: string): Map<string, any>
+    getPathVariable(): Map<string, any>
 }

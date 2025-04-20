@@ -1,4 +1,4 @@
-import {compositionend, compositionstart, listener} from "../../../system/utility/modelUtility";
+import {compositionend, compositionstart, listener} from "../../../system/utility/react/modelUtility";
 
 /**
  * 绑定数据模型

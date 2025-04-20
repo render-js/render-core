@@ -1,4 +1,4 @@
-import {ContextController} from "../../../system/define/ContextController";
+import {ContextController} from "../../../system/prototype/ContextController";
 
 /**
  * 此函数用于解析自定义元素salt
