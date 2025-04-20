@@ -1,4 +1,4 @@
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 
 export function textType(target:any,doc:any,controller:ContextController):void{
     // @ts-ignore

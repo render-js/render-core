@@ -4,7 +4,7 @@ import {parse_directive_html} from "../../kernel/directive/data/v-html";
 import {parse_directive_txt} from "../../kernel/directive/data/v-txt";
 import {parse_directive_model} from "../../kernel/directive/react/v-model";
 import {parse_directive_bind} from "../../kernel/directive/property/v-bind";
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 import {parse_directive_show} from "../../kernel/directive/justify/v-show";
 import {parse_directive_render} from "../../kernel/directive/justify/v-render";
 import {parse_directive_if} from "../../kernel/directive/justify/v-if";

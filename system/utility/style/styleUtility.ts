@@ -115,8 +115,8 @@ export function changeStyle(tag:string, theme:string):void{
  *
  * @param theme
  */
-export function changeTheme(theme:string):void{
-
+export function changeTheme(theme:string):void
+{
     get_style_library().forEach((value: { get: (arg0: string) => string; }, key: string) => {
 
         let styles:HTMLCollection = document.getElementsByTagName("style")
@@ -144,6 +144,5 @@ export function changeTheme(theme:string):void{
             }
         }
     })
-
     set_theme_style(theme);
 }

@@ -1,8 +1,9 @@
 import {resolve_props} from "../resolver/props";
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 import {parse_directive_refs} from "../../kernel/directive/ref/v-ref";
 import {Component} from "../../index";
-import {get_plugin_library} from "../recorder/table0/system_func_0";
+import {get_user_anonymous_ext, get_user_ext_http} from "../recorder/table3/system_func_3";
+import {get_path_variable} from "../recorder/table1/system_func_1";
 
 
 export function inject_$name_to_data(name:string, origin:{}):void
@@ -23,9 +24,21 @@ export function inject_$refs_to_data(template:Element, origin:object):void
         Reflect.set(origin, "$refs", refs);
 }
 
-export function inject_$plugin_to_config(config:object):void
+export function inject_$http_to_data(origin:{}):void
 {
-    Reflect.set(config, "plugins", get_plugin_library());
+    Reflect.set(origin, "$http", get_user_ext_http());
+}
+
+export function inject_$pathVariable_to_data(origin:{}):void
+{
+    Reflect.set(origin, "$pathVariable", get_path_variable());
+}
+
+export function inject_$plugin_to_data(config:object):void
+{
+    Reflect.set(config, "$plugins", function (name:string):any{
+        return  get_user_anonymous_ext(name);
+    });
 }
 
 

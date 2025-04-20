@@ -4,7 +4,8 @@ import {inputUtility, selectUtility, textareaUtility} from "./inputUtility";
  *
  * @param evt
  */
-export function compositionstart(evt:any){
+export function compositionstart(evt:any):void
+{
     evt.target.setAttribute("flag","false")
 }
 
@@ -12,13 +13,11 @@ export function compositionstart(evt:any){
  *
  * @param evt
  */
-export function listener(evt:any){
-
+export function listener(evt:any):void
+{
     if (!evt.target.hasAttribute("flag")){
-
         //Get the event element
         let element = evt.target
-
         switch (element.nodeName.toUpperCase()){
             case "INPUT": inputUtility(element,this);break;
             case "SELECT":selectUtility(element,this);break;
@@ -39,12 +38,11 @@ export function listener(evt:any){
  *
  * @param evt
  */
-export  function compositionend (evt:any){
-
+export  function compositionend (evt:any):void
+{
     evt.target.setAttribute("flag","true")
     //Get the event element
     let element = evt.target
-
     //Get the name attribute
     let dataName = element.name
 
@@ -54,7 +52,6 @@ export  function compositionend (evt:any){
         case "TEXTAREA":textareaUtility(element,this);break;
         default:console.error("Can`t bind this type input tag!");break
     }
-
     //Update the value
     this[dataName] = element.value;
 }

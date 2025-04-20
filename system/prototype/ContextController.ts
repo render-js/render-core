@@ -1,4 +1,4 @@
-import {ControllerGeneric} from "../generic/ControllerGeneric";
+import {ControllerGeneric} from "../generic/controller/ControllerGeneric";
 import {update_Render} from "../../kernel/renderer/updateRender";
 import {Component} from "../../index";
 

@@ -1,8 +1,8 @@
-import {PrefaceGeneric} from "./generic/PrefaceGeneric";
-import {HooksGeneric} from "./generic/HooksGeneric";
+import {PrefaceGeneric} from "./generic/plugin/preface/PrefaceGeneric";
+import {HooksGeneric} from "./generic/plugin/hooks/HooksGeneric";
 import {RouterAction} from "./prototype/RouterAction";
 import {Component} from "../index";
-import {PluginGeneric} from "./generic/PluginGeneric";
+import {PluginGeneric} from "./generic/plugin/PluginGeneric";
 
 export class DefaultRouterPlugin implements PluginGeneric{
 

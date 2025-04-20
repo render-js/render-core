@@ -9,7 +9,7 @@ export function router_listener_with_router(view:HTMLElement):void
     if (view !== null) {
         let controller:ContextController = get_context_controller();
         let router:AbstractRouter = get_router_for_application();
-        let component = router.getComponentByUrl(location.href);
+        let component = router.getComponentByUrl(location.pathname);
         spa_delivery(component, view.parentNode, view, controller);
     }
     else

@@ -1,3 +1,7 @@
+/**
+ *
+ * @param data
+ */
 export function dataInject(data:{}):any
 {
     let out:{} = {};

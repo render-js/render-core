@@ -1,12 +1,12 @@
-import {ContextController} from "../define/ContextController";
+import {ContextController} from "../prototype/ContextController";
 import {assignType, checkType, fileType, textType} from "./inputType";
 
 /**
  *
  * @param controller
  */
-export function locateInputAddress(controller:ContextController):void{
-
+export function locateInputAddress(controller:ContextController):void
+{
     //判断是否是输入导致的数据更新
     if (controller.dataForMethod.hasOwnProperty("origin")){
 
@@ -23,7 +23,8 @@ export function locateInputAddress(controller:ContextController):void{
     }
 }
 
-function locateInput(target:any,doc:any,controller:ContextController):void{
+function locateInput(target:any,doc:any,controller:ContextController):void
+{
     switch (target.getAttribute("type")){
         case "text":textType(target,doc,controller);break;
         case "color":assignType(target,controller);break;
@@ -48,7 +49,8 @@ function locateInput(target:any,doc:any,controller:ContextController):void{
     }
 }
 
-function locateTextArea(target:any, doc:any, controller:ContextController):void{
+function locateTextArea(target:any, doc:any, controller:ContextController):void
+{
     // @ts-ignore
     target.value = controller.dataForMethod[target.getAttribute("name")];
 
@@ -59,7 +61,8 @@ function locateTextArea(target:any, doc:any, controller:ContextController):void{
     target.setSelectionRange(doc.start, doc.start);
 }
 
-function locateSelect(target:any, doc:any):void{
+function locateSelect(target:any, doc:any):void
+{
     // @ts-ignore
     let list = target.getElementsByTagName("option")
 
