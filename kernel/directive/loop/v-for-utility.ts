@@ -8,19 +8,6 @@ import {resolver_map_single} from "./v-map-utility";
  */
 export function resolver_array_single(element:Element, index:number, data:any):void
 {
-    //从根元素开始渲染
-
-    //渲染信息
-    if (element.hasAttribute("@for-message")){
-
-        let data_index = element.getAttribute("@for-message");
-
-        element.removeAttribute("@for-message");
-
-        // @ts-ignore
-        element.innerText = data[data_index];
-    }
-
     //解析data
     if (element.hasAttribute("@data")){
 
@@ -32,9 +19,7 @@ export function resolver_array_single(element:Element, index:number, data:any):v
 
     //解析index
     if (element.hasAttribute("@index")){
-
         element.removeAttribute("@index");
-
         // @ts-ignore
         element.innerText = index;
     }

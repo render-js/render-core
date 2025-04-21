@@ -41,7 +41,7 @@ export function extract_mount(root:ContextController):void
         root.componentAttachedRootElement.parentNode.insertBefore(root.componentAttachedRootElement.firstChild,root.componentAttachedRootElement);
     let parent:ParentNode = root.componentAttachedRootElement.parentNode;
     // @ts-ignore
-    root.anchor = root.componentAttachedRootElement;
+    root.anchorEnd = root.componentAttachedRootElement;
     root.anchorEnd.setAttribute("anchor","end");
     root.anchorBegin.setAttribute("style","display:none");
     root.componentAttachedRootElement = parent;

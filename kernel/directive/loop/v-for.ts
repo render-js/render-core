@@ -24,7 +24,6 @@ export function parse_directive_for_of(elements:HTMLCollection, data:{}):void
 
                     //从数组中取出一条信息，然后开始渲染
                     extractForArray(elements[i].parentNode, elements[i], index, value);
-
                     i++;
                 })
 
