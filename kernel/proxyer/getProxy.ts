@@ -6,35 +6,52 @@ import {locateInputAddress} from "../../system/utility/react/sectionUtility";
  * @param data
  * @param updater
  */
-export  function get_proxy_for_method(data:{}, updater:ContextController):any{
-    let handel:{} = {}
-        handel["set"] = get_setter_for_method_proxy(updater);
+export function get_proxy_for_method(data: {}, updater: ContextController): any {
+    const proxyCache = new WeakMap<object, any>();
 
-    return new Proxy(data, handel);
-}
-
-/**
- * @param updater
- */
-function get_setter_for_method_proxy(updater:ContextController){
-
-    let setter = function (obj:{}, prop: string, value: any):boolean
-        {
-            Reflect.set(obj, prop, value);
-            update_Render(this);
-
-            try {
-                this.watcher[prop](obj[prop],value);
-            }catch (error) {
-
-            }
-
-            locateInputAddress(this);
-            Reflect.deleteProperty(this,"origin");
-            return true;
+    function createDeepProxy(target: any): any {
+        if (proxyCache.has(target)) {
+            return proxyCache.get(target);
         }
 
-    return setter.bind(updater);
+        const proxy = new Proxy(target, {
+            set(obj: any, prop: string | symbol, value: any): boolean {
+                if (value !== null && typeof value === 'object') {
+                    value = createDeepProxy(value);
+                }
+
+                Reflect.set(obj, prop, value);
+
+                update_Render(updater);
+
+                try {
+                    if (updater.watcher && typeof updater.watcher[prop as string] === 'function') {
+                        updater.watcher[prop as string](obj[prop], value);
+                    }
+                } catch (error) {
+                    // silently ignore missing watchers
+                }
+
+                locateInputAddress(updater);
+                Reflect.deleteProperty(updater, 'origin');
+
+                return true;
+            },
+
+            get(obj: any, prop: string | symbol): any {
+                const value = Reflect.get(obj, prop);
+                if (value !== null && typeof value === 'object') {
+                    return createDeepProxy(value);
+                }
+                return value;
+            }
+        });
+
+        proxyCache.set(target, proxy);
+        return proxy;
+    }
+
+    return createDeepProxy(data);
 }
 
 /**

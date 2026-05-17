@@ -1,7 +1,7 @@
 import {ContextController} from "../prototype/ContextController";
 
 /**
- * 该函数用于处理渲染后操作
+ * This function handles pre-render operations
  * @param currenController
  * @param child
  * @param parentController
@@ -16,7 +16,7 @@ export function after_process_for_init(currenController:ContextController, child
 }
 
 /**
- * 该函数用于处理渲染后操作
+ * This function handles post-render operations
  * @param currentController
  * @param parentController
  */

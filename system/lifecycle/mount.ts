@@ -2,7 +2,7 @@ import {ContextController} from "../prototype/ContextController";
 import {Component} from "../../index";
 
 /**
- * This function is used to mount the dom to the html document.
+ * This function is used to mount the dom to the HTML document.
  * @param controller
  * @param proto
  * @param parent

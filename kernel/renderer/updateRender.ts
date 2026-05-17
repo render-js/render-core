@@ -9,7 +9,7 @@ import {archive_mount, mountForUpdate} from "../../system/lifecycle/mount";
 import {ContextController} from "../../system/prototype/ContextController";
 
 /**
- * 更新渲染方法
+ * Method for upgrade
  * @param currentController
  */
 export function update_Render(currentController:ContextController):void{
