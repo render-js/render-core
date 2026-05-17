@@ -3,7 +3,7 @@ import {get_tag_library} from "../system/recorder/table0/system_func_0";
 
 /**
  * This function is used to save the prototype component proto in the window object.
- * So, you can hava a tip that we custom a property named 'tagLib' in the window object.
+ * So, you can have a tip that we custom a property named 'tagLib' in the window object.
  * @param component
  */
 export function registerTagLib(component:Component | Component[]):void

@@ -3,6 +3,9 @@ import {HooksGeneric} from "./generic/plugin/hooks/HooksGeneric";
 import {PluginGeneric} from "./generic/plugin/PluginGeneric";
 import {HttpAction} from "../system/prototype/HttpAction";
 
+/**
+ *
+ */
 export class SystemInitPlugin implements PluginGeneric{
 
     plugin(preface: PrefaceGeneric, hooks: HooksGeneric) {

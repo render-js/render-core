@@ -8,7 +8,6 @@ import {renderHtml} from "../../xboot/renderProcessor";
 import {tag_unknown_check} from "../../system/recorder/table2/system_func_2";
 
 /**
- *
  * @param protoTypeComponent
  * @param componentAttachedRootElement
  * @param child

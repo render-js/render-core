@@ -15,7 +15,7 @@ export class HooksAction implements HooksGeneric{
         changeTheme(theme);
     }
 
-    directDelivery(component: Component): void {
+    public directDelivery (component: Component): void {
         direct_delivery(component);
     }
 }
