@@ -28,7 +28,7 @@ export function parse_directive_for_map(elements:HTMLCollection,data:{}):void
         }
 
         if (elements[i]){
-            parse_directive_for_map(elements[i].children,data);
+            parse_directive_for_map(elements[i].children, data);
         }
     }
 }

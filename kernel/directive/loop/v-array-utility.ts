@@ -39,19 +39,19 @@ export function parse_directive_array_multi(elements:HTMLCollection, index:numbe
     for (let i:number = 0; i < elements.length; i++){
 
         //渲染文档
-        if (elements[i].hasAttribute("@for-document")){
+        if (elements[i].hasAttribute("@array-document")){
 
-            elements[i].removeAttribute("@for-document");
+            elements[i].removeAttribute("@array-document");
 
             resolver_map_single(elements[i],data);
         }
 
         //渲染信息
-        if (elements[i].hasAttribute("@for-message")){
+        if (elements[i].hasAttribute("@array-message")){
 
-            let data_index = elements[i].getAttribute("@for-message");
+            let data_index = elements[i].getAttribute("@array-message");
 
-            elements[i].removeAttribute("@for-message");
+            elements[i].removeAttribute("@array-message");
 
             // @ts-ignore
             elements[i].innerText = data[data_index];

@@ -11,8 +11,8 @@ import {PrefaceGeneric} from "./tension/generic/plugin/preface/PrefaceGeneric";
 import {PrefaceAction} from "./tension/prototype/PrefaceAction";
 import {SystemInitPlugin} from "./tension/SystemInitPlugin";
 import {RouterGeneric} from "./tension/generic/router/RouterGeneric";
-import LintError from "./verify/generic/lintError";
 import {lintComponent} from "./verify/directive-linter";
+import LintError from "./verify/generic/lintError";
 import {errorDisplay} from "./system/output/errorUtility";
 
 /**
@@ -107,14 +107,14 @@ export class RenderJS implements RenderGeneric{
      * @param component
      */
     public add_tag(component: Component): void {
-        let errors:LintError[]  = lintComponent(component);
-        if (errors.length > 0) {
-            errors.map(error => {
-                errorDisplay(component.getName(), error);
-            })
-        }else {
-            registerTagLib(component);
-        }
+
+        let errors:LintError[] = lintComponent(component);
+
+        errors.map(error => {
+            errorDisplay(component.getName(),error);
+        })
+
+        registerTagLib(component);
     }
 
     /**

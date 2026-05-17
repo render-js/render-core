@@ -1,4 +1,4 @@
-import {resolver_array_single} from "./v-for-utility";
+import {resolver_array_single} from "./v-array-utility";
 
 /**
  * 展开数据
@@ -10,13 +10,13 @@ export function parse_directive_for_of(elements:HTMLCollection, data:{}):void
 
     for (let i:number = 0; i < elements.length; i++){
 
-        let result:boolean = elements[i].hasAttribute("@for");
+        let result:boolean = elements[i].hasAttribute("@array");
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("@for")
+            let dataName:string = elements[i].getAttribute("@array")
 
-            elements[i].removeAttribute("@for")
+            elements[i].removeAttribute("@array")
 
             if (data[dataName] instanceof Array){
 

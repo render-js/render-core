@@ -1,4 +1,4 @@
-import {extractForArray} from "./v-for";
+import {extractForArray} from "./v-array";
 
 /**
  * 展开数据
