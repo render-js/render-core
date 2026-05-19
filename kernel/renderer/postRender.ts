@@ -16,7 +16,7 @@ import {
 } from "../../system/injection/injector";
 import {after_process_for_post} from "../../system/lifecycle/lifeCycle";
 import {findComponent} from "../delivery/delivery";
-import {parse_directive_salt_collect} from "../directive/salt/v-solt";
+import {parse_directive_salt_collect} from "../directive/slot/v-slot";
 import {getTemplate} from "../../system/utility/initiate/templateUtility";
 import {loader_tag_style} from "../../system/utility/style/styleUtility";
 import {get_style_library} from "../../system/recorder/table0/system_func_0";

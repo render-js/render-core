@@ -10,7 +10,7 @@ import {parse_directive_render} from "../../../kernel/directive/justify/v-render
 import {parse_directive_if} from "../../../kernel/directive/justify/v-if";
 import {parse_directive_switch} from "../../../kernel/directive/justify/v-switch";
 import {parse_directive_for_of} from "../../../kernel/directive/loop/v-array";
-import {parse_directive_salt_extract} from "../../../kernel/directive/salt/v-solt";
+import {parse_directive_salt_extract} from "../../../kernel/directive/slot/v-slot";
 import {parse_directive_expression} from "../../../kernel/directive/data/v-el";
 import {parse_directive_for_map} from "../../../kernel/directive/loop/v-map";
 import {Component} from "../../../index";

@@ -41,11 +41,11 @@ export function parse_directive_if(elements:HTMLCollection, data:{}):void
     //v-if渲染失败，寻找到是否匹配的v-else
     for (let j:number = 0; j < elements.length; j++){
 
-        let result:boolean = elements[j].hasAttribute("v-else")
+        let result:boolean = elements[j].hasAttribute("@else")
 
         if (result){
 
-            elements[j].removeAttribute("v-else")
+            elements[j].removeAttribute("@else")
 
             if (tag){
                 // @ts-ignore

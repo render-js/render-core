@@ -85,7 +85,6 @@ export class RenderJS implements RenderGeneric{
     public contextController: ContextController;
 
     constructor() {
-
         /* initiate the page controller */
         this.contextController = new ContextController({
             boxMode: false,
@@ -93,13 +92,6 @@ export class RenderJS implements RenderGeneric{
 
         /* init the basis extension */
         this.use_plugin(new SystemInitPlugin());
-    }
-
-    /**
-     * This func is used to execute plugins
-     */
-    public use_plugin(plugin: PluginGeneric) {
-        plugin.plugin(new PrefaceAction(), new HooksAction());
     }
 
     /**
@@ -115,6 +107,13 @@ export class RenderJS implements RenderGeneric{
         })
 
         registerTagLib(component);
+    }
+
+    /**
+     * This func is used to execute plugins
+     */
+    public use_plugin(plugin: PluginGeneric) {
+        plugin.plugin(new PrefaceAction(), new HooksAction());
     }
 
     /**

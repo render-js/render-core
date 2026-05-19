@@ -25,7 +25,7 @@ import {
     get_publish_method, get_setter_method
 } from "../../system/injection/injection";
 import {Component} from "../../index";
-import {parse_directive_salt_collect} from "../directive/salt/v-solt";
+import {parse_directive_salt_collect} from "../directive/slot/v-slot";
 
 /**
  * 该函数用于处理需要更更新时候，需要从父组件提取数据状态的渲染操作

@@ -11,7 +11,7 @@ export function parse_directive_salt_collect(tagTemplate:ChildNode, controller:C
     if (tagTemplate.hasChildNodes())
     {
         // @ts-ignore
-        let list:NodeListOf<Element> = tagTemplate.querySelectorAll("salt");
+        let list:NodeListOf<Element> = tagTemplate.querySelectorAll("slot");
 
         if (list.length !== 0)
         {
@@ -42,13 +42,13 @@ export function parse_directive_salt_extract(elements:HTMLCollection, controller
 
     for (let i:number = 0; i < elements.length;i++){
 
-        let result:boolean = elements[i].hasAttribute("@salt");
+        let result:boolean = elements[i].hasAttribute("@slot");
 
         if (result){
 
-            let dataName:string = elements[i].getAttribute("@salt");
+            let dataName:string = elements[i].getAttribute("@slot");
 
-            elements[i].removeAttribute("@salt");
+            elements[i].removeAttribute("@slot");
 
             if (!dataName){
 

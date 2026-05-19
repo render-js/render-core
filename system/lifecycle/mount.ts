@@ -18,7 +18,7 @@ export function archive_mount(controller:ContextController, proto:Component, par
     //指定渲染空间
     controller.componentAttachedRootElement = renderSpace;
     //开始渲染
-    parent.replaceChild(renderSpace,child);
+    parent.replaceChild(renderSpace, child);
     while (tagTemplate.hasChildNodes())
         renderSpace.append(tagTemplate.firstChild);
 }

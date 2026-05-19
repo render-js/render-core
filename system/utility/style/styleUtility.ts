@@ -42,7 +42,7 @@ export function themeStyle(component:Component, styleLib:Map<string, object>):vo
 
     for (let i:number=0; i<styles.length; i++) {
 
-        componentStyleList.set(styles[i].getAttribute("theme"),styles[i].innerText);
+        componentStyleList.set(styles[i].getAttribute("theme"), style_slot_func(styles[i].innerText, hashName(component.getName())));
     }
 
     styleLib.set(component.getName().toUpperCase(),componentStyleList);
@@ -90,7 +90,7 @@ export function changeStyle(tag:string, theme:string):void{
 
     if (styleTxt === undefined){
 
-        console.log("Dont`t find this style!");
+        console.log("Don`t find this style!");
 
     }else {
         let style:HTMLStyleElement = document.createElement('style')
@@ -145,4 +145,52 @@ export function changeTheme(theme:string):void
         }
     })
     set_theme_style(theme);
+}
+
+
+/**
+ * 给 CSS 中所有选择器添加 V-data 属性选择器
+ * @param {string} cssText - 原始 CSS 字符串
+ * @param {string} salt - 盐值
+ * @returns {string} 处理后的 CSS 字符串
+ */
+/**
+ * Simple synchronous string hash (djb2) — used to produce a unique salt per component name.
+ */
+export function hashName(name: string): string {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = ((hash << 5) - hash) + name.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash).toString(16);
+}
+
+export function style_slot_func(cssText:string, salt:string):string{
+    if (!cssText || !salt) return cssText;
+
+    // 正则匹配：选择器部分 { 声明部分 }
+    // 注意：这里不处理嵌套规则（如 @media 内部的选择器），如果需要可以调整
+    return cssText.replace(
+        /([^{]+)(\{)/g,
+        (match, selectors, brace) => {
+            // 如果是 @ 开头的规则，不处理
+            if (selectors.trim().startsWith('@')) {
+                return match;
+            }
+
+            // 将每个选择器（以逗号分隔）都加上 [V-data="salt"]
+            const newSelectors = selectors
+                .split(',')
+                .map((sel: string) => {
+                    const trimmed = sel.trim();
+                    if (!trimmed) return '';
+                    return `${trimmed}[v-data="${salt}"]`;
+                })
+                .filter(s => s)
+                .join(', ');
+
+            return newSelectors + brace;
+        }
+    );
 }
